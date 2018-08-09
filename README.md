@@ -1,7 +1,7 @@
 # sardonyx-web
 サードニクス
 
-Web client for Sardonyx・サードニクスのウェブクライエント
+Server for Sardonyx・サードニクスのサーバー
 
 ## About・概要
 Sardonyx is an online solution to transform how students and teachers use technology at the International Baccalaureate Diploma Program in Tokyo Metropolitan Kokusai High School. Sardonyx offers a cross-platfrom experience for all its users, through its mobile and web platforms. This repository contains code for Sardonyx's server.
