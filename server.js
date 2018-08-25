@@ -8,17 +8,6 @@ const request = require('request');
 
 const jwt = require('jsonwebtoken');
 
-/* SERVE STATIC FILES */
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-app.get('/login', (req, res) => {
-  res.sendFile(__dirname + '/public/login.html');
-});
-
 /* SERVE API */
 app.use('/api', (req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -26,12 +15,12 @@ app.use('/api', (req, res, next) => {
   next();
 })
 
-app.get('/api/web/validate', (req, res) => {
+app.get('/api/validate', (req, res) => {
   res.sendStatus(200);
   //validate all for now
 });
 
-app.post('/api/web/login', urlencodedParser, (req, res) => {
+app.post('/api/login', urlencodedParser, (req, res) => {
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: req.body
