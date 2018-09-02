@@ -16,3 +16,6 @@ The server provides a real time messaging service between students and teachers.
 Sardonyx is currently under development and is not available for use.
 
 サードニクスは現在開発途中で、まだ非公開です。
+
+## Contribution
+For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.
