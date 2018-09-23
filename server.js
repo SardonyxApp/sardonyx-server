@@ -16,8 +16,8 @@ app.use('/api', (req, res, next) => {
 })
 
 app.get('/api/validate', (req, res) => {
-  res.sendStatus(200);
-  //validate all for now
+  res.sendStatus(401);
+  //invalidate all for now
 });
 
 app.post('/api/login', urlencodedParser, (req, res) => {
@@ -32,7 +32,7 @@ app.post('/api/login', urlencodedParser, (req, res) => {
     }
 
     //successfully received 302 redirection from /sessions to /student
-    if (response.caseless.dict.location) { 
+    if (response.caseless.dict.location) {
       //extract necessary cookies from header to store on client
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
