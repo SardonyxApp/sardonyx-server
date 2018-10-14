@@ -16,8 +16,8 @@ app.use('/api', (req, res, next) => {
 })
 
 app.get('/api/validate', (req, res) => {
-  res.sendStatus(200);
-  //validate all for now
+  res.sendStatus(401);
+  //invalidate all for now
 });
 
 app.post('/api/login', urlencodedParser, (req, res) => {
