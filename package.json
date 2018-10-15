@@ -7,6 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "node-fetch": "^2.2.0"
@@ -14,5 +15,6 @@
   "engines": {
     "node": "8.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "github:SardonyxApp/sardonyx-server"
 }
