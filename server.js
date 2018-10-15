@@ -15,6 +15,11 @@ app.use('/api', (req, res, next) => {
   next();
 })
 
+app.all('/api/random', (req, res) => {
+  let random = Math.floor(Math.random() * 2);
+  res.sendStatus(random === 0 ? 401 : 200); //return random response for testing
+});
+
 app.get('/api/validate', (req, res) => {
   res.sendStatus(401);
   //invalidate all for now
