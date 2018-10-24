@@ -7,9 +7,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
+    "multer": "^1.4.1",
     "node-fetch": "^2.2.0",
     "request": "^2.88.0"
   },
