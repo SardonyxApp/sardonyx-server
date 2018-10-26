@@ -40,11 +40,11 @@ app.post('/api/login', upload.array(), (req, res) => {
       //extract necessary cookies from header to store on client
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
+      const credentials = JSON.stringify({ login: req.body.login, password: req.body.password }); //encrypt this in the future
       const payload = JSON.stringify({
         cfdiud: __cfdiud,
         managebacSession: _managebac_session,
-        login: req.body.login,
-        pass: req.body.password
+        credentials: credentials
       });
       res.status(200)
       res.append('Login-Token', payload);
