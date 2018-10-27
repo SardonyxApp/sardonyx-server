@@ -20,13 +20,34 @@ app.all('/random', (req, res) => {
 });
 
 /**
+ * @description Convert Login-Token header to req.body FormData
+ * @param {Object} req
+ * req should have header 'Login-Token'
+ * @param {Object} req
+ * @param {Function} next
+ */
+const loginTokenToBody = (req, res, next) => {
+  const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
+  if (credentials.login && credentials.password) {
+    req.body = req.body || {}; //define req.body in case of GET requests
+    req.body.login = credentials.login;
+    req.body.password = credentials.password;
+    req.body.remember_me = '1';
+    next();
+  } else {
+    //unauthorize before sending useless requests
+    res.sendStatus(401);
+  }
+};
+
+/**
  * @description validate login in req.body using Managebac
  * @param {Object} req 
  * req must have body
  * @param {Object} res 
- * @param {Object} next 
+ * this is the final middlware
  */
-const loginToManagebac = (req, res, next) => {
+const loginToManagebac = (req, res) => {
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: req.body
@@ -51,22 +72,17 @@ const loginToManagebac = (req, res, next) => {
       });
       res.status(200);
       res.append('Login-Token', payload);
+      res.send();
     }
 
     //no or incorrect redirection, unauthorized
-    else res.status(401);
+    else res.sendStatus(401);
   });
-  next();
-}
+};
 
-app.get('/api/validate', (req, res) => {
-  res.sendStatus(401);
-  //invalidate all for now
-});
+app.get('/api/validate', loginTokenToBody, loginToManagebac);
 
-app.post('/api/login', upload.array(), loginToManagebac, (req, res) => {
-  res.send();
-});
+app.post('/api/login', upload.array(), loginToManagebac);
 
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
