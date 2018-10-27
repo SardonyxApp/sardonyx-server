@@ -19,17 +19,19 @@ app.all('/random', (req, res) => {
   res.sendStatus(random === 0 ? 401 : 200); //return random response for testing
 });
 
-app.get('/api/validate', (req, res) => {
-  res.sendStatus(401);
-  //invalidate all for now
-});
-
-app.post('/api/login', upload.array(), (req, res) => {
+/**
+ * @description validate login in req.body using Managebac
+ * @param {Object} req 
+ * req must have body
+ * @param {Object} res 
+ * @param {Object} next 
+ */
+const loginToManagebac = (req, res, next) => {
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: req.body
     //imitate client login
-  }, (err, response, body) => {
+  }, (err, response) => {
     if (err) {
       console.error(err);
       res.status(503).send('There was an error accessing Managebac.');
@@ -37,7 +39,6 @@ app.post('/api/login', upload.array(), (req, res) => {
 
     //successfully received 302 redirection from /sessions to /student
     if (response.caseless.dict.location) {
-      //extract necessary cookies from header to store on client
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
       const login = req.body.login; 
@@ -48,13 +49,23 @@ app.post('/api/login', upload.array(), (req, res) => {
         login: login,
         password: password
       });
-      res.status(200)
+      res.status(200);
       res.append('Login-Token', payload);
-      res.send();
     }
 
-    else res.sendStatus(401);
+    //no or incorrect redirection, unauthorized
+    else res.status(401);
   });
+  next();
+}
+
+app.get('/api/validate', (req, res) => {
+  res.sendStatus(401);
+  //invalidate all for now
+});
+
+app.post('/api/login', upload.array(), loginToManagebac, (req, res) => {
+  res.send();
 });
 
 const listener = app.listen(process.env.PORT, () => {
