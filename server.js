@@ -14,7 +14,7 @@ app.use('/api', (req, res, next) => {
   next();
 })
 
-app.all('/api/random', (req, res) => {
+app.all('/random', (req, res) => {
   let random = Math.floor(Math.random() * 2);
   res.sendStatus(random === 0 ? 401 : 200); //return random response for testing
 });
@@ -40,11 +40,13 @@ app.post('/api/login', upload.array(), (req, res) => {
       //extract necessary cookies from header to store on client
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
-      const credentials = JSON.stringify({ login: req.body.login, password: req.body.password }); //encrypt this in the future
+      const login = req.body.login; 
+      const password = req.body.password; //encrypt this in the future
       const payload = JSON.stringify({
         cfdiud: __cfdiud,
         managebacSession: _managebac_session,
-        credentials: credentials
+        login: login,
+        password: password
       });
       res.status(200)
       res.append('Login-Token', payload);
