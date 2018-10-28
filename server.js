@@ -80,8 +80,13 @@ const loginToManagebac = (req, res) => {
   });
 };
 
+//initial validation
 app.get('/api/validate', loginTokenToBody, loginToManagebac);
 
+//reissue tokens
+app.get('/api/login', loginTokenToBody, loginToManagebac);
+
+//initial login
 app.post('/api/login', upload.array(), loginToManagebac);
 
 const listener = app.listen(process.env.PORT, () => {
