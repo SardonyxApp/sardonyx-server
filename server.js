@@ -2,68 +2,69 @@ const express = require('express');
 const app = express();
 
 const multer = require('multer');
-const upload = multer();
-//parse multipart/form-data
+const upload = multer(); // Used to parse multipart/form-data
 
 const request = require('request');
 
-/* SERVE API */
+// Set general settings on all of the API routes
 app.use('/api', (req, res, next) => {
+  // Allow from all for now, for testing purposes
   res.set('Access-Control-Allow-Origin', '*');
-  //allow from all for now, for testing purposes
+  // Continue with processing the request
   next();
-})
+});
 
+// Route to return a random response code of either 401 or 200
 app.all('/random', (req, res) => {
-  let random = Math.floor(Math.random() * 2);
-  res.sendStatus(random === 0 ? 401 : 200); //return random response for testing
+  let random = Math.floor(Math.random() * 2); // Generate either 0 or 1
+  res.sendStatus(random === 0 ? 401 : 200);
 });
 
 /**
  * @description Convert Login-Token header to req.body FormData
  * @param {Object} req
- * req should have header 'Login-Token'
+ * req should have the header 'Login-Token'
  * @param {Object} req
  * @param {Function} next
  */
 const loginTokenToBody = (req, res, next) => {
   const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
   if (credentials.login && credentials.password) {
-    req.body = req.body || {}; //define req.body in case of GET requests
+    req.body = req.body || {}; // Define req.body in case of GET requests
     req.body.login = credentials.login;
     req.body.password = credentials.password;
     req.body.remember_me = '1';
     next();
   } else {
-    //unauthorize before sending useless requests
+    // Unauthorize before sending useless requests
     res.sendStatus(401);
   }
 };
 
 /**
- * @description validate login in req.body using Managebac
+ * @description Validate login in req.body using Managebac
  * @param {Object} req 
- * req must have body
+ * req must have body containing keys 'login' and 'password'
  * @param {Object} res 
- * this is the final middlware
  */
 const loginToManagebac = (req, res) => {
+  // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: req.body
-    //imitate client login
   }, (err, response) => {
     if (err) {
       console.error(err);
-      res.status(503).send('There was an error accessing Managebac.');
+      res.status(502).send('There was an error accessing Managebac.');
     }
 
-    //successfully received 302 redirection from /sessions to /student
-    if (response.caseless.dict.location) {
+    // ManageBac returns a 302 redirection from /sessions to /student on success
+    // Check if the Destination is /student, then keep all the information to send back to client
+    if (response.caseless.dict.location.includes('/student')) {
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
       const login = req.body.login; 
-      const password = req.body.password; //encrypt this in the future
+      const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
         cfdiud: __cfdiud,
         managebacSession: _managebac_session,
@@ -74,18 +75,18 @@ const loginToManagebac = (req, res) => {
       res.sendStatus(200);
     }
 
-    //no or incorrect redirection, unauthorized
+    // No or incorrect redirection => unauthorized
     else res.sendStatus(401);
   });
 };
 
-//initial validation
+// Initial validation
 app.get('/api/validate', loginTokenToBody, loginToManagebac);
 
-//reissue tokens
+// Reissue tokens
 app.get('/api/login', loginTokenToBody, loginToManagebac);
 
-//initial login
+// Initial login
 app.post('/api/login', upload.array(), loginToManagebac);
 
 const listener = app.listen(process.env.PORT, () => {
