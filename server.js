@@ -70,9 +70,8 @@ const loginToManagebac = (req, res) => {
         login: login,
         password: password
       });
-      res.status(200);
       res.append('Login-Token', payload);
-      res.send();
+      res.sendStatus(200);
     }
 
     //no or incorrect redirection, unauthorized
