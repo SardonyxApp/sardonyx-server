@@ -101,7 +101,7 @@ const loginToManagebac = (req, res) => {
 
     }
 
-    // No or incorrect redirection => unauthorized
+    // Nonexistent or incorrect redirection => unauthorized
     res.sendStatus(401);
 
   });
@@ -114,7 +114,8 @@ app.get('/api/validate', loginTokenToBody, loginToManagebac);
 app.get('/api/login', loginTokenToBody, loginToManagebac);
 
 // Initial login
-app.post('/api/login', upload.none(), loginToManagebac); // use .none() when it's only text fields
+// use upload.none() when it's only text fields
+app.post('/api/login', upload.none(), loginToManageBac); 
 
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
