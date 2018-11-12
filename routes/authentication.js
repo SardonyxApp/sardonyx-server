@@ -1,4 +1,4 @@
-const request = require("request");
+const request = require('request');
 
 /**
  * @description Convert Login-Token header to req.body FormData
