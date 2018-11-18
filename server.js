@@ -4,7 +4,7 @@ const app = express();
 const multer = require('multer');
 const upload = multer(); // Used to parse multipart/form-data
 
-const authRoutes = require('./routes/authentication');
+const auth = require('./helpers/authentication');
 
 // Route to return a random response code of either 401 or 200
 app.all('/random', (req, res) => {
@@ -20,18 +20,18 @@ app.use('/api', (req, res, next) => {
 });
 
 // Initial validation
-app.get('/api/validate', authRoutes.loginTokenToBody, authRoutes.loginToManagebac, (req, res) => {
+app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, (req, res) => {
   res.status(200).end();
 });
 
 // Reissue tokens
-app.get('/api/login', authRoutes.loginTokenToBody, authRoutes.loginToManagebac, (req, res) => {
+app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, (req, res) => {
   res.status(200).end();
 });
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), authRoutes.loginToManagebac, authRoutes.createSardonyxToken);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken);
 
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
