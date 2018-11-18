@@ -23,13 +23,18 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				use: ['style-loader', 'css-loader', 'sass-loader']
+			},
+			{
+				test: /\.svg$/,
+				use: ['file-loader']
 			}
 		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			chunks: ['index'],
-			template: './src/index.html'
+			template: './src/index.html',
+			favicon: './src/Icon.svg'
 		})
 	]
 };
