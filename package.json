@@ -8,8 +8,8 @@
     "client": "webpack --mode production",
     "server-dev": "nodemon server",
     "start": "node server",
-    "dev": "concurrently \"npm run cliengt\" \"npm start\"",
-    "build": "npm run webpack && npm start"
+    "dev": "concurrently \"npm run client-dev\" \"npm run server-dev\"",
+    "build": "npm run client && npm start"
   },
   "engines": {
     "node": "8.x"
