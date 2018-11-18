@@ -2,10 +2,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	entry: ['@babel/polyfill', './src/App.js'],
+	entry: {
+		'index': ['@babel/polyfill', './src/App.js']
+	},
 	output: {
 		path: path.join(__dirname, 'public'),
-		filename: 'index.js'
+		filename: '[name].js'
 	},
 	module: {
 		rules: [
@@ -17,12 +19,17 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader']
+			},
+			{
+				test: /\.scss$/,
+				use: ['style-loader', 'css-loader', 'sass-loader']
 			}
 		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './src/index.html',
+			chunks: ['index'],
+			template: './src/index.html'
 		})
 	]
 };
