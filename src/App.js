@@ -6,7 +6,12 @@ import './index.scss';
 class Root extends React.Component {
   render() {
     return (
-      <h1>Hello world</h1>
+      <div>
+        <h1>Sardonyx</h1>
+        <img src={require('./Icon.svg')} id="logo" />
+        <p>The web app is under development.</p>
+        <p>Source code is on <a href="https://github.com/SardonyxApp">Github</a>.</p>
+      </div>
     );
   }
 }
