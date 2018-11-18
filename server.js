@@ -4,7 +4,11 @@ const app = express();
 const multer = require('multer');
 const upload = multer(); // Used to parse multipart/form-data
 
+require('dotenv').config();
+
 const auth = require('./helpers/authentication');
+
+app.use(express.static('public'));
 
 // Route to return a random response code of either 401 or 200
 app.all('/random', (req, res) => {
