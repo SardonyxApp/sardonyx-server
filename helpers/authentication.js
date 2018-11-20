@@ -88,6 +88,5 @@ exports.createSardonyxToken = (req, res, next) => {
 
   // Return that token
   res.append('Sardonyx-Token', token);
-  res.status(200);
   next();
 };
