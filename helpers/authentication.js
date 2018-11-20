@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Helper functions used in authentication.
+ * @author SardonyxApp
+ * @license MIT
+ */
+
 const request = require('request');
 
 /**
@@ -66,14 +72,14 @@ exports.loginToManagebac = (req, res, next) => {
   });
 };
 
-
 /**
  * This middleware is only called if loginToManagebac was 200.
  * @description Creates a unique token and puts that in a DB.
  * @param {Object} req 
  * @param {Object} res 
+ * @param {Function} next
  */
-exports.createSardonyxToken = (req, res) => {
+exports.createSardonyxToken = (req, res, next) => {
   // Create token
   const token = 'temporary0123abcd'
 
@@ -82,5 +88,6 @@ exports.createSardonyxToken = (req, res) => {
 
   // Return that token
   res.append('Sardonyx-Token', token);
-  res.status(200).end();
+  res.status(200);
+  next();
 };

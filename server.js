@@ -4,7 +4,7 @@ const app = express();
 const multer = require('multer');
 const upload = multer(); // Used to parse multipart/form-data
 
-require('dotenv').config();
+require('dotenv').config(); // Used to parse .env
 
 const auth = require('./helpers/authentication');
 
@@ -24,18 +24,19 @@ app.use('/api', (req, res, next) => {
 });
 
 // Initial validation
-app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, (req, res) => {
-  res.status(200).end();
-});
+app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac);
 
 // Reissue tokens
-app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, (req, res) => {
-  res.status(200).end();
-});
+app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac);
 
 // Initial login
 // use upload.none() when it's only text fields
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken);
+
+// Finally send back requests with 200 OK
+app.all('/api', (req, res) => {
+  res.status(200).end();
+});
 
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
