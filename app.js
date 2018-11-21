@@ -7,6 +7,7 @@ const upload = multer(); // Used to parse multipart/form-data
 require('dotenv').config(); // Used to parse .env
 
 const auth = require('./helpers/authentication');
+const managebac = require('./helpers/managebac');
 
 const end200 = (req, res) => {
   res.status(200).end();
