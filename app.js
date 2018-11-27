@@ -7,7 +7,7 @@ const upload = multer(); // Used to parse multipart/form-data
 require('dotenv').config(); // Used to parse .env
 
 const auth = require('./helpers/authentication');
-const managebac = require('./helpers/managebac');
+const mb = require('./helpers/managebac');
 
 const end200 = (req, res) => {
   res.status(200).end();
@@ -31,14 +31,14 @@ app.use('/api', (req, res, next) => {
 app.get('/api', end200);
 
 // Initial validation
-app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, end200);
+app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, mb.loadDeadlines, end200);
 
 // Reissue tokens
 app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, end200);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDeadlines, end200);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
