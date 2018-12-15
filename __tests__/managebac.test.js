@@ -112,3 +112,39 @@ describe('Load classes', () => {
     });
   });
 });
+
+describe('Load groups', () => {
+  describe('GET /api/validate', () => {
+    test('GET /api/validate should return a valid groups json', done => {
+      request(app)
+      .get('/api/validate')
+      .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
+      .then(response => {
+        const classes = JSON.parse(response.headers['managebac-data']).groups;
+        classes.forEach(item => {
+          expect(typeof item.title).toBe('string');
+          expect(typeof item.link).toBe('string');
+        });
+        done();
+      });
+    });
+  });
+
+  describe('POST /api/login', () => {
+    test('POST /api/login should return a valid groups json', done => {
+      request(app)
+        .post('/api/login')
+        .set('Content-Type', 'multipart/form-data')
+        .field('login', process.env.LOGIN)
+        .field('password', process.env.PASSWORD)
+        .then(response => {
+          const classes = JSON.parse(response.headers['managebac-data']).groups;
+          classes.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+          });
+          done();
+        });
+    });
+  });
+});
