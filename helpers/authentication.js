@@ -49,7 +49,7 @@ exports.loginToManagebac = (req, res, next) => {
   }, (err, response) => {
     if (err) {
       console.error(err);
-      res.status(502).write('There was an error accessing Managebac.').end();
+      res.status(502).end();
       return;
     }
 
