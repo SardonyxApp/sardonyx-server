@@ -57,7 +57,28 @@ exports.loadClasses = (req, res, next) => {
 
   $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
     req.classes.push({
-      title: $(el).find('a').text(),
+      title: encodeURI($(el).find('a').text().replace(/\n/g, '')),
+      link: $(el).find('a').attr('href')
+    });
+  });
+
+  next();
+};
+
+/**
+ * @description Load group list 
+ * @param {Object} req
+ * req must have document property
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadGroups = (req, res, next) => {
+  const $ = cheerio.load(req.document);
+  req.groups = [];
+
+  $('#menu > .nav-menu > li.parent:nth-child(10) li').each((i, el) => {
+    req.groups.push({
+      title: encodeURI($(el).find('a').text().replace(/\n/g, '')),
       link: $(el).find('a').attr('href')
     });
   });
@@ -75,8 +96,8 @@ exports.encode = (req, res, next) => {
   const payload = {};
   if (req.hasOwnProperty('deadlines')) payload.deadlines = req.deadlines;
   if (req.hasOwnProperty('classes')) payload.classes = req.classes;
-  // Add more as we load new things 
-  // ...
+  if (req.hasOwnProperty('groups')) payload.groups = req.groups;
+  
   res.append('Managebac-Data', JSON.stringify(payload));
   next();
 };
