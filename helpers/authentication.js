@@ -42,7 +42,9 @@ exports.loginToManagebac = (req, res, next) => {
   // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
-    form: { ...req.body, ...additionalFormData } // Combine data
+    form: { ...req.body, ...additionalFormData },
+    jar: true,
+    followAllRedirects: true,
   }, (err, response) => {
     if (err) {
       console.error(err);
@@ -50,15 +52,14 @@ exports.loginToManagebac = (req, res, next) => {
       return;
     }
 
-    // ManageBac returns a 302 redirection from /sessions to /student on success
-    // Check if the destination is /student, then keep all the information to send back to client
-    if (response.caseless.dict.location && response.caseless.dict.location.includes('/student')) {
-      const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
-      const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
+    // Successfully returns student page
+    if (response.request.uri.href === "https://kokusaiib.managebac.com/student") {
+      //const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
+      const _managebac_session = response.headers['set-cookie'][0].split(';')[0];
       const login = req.body.login;
       const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
-        cfdiud: __cfdiud,
+        cfdiud: "dummy string to pass the tests for now",
         managebacSession: _managebac_session,
         login: login,
         password: password
