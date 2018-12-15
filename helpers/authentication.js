@@ -38,12 +38,13 @@ exports.loginToManagebac = (req, res, next) => {
   const additionalFormData = {
     'remember_me': 1
   };
+  const cookieJar = request.jar();
 
   // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: { ...req.body, ...additionalFormData },
-    jar: true,
+    jar: cookieJar,
     followAllRedirects: true,
   }, (err, response) => {
     if (err) {
@@ -53,13 +54,13 @@ exports.loginToManagebac = (req, res, next) => {
     }
 
     // Successfully returns student page
-    if (response.request.uri.href === "https://kokusaiib.managebac.com/student") {
-      //const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
-      const _managebac_session = response.headers['set-cookie'][0].split(';')[0];
+    if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
+      const __cfdiud = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
       const login = req.body.login;
       const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
-        cfdiud: "dummy string to pass the tests for now",
+        cfdiud: __cfdiud,
         managebacSession: _managebac_session,
         login: login,
         password: password
