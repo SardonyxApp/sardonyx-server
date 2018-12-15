@@ -5,6 +5,7 @@
  */
 
  const request = require('request');
+ const cheerio = require('cheerio');
 
  /**
   * @description Loads upcoming deadlines
@@ -14,5 +15,6 @@
   * @param {Function} next
   */
  exports.loadDeadlines = (req, res, next) => {
+   const $ = cheerio.load(req.document);
    next();
  };
