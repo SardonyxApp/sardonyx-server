@@ -38,12 +38,20 @@ exports.loginToManagebac = (req, res, next) => {
   const additionalFormData = {
     'remember_me': 1
   };
+  const cookieJar = request.jar();
 
   // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
+<<<<<<< HEAD
     url: 'https://kokusaiib.managebac.com/session',
     followAllRedirects: true,
     form: { ...req.body, ...additionalFormData } // Combine data
+=======
+    url: 'https://kokusaiib.managebac.com/sessions',
+    form: { ...req.body, ...additionalFormData },
+    jar: cookieJar,
+    followAllRedirects: true,
+>>>>>>> dev-auth
   }, (err, response) => {
     if (err) {
       console.error(err);
@@ -51,10 +59,17 @@ exports.loginToManagebac = (req, res, next) => {
       return;
     }
 
+<<<<<<< HEAD
     if (response) {
       console.log(response);
       const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
       const _managebac_session = response.headers['set-cookie'][1].split(';')[0];
+=======
+    // Successfully returns student page
+    if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
+      const __cfdiud = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
+>>>>>>> dev-auth
       const login = req.body.login;
       const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
