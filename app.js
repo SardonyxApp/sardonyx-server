@@ -31,14 +31,14 @@ app.use('/api', (req, res, next) => {
 app.get('/api', end200);
 
 // Initial validation
-app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, mb.loadDeadlines, mb.encode, end200);
+app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, mb.loadDeadlines, mb.loadClasses, mb.encode, end200);
 
 // Reissue tokens
 app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDeadlines, mb.encode, end200);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDeadlines, mb.loadClasses, mb.encode, end200);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons

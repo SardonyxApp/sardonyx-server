@@ -53,7 +53,7 @@ describe('Load deadlines', () => {
   });
 
   describe('POST /api/login', () => {
-    test('POST /api/validate should return a valid deadlines json', done => {
+    test('POST /api/login should return a valid deadlines json', done => {
       request(app)
         .post('/api/login')
         .set('Content-Type', 'multipart/form-data')
@@ -70,6 +70,42 @@ describe('Load deadlines', () => {
             expect(typeof Date.parse(item.due)).toBe('number');
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
+          done();
+        });
+    });
+  });
+});
+
+describe('Load classes', () => {
+  describe('GET /api/validate', () => {
+    test('GET /api/validate should return a valid classes json', done => {
+      request(app)
+      .get('/api/validate')
+      .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
+      .then(response => {
+        const classes = JSON.parse(response.headers['managebac-data']).classes;
+        classes.forEach(item => {
+          expect(typeof item.title).toBe('string');
+          expect(typeof item.link).toBe('string');
+        });
+        done();
+      });
+    });
+  });
+
+  describe('POST /api/login', () => {
+    test('POST /api/login should return a valid classes json', done => {
+      request(app)
+        .post('/api/login')
+        .set('Content-Type', 'multipart/form-data')
+        .field('login', process.env.LOGIN)
+        .field('password', process.env.PASSWORD)
+        .then(response => {
+          const classes = JSON.parse(response.headers['managebac-data']).classes;
+          classes.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
           });
           done();
         });

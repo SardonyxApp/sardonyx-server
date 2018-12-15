@@ -11,14 +11,14 @@ const { getMonth, guessYear } = require('./helpers');
 /**
  * @description Loads upcoming deadlines
  * @param {Object} req
- * req must have document
+ * req must have document property
  * @param {Object} res
  * @param {Function} next
  */
 exports.loadDeadlines = (req, res, next) => {
   const $ = cheerio.load(req.document);
+  req.deadlines = [];
 
-  const payload = [];
   $('.agenda > .line').each((i, el) => {
     const labels = [];
     $(el).find('.label').each((i, label) => {
@@ -30,7 +30,7 @@ exports.loadDeadlines = (req, res, next) => {
     const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) + 12;
     const dueMonth = getMonth($(el).find('.month').text());
 
-    payload.push({
+    req.deadlines.push({
       title: encodeURI($(el).find('.title a').text()), 
       link: $(el).find('.title a').attr('href'),
       labels: labels,
@@ -41,7 +41,27 @@ exports.loadDeadlines = (req, res, next) => {
     });
   });
 
-  req.deadlines = payload;
+  next();
+};
+
+/**
+ * @description Load class list 
+ * @param {Object} req
+ * req must have document property
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadClasses = (req, res, next) => {
+  const $ = cheerio.load(req.document);
+  req.classes = [];
+
+  $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
+    req.classes.push({
+      title: $(el).find('a').text(),
+      link: $(el).find('a').attr('href')
+    });
+  });
+
   next();
 };
 
@@ -54,6 +74,7 @@ exports.loadDeadlines = (req, res, next) => {
 exports.encode = (req, res, next) => {
   const payload = {};
   if (req.hasOwnProperty('deadlines')) payload.deadlines = req.deadlines;
+  if (req.hasOwnProperty('classes')) payload.classes = req.classes;
   // Add more as we load new things 
   // ...
   res.append('Managebac-Data', JSON.stringify(payload));
