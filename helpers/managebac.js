@@ -77,6 +77,16 @@ const loadGroups = (document) => {
   return payload;
 };
 
+/** 
+ * @description Load notification count
+ * @param {String} document 
+ */
+const loadNotificationCount = (document) => {
+  const $ = cheerio.load(document);
+  
+  return $('.notifications-count').data('count');
+};
+
 /**
  * @description Load dashboard
  * @param {Object} req
@@ -87,7 +97,8 @@ exports.loadDefaults = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
     deadlines: loadDeadlines(req.document),
     classes: loadClasses(req.document),
-    groups: loadGroups(req.document)
+    groups: loadGroups(req.document),
+    notificationCount: loadNotificationCount(req.document)
   }));
 
   next();

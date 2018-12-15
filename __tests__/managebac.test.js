@@ -120,8 +120,8 @@ describe('Load groups', () => {
       .get('/api/validate')
       .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
       .then(response => {
-        const classes = JSON.parse(response.headers['managebac-data']).groups;
-        classes.forEach(item => {
+        const groups = JSON.parse(response.headers['managebac-data']).groups;
+        groups.forEach(item => {
           expect(typeof item.title).toBe('string');
           expect(typeof item.link).toBe('string');
         });
@@ -138,11 +138,41 @@ describe('Load groups', () => {
         .field('login', process.env.LOGIN)
         .field('password', process.env.PASSWORD)
         .then(response => {
-          const classes = JSON.parse(response.headers['managebac-data']).groups;
-          classes.forEach(item => {
+          const groups = JSON.parse(response.headers['managebac-data']).groups;
+          groups.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
           });
+          done();
+        });
+    });
+  });
+});
+
+describe('Load notification count', () => {
+  describe('GET /api/validate', () => {
+    test('GET /api/validate should return a valid notification count', done => {
+      request(app)
+      .get('/api/validate')
+      .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
+      .then(response => {
+        const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
+        expect(typeof notificationCount).toBe('number');
+        done();
+      });
+    });
+  });
+
+  describe('POST /api/login', () => {
+    test('POST /api/login should return a valid notification count', done => {
+      request(app)
+        .post('/api/login')
+        .set('Content-Type', 'multipart/form-data')
+        .field('login', process.env.LOGIN)
+        .field('password', process.env.PASSWORD)
+        .then(response => {
+          const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
+          expect(typeof notificationCount).toBe('number');
           done();
         });
     });
