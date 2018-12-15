@@ -5,26 +5,72 @@ require('dotenv').config();
 
 describe('Initial load', () => {
   describe('GET /api/validate', () => {
-    test('GET /api/validate should return a response json', (done) => {
+    test('GET /api/validate should return a response json', done => {
       request(app)
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          expect(true).toBeTruthy();
+          expect(response.headers['managebac-data']).toBeTruthy();
           done();
-          // Pseudocode: check to see if the response json is included in the appropriate header
-          // Pseudocode: check to see if content of response json is appropriate
         });
     });
 
-    test('POST /api/login should return a response json', (done) => {
+    test('POST /api/login should return a response json', done => {
       request(app)
         .post('/api/login')
         .set('Content-Type', 'multipart/form-data')
         .field('login', process.env.LOGIN)
         .field('password', process.env.PASSWORD)
         .then(response => {
-          expect(true).toBeTruthy();
+          expect(response.headers['managebac-data']).toBeTruthy();
+          done();
+        });
+    });
+  });
+});
+
+describe('Load deadlines', () => {
+  describe('GET /api/validate', () => {
+    test('GET /api/validate should return a valid deadlines json', done => {
+      request(app)
+        .get('/api/validate')
+        .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
+        .then(response => {
+          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          deadlines.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.deadline).toBe('boolean');
+            expect(typeof item.due).toBe('string');
+            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/login', () => {
+    test('POST /api/validate should return a valid deadlines json', done => {
+      request(app)
+        .post('/api/login')
+        .set('Content-Type', 'multipart/form-data')
+        .field('login', process.env.LOGIN)
+        .field('password', process.env.PASSWORD)
+        .then(response => {
+          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          deadlines.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.deadline).toBe('boolean');
+            expect(typeof item.due).toBe('string');
+            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
           done();
         });
     });
