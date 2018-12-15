@@ -14,7 +14,9 @@ describe('Initial load', () => {
           done();
         });
     });
+  });
 
+  describe('POST /api/login', () => {
     test('POST /api/login should return a response json', done => {
       request(app)
         .post('/api/login')
@@ -26,7 +28,7 @@ describe('Initial load', () => {
           done();
         });
     });
-  });
+  })
 });
 
 describe('Load deadlines', () => {
