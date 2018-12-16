@@ -45,7 +45,7 @@ exports.loginTokenToCookie = (req, res, next) => {
       cfduid: cookies.cfduid,
       managebacSession: cookies.managebacSession
     };
-    
+
     next();
   } else {
     // The request did not contain cookie information, redirect them to reissue
@@ -121,9 +121,9 @@ exports.getClass = (req, res, next) => {
       return;
     }
     // Successfully returns class page 
-    if (response.request.uri.href === `https://kokusaiib.managebac.com/student/classes/${req.params.classId}`) {
+    if (response.statusCode === 200 && response.request.uri.href === `https://kokusaiib.managebac.com/student/classes/${req.params.classId}`) {
       const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-      const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
+      const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session
@@ -134,7 +134,7 @@ exports.getClass = (req, res, next) => {
     }
 
     //Nonexistent or invalid request, unauthorized 
-    res.status(401).end();
+    res.redirect('/api/login');
   });
 };
 
