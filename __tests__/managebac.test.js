@@ -180,3 +180,49 @@ describe('Load notification count', () => {
     });
   });
 });
+
+describe('Load single resource', () => {
+  describe('GET /api/class/:classId', () => {
+    test('GET /api/class/:classId should return valid cookies', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.cfduid}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          done();
+        });
+    });
+
+    test('GET /api/class/:classId should return 302 with no cookies', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}`)
+        .then(response => {
+          expect(response.statusCode).toBe(302);
+          done();
+        });
+    });    
+
+    test('GET /api/class/:classId should return 302 with invalid cookies', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(302);
+          done();
+        });
+    });
+
+    test('GET /api/class/:classId should return 401 with invalid classId', done => {
+      request(app)
+        .get(`/api/class/foobar`)
+        .set('Login-Token', `{"cfduid": "${process.env.cfduid}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(302);
+          done();
+        });
+    });
+  });
+});
