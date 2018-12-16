@@ -40,5 +40,8 @@ app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, end200);
 // use upload.none() when it's only text fields
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults, end200);
 
+// Load class 
+app.get('/api/class/:classId', auth.loginTokenToCookie, auth.getClass, end200);
+
 module.exports = app;
 // app.js and server.js are split for testing reasons

@@ -103,3 +103,19 @@ exports.loadDefaults = (req, res, next) => {
 
   next();
 };
+
+/**
+ * @description Load single class 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadClass = (req, res, next) => {
+  // res.append('Managebac-Data', JSON.stringify({
+  //   upcoming: loadUpcoming,
+  //   assignments: loadAssignments,
+  //   messages: loadMessages
+  // }));
+
+  next();
+}
