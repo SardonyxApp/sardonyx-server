@@ -6,7 +6,7 @@
 
 const request = require('request');
 const cheerio = require('cheerio');
-const { getMonth, guessYear } = require('./helpers');
+const { getMonth, guessFutureYear, guessPastYear } = require('./helpers');
 
 /**
  * @description Loads upcoming deadlines
@@ -26,13 +26,14 @@ const loadDeadlines = (document) => {
     const dueMinute = Number(due.match(/\d{2}(?!:\d{1,2})/)[0]);
     const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) + 12;
     const dueMonth = getMonth($(el).find('.month').text());
+    const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
     payload.push({
       title: encodeURI($(el).find('.title a').text()), 
       link: $(el).find('.title a').attr('href'),
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-      due: new Date(guessYear(dueMonth), dueMonth, $(el).find('.day').text(), dueHour, dueMinute),
+      due: new Date(dueYear, dueMonth, $(el).find('.day').text(), dueHour, dueMinute),
       author: $(el).find('.author').attr('title'),
       avatar: $(el).find('.avatar').attr('src') || false
     });
@@ -129,8 +130,8 @@ exports.loadOverview = (req, res, next) => {
 exports.loadAssignments = (req, res, next) => {
   const arr = loadDeadlines(req.document);
   res.append('Managebac-Data', JSON.stringify({
-    upcoming: arr.filter(val => val.due.getTime() < new Date().getTime()),
-    completed: arr.filter(val => val.due.getTime() >= new Date().getTime())
+    upcoming: arr.filter(val => val.due.getTime() >= new Date().getTime()),
+    completed: arr.filter(val => val.due.getTime() < new Date().getTime())
   }));
 
   next();
