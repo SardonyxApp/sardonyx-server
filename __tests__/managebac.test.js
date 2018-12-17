@@ -193,12 +193,32 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/overview should return 401 with invalid classId', done => {
+    test('GET /api/class/:resourceId/overview should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/class/:resourceId/overview should return a valid deadlines json', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}/overview`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          deadlines.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.deadline).toBe('boolean');
+            expect(typeof item.due).toBe('string');
+            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
           done();
         });
     });
@@ -237,12 +257,32 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments should return 401 with invalid classId', done => {
+    test('GET /api/class/:resourceId/assignments should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/assignments`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/class/:resourceId/assignments should return a valid json', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}/assignments`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const dataObj = JSON.parse(response.headers['managebac-data']);
+          dataObj.upcoming.concat(dataObj.completed).forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.deadline).toBe('boolean');
+            expect(typeof item.due).toBe('string');
+            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
           done();
         });
     });
@@ -281,7 +321,7 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages should return 401 with invalid classId', done => {
+    test('GET /api/class/:resourceId/messages should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -327,12 +367,32 @@ describe('Load group', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/overview should return 401 with invalid classId', done => {
+    test('GET /api/group/:resourceId/overview should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/overview should return a valid deadlines json', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/overview`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          deadlines.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.deadline).toBe('boolean');
+            expect(typeof item.due).toBe('string');
+            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+          });
           done();
         });
     });
@@ -371,7 +431,7 @@ describe('Load group', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages should return 401 with invalid classId', done => {
+    test('GET /api/group/:resourceId/messages should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)

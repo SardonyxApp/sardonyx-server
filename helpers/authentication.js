@@ -135,7 +135,7 @@ exports.getResource = (resource, destination) => {
           managebacSession: _managebac_session
         });
         res.append('Login-Token', payload);
-        res.document = response.body;
+        req.document = response.body;
         return next();
       }
 

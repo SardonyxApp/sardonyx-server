@@ -103,3 +103,35 @@ exports.loadDefaults = (req, res, next) => {
 
   next();
 };
+
+/**
+ * @description Load class overview
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadOverview = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    deadlines: loadDeadlines(req.document)
+  }));
+
+  next();
+};
+
+/**
+ * @description Load class assignment list 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadAssignments = (req, res, next) => {
+  const arr = loadDeadlines(req.document);
+  res.append('Managebac-Data', JSON.stringify({
+    upcoming: arr.filter(val => val.due.getTime() < new Date().getTime()),
+    completed: arr.filter(val => val.due.getTime() >= new Date().getTime())
+  }));
+
+  next();
+};
