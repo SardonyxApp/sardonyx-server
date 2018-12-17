@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Authentication API', () => {
   describe('GET /api/validate', () => {
     test('GET /api/validate should return 401 without credentials', (done) => {
