@@ -330,6 +330,26 @@ describe('Load class', () => {
           done();
         });
     });
+
+    test('GET /api/class/:resourceId/messages should return a valid json', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}/messages`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          messages.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.content).toBe('string');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.date).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(typeof item.commentCount).toBe('number');
+          });
+          done();
+        });
+    });
   });
 });
 
@@ -437,6 +457,26 @@ describe('Load group', () => {
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages should return a valid json', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          messages.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.content).toBe('string');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.date).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(typeof item.commentCount).toBe('number');
+          });
           done();
         });
     });

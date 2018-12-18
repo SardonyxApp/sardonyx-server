@@ -11,6 +11,7 @@ const { getMonth, guessFutureYear, guessPastYear } = require('./helpers');
 /**
  * @description Loads upcoming deadlines
  * @param {String} document 
+ * @returns {Array}
  */
 const loadDeadlines = (document) => {
   const $ = cheerio.load(document);
@@ -23,8 +24,8 @@ const loadDeadlines = (document) => {
     });
 
     const due = $(el).find('.due').text();
-    const dueMinute = Number(due.match(/\d{2}(?!:\d{1,2})/)[0]);
-    const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{1,2})/)[0]) + 12;
+    const dueMinute = Number(due.match(/\d{2}(?= [AP]M)/)[0]);
+    const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12;
     const dueMonth = getMonth($(el).find('.month').text());
     const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
@@ -43,8 +44,40 @@ const loadDeadlines = (document) => {
 };
 
 /**
+ * @description Load class messages 
+ * @param {String} document 
+ * @returns {Array}
+ */
+const loadDiscussions = (document) => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('.discussion').each((i, el) => {
+    const due = $(el).find('.header').text();
+    const dueMinute = Number(due.match(/\d{2}(?= [AP]M)/));
+    const dueHour = due.match(/[APM]{2}/) === "AM" ? Number(due.match(/\d{1,2}(?=:\d{2})/)) : Number(due.match(/\d{1,2}(?=:\d{2})/)) + 12;
+    const dueDay = Number(due.match(/\d{1,2}(?=, \d{4})/));
+    const dueMonth = getMonth(due.match(/\w{3}(?= {1,2}\d)/)[0]);
+    const dueYear = Number(due.match(/\d{4}(?= at )/));
+
+    payload.push({
+      title: encodeURI($(el).find('h4.title').text()),
+      link: $(el).find('h4.title a').attr('href'),
+      content: $(el).find('.body > .fix-body-margins').html(), // This is potentially dangerous, XSS
+      author: $(el).find('.header strong').text(),
+      avatar: $(el).find('.avatar').attr('src') || false,
+      date: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
+      commentCount: Number($(el).find('.cell.stretch a').text().match(/^\d+/))
+    });
+  });
+
+  return payload;
+};
+
+/**
  * @description Load class list 
  * @param {String} document
+ * @returns {Array}
  */
 const loadClasses = (document) => {
   const $ = cheerio.load(document);
@@ -63,6 +96,7 @@ const loadClasses = (document) => {
 /**
  * @description Load group list  
  * @param {String} document
+ * @returns {Array}
  */
 const loadGroups = (document) => {
   const $ = cheerio.load(document);
@@ -81,6 +115,7 @@ const loadGroups = (document) => {
 /** 
  * @description Load notification count
  * @param {String} document 
+ * @returns {Number}
  */
 const loadNotificationCount = (document) => {
   const $ = cheerio.load(document);
@@ -132,6 +167,22 @@ exports.loadAssignments = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
     upcoming: arr.filter(val => val.due.getTime() >= new Date().getTime()),
     completed: arr.filter(val => val.due.getTime() < new Date().getTime())
+  }));
+
+  next();
+};
+
+
+/**
+ * @description Load class messages 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadMessages = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    messages: loadDiscussions(req.document)
   }));
 
   next();
