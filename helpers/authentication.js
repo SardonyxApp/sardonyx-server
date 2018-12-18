@@ -106,17 +106,29 @@ exports.loginToManagebac = (req, res, next) => {
  * resource can be any of the valid Managebac resources, like classes and groups
  * @param {String} destination 
  * destination can be any of the valid Managebac destinations, like assignments and messages
- * If destination is overview, then pass an empty string
- * @example getResource('classes', 'assignments') will GET /student/classes/:resourceId/assignments 
+ * @example getResource('classes') with no parameters will GET /student/classes
+ * @example getResource('classes') with req.params.resourceId will GET /student/classes/:classId
+ * @example getResource('classes', 'assignments') without req.params.destinationId will GET /student/classes/:resourceId/assignments
+ * @example getResource('classes', 'assignments') with req.params.destinationId will GET /student/classes/:resourceId/assignments/:destinationId
  */
 exports.getResource = (resource, destination) => {
   return (req, res, next) => {
     const j = request.jar(); // Cookie jar 
     j.setCookie(request.cookie(req.cookie.cfduid), 'https://kokusaiib.managebac.com');
     j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
-
-    const url = destination ? `https://kokusaiib.managebac.com/student/${resource}/${req.params.resourceId}/${destination}` : `https://kokusaiib.managebac.com/student/${resource}/${req.params.resourceId}`;
-
+    
+    let url = `https://kokusaiib.managebac.com/student`;
+    if (resource && req.params.resourceId) {
+      if (destination) {
+        if (req.params.destinationId) url += `/${resource}/${req.params.resourceId}/${destination}/${req.params.destinationId}`;
+        else url += `/${resource}/${req.params.resourceId}/${destination}`;
+      } else {
+        url += `/${resource}/${req.params.resourceId}`;
+      }
+    } else if (resource) {
+      url += `/${resource}`;
+    }
+    
     request.get({
       url: url,
       jar: j,

@@ -41,13 +41,20 @@ app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, end200);
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults, end200);
 
 // Load class
-app.get('/api/class/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('classes', ''), mb.loadOverview, end200);
+app.get('/api/class/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('classes'), mb.loadOverview, end200);
 app.get('/api/class/:resourceId/assignments', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), mb.loadAssignments, end200);
 app.get('/api/class/:resourceId/messages', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), mb.loadMessages, end200);
 
 // Load group 
-app.get('/api/group/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('groups', ''), mb.loadOverview, end200);
+app.get('/api/group/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('groups'), mb.loadOverview, end200);
 app.get('/api/group/:resourceId/messages', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessages, end200);
+
+// Load assignment
+app.get('/api/class/:resourceId/assignments/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), end200);
+
+// Load message 
+app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), end200);
+app.get('/api/group/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), end200);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
