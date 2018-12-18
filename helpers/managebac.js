@@ -52,22 +52,36 @@ const loadDiscussions = (document) => {
   const $ = cheerio.load(document);
   const payload = [];
 
+  const setDate = el => {
+    const date = $(el).find('.header').text();
+    const minute = Number(date.match(/\d{2}(?= [AP]M)/));
+    const hour = date.match(/[APM]{2}/) === "AM" ? Number(date.match(/\d{1,2}(?=:\d{2})/)) : Number(date.match(/\d{1,2}(?=:\d{2})/)) + 12;
+    const day = Number(date.match(/\d{1,2}(?=, \d{4})/));
+    const month = getMonth(date.match(/\w{3}(?= {1,2}\d)/)[0]);
+    const year = Number(date.match(/\d{4}(?= at )/));
+    return new Date(year, month, day, hour, minute);
+  }
+
   $('.discussion').each((i, el) => {
-    const due = $(el).find('.header').text();
-    const dueMinute = Number(due.match(/\d{2}(?= [AP]M)/));
-    const dueHour = due.match(/[APM]{2}/) === "AM" ? Number(due.match(/\d{1,2}(?=:\d{2})/)) : Number(due.match(/\d{1,2}(?=:\d{2})/)) + 12;
-    const dueDay = Number(due.match(/\d{1,2}(?=, \d{4})/));
-    const dueMonth = getMonth(due.match(/\w{3}(?= {1,2}\d)/)[0]);
-    const dueYear = Number(due.match(/\d{4}(?= at )/));
+    const comments = [];
+    $(el).find('.reply').each((i, elem) => {
+      comments.push({
+        title: encodeURI($(elem).find('h4.title').text()),
+        content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+        author: $(elem).find('.header strong').text(),
+        avatar: $(elem).find('.avatar').attr('src') || false, 
+        date: setDate(elem)
+      });
+    });
 
     payload.push({
-      title: encodeURI($(el).find('h4.title').text()),
-      link: $(el).find('h4.title a').attr('href'),
-      content: $(el).find('.body > .fix-body-margins').html(), // This is potentially dangerous, XSS
-      author: $(el).find('.header strong').text(),
-      avatar: $(el).find('.avatar').attr('src') || false,
-      date: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
-      commentCount: Number($(el).find('.cell.stretch a').text().match(/^\d+/))
+      title: encodeURI($(el).find('.discussion-content h4.title').text()),
+      link: $(el).find('.discussion-content h4.title a').attr('href'),
+      content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
+      author: $(el).find('.discussion-content .header strong').text(),
+      avatar: $(el).find('.discussion-content .avatar').attr('src') || false,
+      date: setDate(el),
+      comments: comments
     });
   });
 
@@ -141,7 +155,7 @@ exports.loadDefaults = (req, res, next) => {
 };
 
 /**
- * @description Load class overview
+ * @description Load class/group overview
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
@@ -174,7 +188,7 @@ exports.loadAssignments = (req, res, next) => {
 
 
 /**
- * @description Load class messages 
+ * @description Load class/group messages 
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
@@ -183,6 +197,21 @@ exports.loadAssignments = (req, res, next) => {
 exports.loadMessages = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
     messages: loadDiscussions(req.document)
+  }));
+
+  next();
+};
+
+/**
+ * @description Load single message
+ * @param {Object} req
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadMessage = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    message: loadDiscussions(req.document)
   }));
 
   next();

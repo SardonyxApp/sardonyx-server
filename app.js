@@ -53,8 +53,8 @@ app.get('/api/group/:resourceId/messages', auth.loginTokenToCookie, auth.getReso
 app.get('/api/class/:resourceId/assignments/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), end200);
 
 // Load message 
-app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), end200);
-app.get('/api/group/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), end200);
+app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), mb.loadMessage, end200);
+app.get('/api/group/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessage, end200);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
