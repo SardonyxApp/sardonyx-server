@@ -6,14 +6,14 @@
 
 const request = require('request');
 const cheerio = require('cheerio');
-const { getMonth, guessFutureYear, guessPastYear } = require('./helpers');
+const { getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
 
 /**
- * @description Loads upcoming deadlines
+ * @description Retrieve upcoming deadlines from document
  * @param {String} document 
  * @returns {Array}
  */
-const loadDeadlines = (document) => {
+const retrieveDeadlines = (document) => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -30,12 +30,12 @@ const loadDeadlines = (document) => {
     const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
     payload.push({
-      title: encodeURI($(el).find('.title a').text()), 
-      link: $(el).find('.title a').attr('href'),
+      title: encodeURI($(el).find('h4.title').text()), 
+      link: $(el).find('.title a').attr('href') || false,
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
       due: new Date(dueYear, dueMonth, $(el).find('.day').text(), dueHour, dueMinute),
-      author: $(el).find('.author').attr('title'),
+      author: $(el).find('.author').attr('title') || false,
       avatar: $(el).find('.avatar').attr('src') || false
     });
   });
@@ -44,23 +44,13 @@ const loadDeadlines = (document) => {
 };
 
 /**
- * @description Load class messages 
+ * @description Retrieve class messages from document
  * @param {String} document 
  * @returns {Array}
  */
-const loadDiscussions = (document) => {
+const retrieveMessages = (document) => {
   const $ = cheerio.load(document);
   const payload = [];
-
-  const setDate = el => {
-    const date = $(el).find('.header').text();
-    const minute = Number(date.match(/\d{2}(?= [AP]M)/));
-    const hour = date.match(/[APM]{2}/) === "AM" ? Number(date.match(/\d{1,2}(?=:\d{2})/)) : Number(date.match(/\d{1,2}(?=:\d{2})/)) + 12;
-    const day = Number(date.match(/\d{1,2}(?=, \d{4})/));
-    const month = getMonth(date.match(/\w{3}(?= {1,2}\d)/)[0]);
-    const year = Number(date.match(/\d{4}(?= at )/));
-    return new Date(year, month, day, hour, minute);
-  }
 
   $('.discussion').each((i, el) => {
     const comments = [];
@@ -70,7 +60,7 @@ const loadDiscussions = (document) => {
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || false, 
-        date: setDate(elem)
+        date: createDate($(elem).find('.header').text())
       });
     });
 
@@ -85,7 +75,7 @@ const loadDiscussions = (document) => {
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.discussion-content .avatar').attr('src') || false,
-      date: setDate(el),
+      date: createDate($(el).find('.header').text()),
       files: files,
       comments: comments
     });
@@ -95,11 +85,11 @@ const loadDiscussions = (document) => {
 };
 
 /**
- * @description Load class list 
+ * @description Retrieve class list from document hamburger menu
  * @param {String} document
  * @returns {Array}
  */
-const loadClasses = (document) => {
+const retrieveClasses = (document) => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -114,11 +104,11 @@ const loadClasses = (document) => {
 };
 
 /**
- * @description Load group list  
+ * @description Retrieve group list from document hamburger menu
  * @param {String} document
  * @returns {Array}
  */
-const loadGroups = (document) => {
+const retrieveGroups = (document) => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -133,15 +123,61 @@ const loadGroups = (document) => {
 };
 
 /** 
- * @description Load notification count
+ * @description Retrieve notification count from document
  * @param {String} document 
  * @returns {Number}
  */
-const loadNotificationCount = (document) => {
+const retrieveNotificationCount = (document) => {
   const $ = cheerio.load(document);
-  
   return $('.notifications-count').data('count');
 };
+
+/**
+ * @description Retrieve content from the details section of document
+ * @param {String} document 
+ * @returns {String}
+ */
+const retrieveDetails = document => {
+  const $ = cheerio.load(document);
+  return $('label:contains("Details")').next().html(); // This is potentially dangerous, XSS
+};
+
+/**
+ * @description Retrieve attachments from document 
+ * @param {String} document 
+ * @returns {Array}
+ */
+const retrieveAttachments = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('.content-block .list-unstyled a').each((i, el) => {
+    payload.push($(el).attr('href'));
+  });
+
+  return payload;
+}
+
+/**
+ * @description Retrieve dropbox from document 
+ * @param {String} document 
+ * @returns {Array} 
+ */
+const retrieveDropbox = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('.row.file').each((i, el) => {
+    payload.push({
+      title: encodeURI($(el).find('.details a').text()),
+      link: $(el).find('.details a').attr('href'),
+      date: createDate($(el).find('.details label').text()),
+      similarity: Number($(el).find('span.hidden-xs').next().text())
+    });
+  });
+
+  return payload;
+}
 
 /**
  * @description Load dashboard
@@ -151,10 +187,10 @@ const loadNotificationCount = (document) => {
  */
 exports.loadDefaults = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    deadlines: loadDeadlines(req.document),
-    classes: loadClasses(req.document),
-    groups: loadGroups(req.document),
-    notificationCount: loadNotificationCount(req.document)
+    deadlines: retrieveDeadlines(req.document),
+    classes: retrieveClasses(req.document),
+    groups: retrieveGroups(req.document),
+    notificationCount: retrieveNotificationCount(req.document)
   }));
 
   next();
@@ -169,7 +205,7 @@ exports.loadDefaults = (req, res, next) => {
  */
 exports.loadOverview = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    deadlines: loadDeadlines(req.document)
+    deadlines: retrieveDeadlines(req.document)
   }));
 
   next();
@@ -183,7 +219,7 @@ exports.loadOverview = (req, res, next) => {
  * @param {Function} next 
  */
 exports.loadAssignments = (req, res, next) => {
-  const arr = loadDeadlines(req.document);
+  const arr = retrieveDeadlines(req.document);
   res.append('Managebac-Data', JSON.stringify({
     upcoming: arr.filter(val => val.due.getTime() >= new Date().getTime()),
     completed: arr.filter(val => val.due.getTime() < new Date().getTime())
@@ -202,7 +238,26 @@ exports.loadAssignments = (req, res, next) => {
  */
 exports.loadMessages = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    messages: loadDiscussions(req.document)
+    messages: retrieveMessages(req.document)
+  }));
+
+  next();
+};
+
+/**
+ * @description Load single assignment 
+ * @param {Object} req
+ * req must have a document property
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadAssignment = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    assignment: Object.assign(retrieveDeadlines(req.document)[0], {
+      details: retrieveDetails(req.document),
+      attachments: retrieveAttachments(req.document),
+      dropbox: retrieveDropbox(req.document)
+    })
   }));
 
   next();
@@ -217,7 +272,7 @@ exports.loadMessages = (req, res, next) => {
  */
 exports.loadMessage = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    message: loadDiscussions(req.document)
+    message: retrieveMessages(req.document)
   }));
 
   next();
