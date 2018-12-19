@@ -256,7 +256,8 @@ exports.loadAssignment = (req, res, next) => {
     assignment: Object.assign(retrieveDeadlines(req.document)[0], {
       details: retrieveDetails(req.document),
       attachments: retrieveAttachments(req.document),
-      dropbox: retrieveDropbox(req.document)
+      dropbox: retrieveDropbox(req.document),
+      messages: retrieveMessages(req.document)
     })
   }));
 
