@@ -99,5 +99,20 @@ describe('Load notification', () => {
           done();
         });
     });
+
+    test('GET /api/notification/:resourceId shoudl return a valid json', done => {
+      request(app)
+        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const notification = JSON.parse(response.headers['managebac-data']).notification;
+          expect(typeof notification.title).toBe('string');
+          expect(typeof notification.author).toBe('string');
+          expect(typeof notification.date).toBe('string');
+          expect(typeof Date.parse(notification.date)).toBe('number');
+          expect(typeof notification.content).toBe('string');
+          done();
+        });
+    });
   });
 });

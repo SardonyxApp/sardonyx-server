@@ -6,7 +6,7 @@
 
 const request = require('request');
 const cheerio = require('cheerio');
-const { getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
+const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
 
 /**
  * @description Retrieve upcoming deadlines from document
@@ -26,7 +26,7 @@ const retrieveDeadlines = document => {
     const due = $(el).find('.due').text();
     const dueMinute = Number(due.match(/\d{2}(?= [AP]M)/)[0]);
     const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12;
-    const dueMonth = getMonth($(el).find('.month').text());
+    const dueMonth = getMonthFromAbbr($(el).find('.month').text());
     const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
     payload.push({
@@ -142,7 +142,25 @@ const retrieveNotifications = document => {
   });
 
   return payload;
-}
+};
+
+/**
+ * @description Retrieve single notification from document
+ * @param {String} document 
+ * @returns {Object}
+ */
+const retrieveNotification = document => {
+  const $ = cheerio.load(document);
+  const date = $('.message-details p:last-child strong').text();
+  const payload =  {
+    title: encodeURI($('.content-block h3').text()),
+    author: $('.message-details p:first-child strong').text(),
+    date: new Date(Number(date.match(/\d{4}/)), getMonth(date.match(/^\w+/)[0]), Number(date.match(/\d{1,2}(?=,)/)), Number(date.match(/\d{1,2}(?=:)/)), Number(date.match(/\d{2}$/)))
+  };
+  $('.message-notifications .message-details').remove();
+  payload.content = $('.message-notifications').html();
+  return payload;
+};
 
 /** 
  * @description Retrieve notification count from document
@@ -178,7 +196,7 @@ const retrieveAttachments = document => {
   });
 
   return payload;
-}
+};
 
 /**
  * @description Retrieve dropbox from document 
@@ -199,7 +217,7 @@ const retrieveDropbox = document => {
   });
 
   return payload;
-}
+};
 
 /**
  * @description Load dashboard
@@ -311,6 +329,21 @@ exports.loadMessage = (req, res, next) => {
 exports.loadNotifications = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
     notifications: retrieveNotifications(req.document)
+  }));
+
+  next();
+};
+
+/**
+ * @description Load single notification 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadNotification = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    notification: retrieveNotification(req.document)
   }));
 
   next();
