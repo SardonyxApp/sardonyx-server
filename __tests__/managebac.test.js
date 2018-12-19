@@ -561,6 +561,16 @@ describe('Load assignment', () => {
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(typeof item.similarity).toBe('number');
           });
+          assignment.messages.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.content).toBe('string');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.date).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(Array.isArray(item.files)).toBeTruthy();
+          });
           done();
         });
     });
