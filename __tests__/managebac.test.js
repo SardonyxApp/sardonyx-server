@@ -774,6 +774,23 @@ describe('Load notifications', () => {
           done();
         });
     });
+
+    test('GET /api/notification should return a valid json', done => {
+      request(app)
+        .get('/api/notification')
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const notifications= JSON.parse(response.headers['managebac-data']).notifications;
+          notifications.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.dateString).toBe('string');
+            expect(typeof item.unread).toBe('boolean');
+          });
+          done();
+        });
+    });
   });
 });
 
@@ -813,7 +830,7 @@ describe('Load notification', () => {
 
     test('GET /api/notification/:resourceId should return 401 with invalid resourceId', done => {
       request(app)
-        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .get(`/api/notification/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);

@@ -13,7 +13,7 @@ const { getMonth, guessFutureYear, guessPastYear, createDate } = require('./help
  * @param {String} document 
  * @returns {Array}
  */
-const retrieveDeadlines = (document) => {
+const retrieveDeadlines = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -48,7 +48,7 @@ const retrieveDeadlines = (document) => {
  * @param {String} document 
  * @returns {Array}
  */
-const retrieveMessages = (document) => {
+const retrieveMessages = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -89,7 +89,7 @@ const retrieveMessages = (document) => {
  * @param {String} document
  * @returns {Array}
  */
-const retrieveClasses = (document) => {
+const retrieveClasses = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -108,7 +108,7 @@ const retrieveClasses = (document) => {
  * @param {String} document
  * @returns {Array}
  */
-const retrieveGroups = (document) => {
+const retrieveGroups = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
@@ -122,12 +122,34 @@ const retrieveGroups = (document) => {
   return payload;
 };
 
+/**
+ * @description Retrieve notification list from document
+ * @param {String} document 
+ * @returns {Array}
+ */
+const retrieveNotifications = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('tr.message').each((i, el) => {
+    payload.push({
+      title: encodeURI($(el).find('.title a').text()),
+      link: $(el).find('.title a').attr('href'),
+      author: $(el).find('td:nth-child(3)').text(),
+      dateString: $(el).find('td:last-child').text(), // Not possible to obtain exact date in list view 
+      unread: $(el).hasClass('unread') // Boolean
+    });
+  });
+
+  return payload;
+}
+
 /** 
  * @description Retrieve notification count from document
  * @param {String} document 
  * @returns {Number}
  */
-const retrieveNotificationCount = (document) => {
+const retrieveNotificationCount = document => {
   const $ = cheerio.load(document);
   return $('.notifications-count').data('count');
 };
@@ -274,6 +296,21 @@ exports.loadAssignment = (req, res, next) => {
 exports.loadMessage = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
     message: retrieveMessages(req.document)
+  }));
+
+  next();
+};
+
+/**
+ * @description Load notification list
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadNotifications = (req, res, next) => {
+  res.append('Managebac-Data', JSON.stringify({
+    notifications: retrieveNotifications(req.document)
   }));
 
   next();
