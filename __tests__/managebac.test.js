@@ -740,3 +740,85 @@ describe('Load message', () => {
     });
   });
 });
+
+describe('Load notifications', () => {
+  describe('GET /api/notification', () => {
+    test('GET /api/notification should return valid cookies', done => {
+      request(app)
+        .get('/api/notification')
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          done();
+        });
+    });
+
+    test('GET /api/notification should return 401 with no cookies', done => {
+      request(app)
+        .get('/api/notification')
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/notification should return 401 with invalid cookies', done => {
+      request(app)
+        .get('/api/notification')
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+  });
+});
+
+describe('Load notification', () => {
+  describe('GET /api/notification/:resourceId', () => {
+    test('GET /api/notification should return valid cookies', done => {
+      request(app)
+        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          done();
+        });
+    });
+
+    test('GET /api/notification should return 401 with no cookies', done => {
+      request(app)
+        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/notification should return 401 with invalid cookies', done => {
+      request(app)
+        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/notification/:resourceId should return 401 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+  });
+});
