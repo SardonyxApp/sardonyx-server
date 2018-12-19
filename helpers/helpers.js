@@ -26,3 +26,18 @@ exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonth() ? new
  */
 exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new Date().getFullYear() : new Date().getFullYear() + 1;
 // Not going to be correct for dates two or more years ago
+
+/**
+ * @description Create date based on date string
+ * @param {String} dateString 
+ * @return {Date}
+ * @example createDate('Jan 1, 2018 at 12:00 AM');
+ */
+exports.createDate = dateString => {
+  const minute = Number(dateString.match(/\d{2}(?= [AP]M)/));
+  const hour = dateString.match(/[APM]{2}/) === 'AM' ? Number(dateString.match(/\d{1,2}(?=:\d{2})/)) : Number(dateString.match(/\d{1,2}(?=:\d{2})/)) + 12;
+  const day = Number(dateString.match(/\d{1,2}(?=, \d{4})/));
+  const month = exports.getMonth(dateString.match(/\w{3}(?= {1,2}\d)/)[0]);
+  const year = Number(dateString.match(/\d{4}(?= at )/));
+  return new Date(year, month, day, hour, minute);
+};

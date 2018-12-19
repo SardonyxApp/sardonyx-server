@@ -50,7 +50,7 @@ app.get('/api/group/:resourceId/overview', auth.loginTokenToCookie, auth.getReso
 app.get('/api/group/:resourceId/messages', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessages, end200);
 
 // Load assignment
-app.get('/api/class/:resourceId/assignments/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), end200);
+app.get('/api/class/:resourceId/assignments/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), mb.loadAssignment, end200);
 
 // Load message 
 app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), mb.loadMessage, end200);

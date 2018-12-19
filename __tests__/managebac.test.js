@@ -536,6 +536,34 @@ describe('Load assignment', () => {
           done();
         });
     });
+
+    test('GET /api/class/:resourceId/assignments/:destinationId should return a valid json', done => {
+      request(app)
+        .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const assignment = JSON.parse(response.headers['managebac-data']).assignment;
+          expect(typeof assignment.title).toBe('string');
+          expect(assignment.link).toBeFalsy();
+          expect(Array.isArray(assignment.labels)).toBeTruthy();
+          expect(assignment.deadline).toBeFalsy();
+          expect(typeof assignment.due).toBe('string');
+          expect(typeof Date.parse(assignment.due)).toBe('number');
+          expect(assignment.author).toBeFalsy();
+          expect(assignment.avatar).toBeFalsy();
+          expect(typeof assignment.details).toBe('string');
+          expect(Array.isArray(assignment.attachments)).toBeTruthy();
+          expect(Array.isArray(assignment.dropbox)).toBeTruthy();
+          assignment.dropbox.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.date).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(typeof item.similarity).toBe('number');
+          });
+          done();
+        });
+    });
   });
 });
 
