@@ -57,7 +57,7 @@ app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCooki
 app.get('/api/group/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessage, end200);
 
 // Load notifications 
-app.get('/api/notification', auth.loginTokenToCookie, auth.getResource('notifications'), end200);
+app.get('/api/notification', auth.loginTokenToCookie, auth.getResource('notifications'), mb.loadNotifications, end200);
 app.get('/api/notification/:resourceId', auth.loginTokenToCookie, auth.getResource('notifications'), end200);
 module.exports = app;
 // app.js and server.js are split for testing reasons
