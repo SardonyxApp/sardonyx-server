@@ -23,7 +23,7 @@ exports.getMonth = str => ['January', 'February', 'March', 'April', 'May', 'June
  * @param {Number} monthIndex 
  * @return {Number}
  */
-exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonthFromAbbr() ? new Date().getFullYear() + 1 : new Date().getFullYear();
+exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonth() ? new Date().getFullYear() + 1 : new Date().getFullYear();
 // Not going to be correct for dates that are two or more years ahead.
 
 /**
@@ -31,7 +31,7 @@ exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonthFromAbbr
  * @param {Number} monthIndex 
  * @return {Number}
  */
-exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonthFromAbbr() ? new Date().getFullYear() : new Date().getFullYear() + 1;
+exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new Date().getFullYear() : new Date().getFullYear() + 1;
 // Not going to be correct for dates two or more years ago
 
 /**
