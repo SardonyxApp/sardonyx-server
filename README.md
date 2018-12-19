@@ -18,5 +18,92 @@ Sardonyx is currently under development and is not available for use.
 
 サードニクスは現在開発途中で、まだ非公開です。
 
+## API
+Sardonyx's Managebac API can be accessed at the following endpoints.
+
+### Authentication API
+#### Validate login based on token
+```
+GET /api/validate
+```
+Required: `Login-Token` header with `login` and `password` for `https://kokusaiib.managebac.com`
+
+#### Validate login based on multipart form 
+```
+POST /api/login
+```
+Required: multipart form in request body with `login` and `password` for `https://kokusaiib.managebac.com`
+
+#### Reissue Managebac cookies based on token 
+```
+GET /api/login
+```
+Required: `Login-Token` header with `login` and `password` for `https://kokusaiib.managebac.com`
+
+### Managebac API
+#### Load class 
+Load class overview 
+```
+GET /api/class/:classId/overview
+```
+
+Load class assignments 
+```
+GET /api/class/:classId/assignments
+```
+
+Load class messages 
+```
+GET /api/class/:classId/messages
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
+#### Load group
+Load group overview 
+```
+GET /api/group/:groupId/overview
+```
+
+Load group messages
+```
+GET /api/group/:groupId/messages
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
+#### Load single assignment 
+Load single class assignment 
+```
+GET /api/class/:classId/assignments/:assignmentId
+```
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
+#### Load single message
+Load single class message 
+```
+GET /api/class/:classId/messages/:messageId
+```
+
+Load single group message 
+```
+GET /api/group/:groupId/messages/:messageId
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
+#### Load notifications 
+Load notification list 
+```
+GET /api/notification
+```
+
+Load single notification 
+```
+GET /api/notification/:notificationId
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
 ## Contribution
 For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.
