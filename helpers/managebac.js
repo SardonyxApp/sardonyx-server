@@ -74,6 +74,11 @@ const loadDiscussions = (document) => {
       });
     });
 
+    const files = [];
+    $(el).find('.list-unstyled a').each((i, elem) => {
+      files.push($(elem).attr('href'));
+    });
+
     payload.push({
       title: encodeURI($(el).find('.discussion-content h4.title').text()),
       link: $(el).find('.discussion-content h4.title a').attr('href'),
@@ -81,6 +86,7 @@ const loadDiscussions = (document) => {
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.discussion-content .avatar').attr('src') || false,
       date: setDate(el),
+      files: files,
       comments: comments
     });
   });
