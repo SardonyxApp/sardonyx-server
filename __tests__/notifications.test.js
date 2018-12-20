@@ -57,7 +57,7 @@ describe('Load notifications', () => {
   });
 
   describe('GET /api/notification?pageId=:pageId', () => {
-    test('GET /api/notification should return valid cookies', done => {
+    test('GET /api/notification?pageId=:pageId should return valid cookies', done => {
       request(app)
         .get(`/api/notification?pageId=${process.env.NOTIFICATION_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -110,7 +110,7 @@ describe('Load notifications', () => {
 
 describe('Load notification', () => {
   describe('GET /api/notification/:resourceId', () => {
-    test('GET /api/notification should return valid cookies', done => {
+    test('GET /api/notification/:resourceId should return valid cookies', done => {
       request(app)
         .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
