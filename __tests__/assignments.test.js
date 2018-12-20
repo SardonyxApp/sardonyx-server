@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Load assignment', () => {
   describe('GET /api/class/:resourceId/assignments/:destinationId', () => {
     test('GET /api/class/:resourceId/assignments should return valid cookies', done => {

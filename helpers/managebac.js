@@ -234,9 +234,8 @@ const retrieveNumberOfPages = document => {
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadDefaults = (req, res, next) => {
+exports.loadDefaults = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     deadlines: retrieveDeadlines(req.document),
     classes: retrieveClasses(req.document),
@@ -244,7 +243,7 @@ exports.loadDefaults = (req, res, next) => {
     notificationCount: retrieveNotificationCount(req.document)
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -252,14 +251,13 @@ exports.loadDefaults = (req, res, next) => {
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadOverview = (req, res, next) => {
+exports.loadOverview = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     deadlines: retrieveDeadlines(req.document)
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -267,16 +265,15 @@ exports.loadOverview = (req, res, next) => {
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadAssignments = (req, res, next) => {
+exports.loadAssignments = (req, res) => {
   const arr = retrieveDeadlines(req.document);
   res.append('Managebac-Data', JSON.stringify({
     upcoming: arr.filter(val => val.due.getTime() >= new Date().getTime()),
     completed: arr.filter(val => val.due.getTime() < new Date().getTime())
   }));
 
-  next();
+  res.status(200).end();
 };
 
 
@@ -285,15 +282,14 @@ exports.loadAssignments = (req, res, next) => {
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadMessages = (req, res, next) => {
+exports.loadMessages = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     messages: retrieveMessages(req.document),
     numberOfPages: retrieveNumberOfPages(req.document)
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -301,9 +297,8 @@ exports.loadMessages = (req, res, next) => {
  * @param {Object} req
  * req must have a document property
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadAssignment = (req, res, next) => {
+exports.loadAssignment = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     assignment: Object.assign(retrieveDeadlines(req.document)[0], {
       details: retrieveDetails(req.document),
@@ -313,7 +308,7 @@ exports.loadAssignment = (req, res, next) => {
     })
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -321,14 +316,13 @@ exports.loadAssignment = (req, res, next) => {
  * @param {Object} req
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadMessage = (req, res, next) => {
+exports.loadMessage = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     message: retrieveMessages(req.document)
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -336,15 +330,14 @@ exports.loadMessage = (req, res, next) => {
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadNotifications = (req, res, next) => {
+exports.loadNotifications = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     notifications: retrieveNotifications(req.document),
     numberOfPages: retrieveNumberOfPages(req.document)
   }));
 
-  next();
+  res.status(200).end();
 };
 
 /**
@@ -352,12 +345,21 @@ exports.loadNotifications = (req, res, next) => {
  * @param {Object} req 
  * req must have a document property 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadNotification = (req, res, next) => {
+exports.loadNotification = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     notification: retrieveNotification(req.document)
   }));
 
-  next();
+  res.status(200).end();
+};
+
+/**
+ * @description Load CAS dashboard 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ */
+exports.loadCas = (req, res) => {
+  res.status(200).end();
 };

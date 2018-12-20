@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Load notifications', () => {
   describe('GET /api/notification', () => {
     test('GET /api/notification should return valid cookies', done => {
