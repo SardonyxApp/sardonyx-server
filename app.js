@@ -31,34 +31,34 @@ app.use('/api', (req, res, next) => {
 app.get('/api', end200);
 
 // Initial validation
-app.get('/api/validate', auth.loginTokenToBody, auth.loginToManagebac, mb.loadDefaults, end200);
+app.get('/api/validate', auth.tokenToBody, auth.loginToManagebac, mb.loadDefaults, end200);
 
 // Reissue tokens
-app.get('/api/login', auth.loginTokenToBody, auth.loginToManagebac, end200);
+app.get('/api/login', auth.tokenToBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults, end200);
 
 // Load class
-app.get('/api/class/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('classes'), mb.loadOverview, end200);
-app.get('/api/class/:resourceId/assignments', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), mb.loadAssignments, end200);
-app.get('/api/class/:resourceId/messages', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), mb.loadMessages, end200);
+app.get('/api/class/:resourceId/overview', auth.tokenToCookie, auth.loadUrl('classes'), auth.retrieve, mb.loadOverview, end200);
+app.get('/api/class/:resourceId/assignments', auth.tokenToCookie, auth.loadUrl('classes', 'assignments'), auth.retrieve, mb.loadAssignments, end200);
+app.get('/api/class/:resourceId/messages', auth.tokenToCookie, auth.loadUrl('classes', 'discussions'), auth.retrieve, mb.loadMessages, end200);
 
 // Load group 
-app.get('/api/group/:resourceId/overview', auth.loginTokenToCookie, auth.getResource('groups'), mb.loadOverview, end200);
-app.get('/api/group/:resourceId/messages', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessages, end200);
+app.get('/api/group/:resourceId/overview', auth.tokenToCookie, auth.loadUrl('groups'), auth.retrieve, mb.loadOverview, end200);
+app.get('/api/group/:resourceId/messages', auth.tokenToCookie, auth.loadUrl('groups', 'discussions'), auth.retrieve, mb.loadMessages, end200);
 
 // Load assignment
-app.get('/api/class/:resourceId/assignments/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'assignments'), mb.loadAssignment, end200);
+app.get('/api/class/:resourceId/assignments/:destinationId', auth.tokenToCookie, auth.loadUrl('classes', 'assignments'), auth.retrieve, mb.loadAssignment, end200);
 
 // Load message 
-app.get('/api/class/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('classes', 'discussions'), mb.loadMessage, end200);
-app.get('/api/group/:resourceId/messages/:destinationId', auth.loginTokenToCookie, auth.getResource('groups', 'discussions'), mb.loadMessage, end200);
+app.get('/api/class/:resourceId/messages/:destinationId', auth.tokenToCookie, auth.loadUrl('classes', 'discussions'), auth.retrieve, mb.loadMessage, end200);
+app.get('/api/group/:resourceId/messages/:destinationId', auth.tokenToCookie, auth.loadUrl('groups', 'discussions'), auth.retrieve, mb.loadMessage, end200);
 
 // Load notifications 
-app.get('/api/notification', auth.loginTokenToCookie, auth.getResource('notifications'), mb.loadNotifications, end200);
-app.get('/api/notification/page/:pageId', auth.loginTokenToCookie, auth.getResource('notifications/page'), mb.loadNotifications, end200); // :resourceId is used to hold page number
-app.get('/api/notification/:resourceId', auth.loginTokenToCookie, auth.getResource('notifications'), mb.loadNotification, end200);
+app.get('/api/notification', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotifications, end200);
+app.get('/api/notification/page/:resourceId', auth.tokenToCookie, auth.loadUrl('notifications/page'), auth.retrieve, mb.loadNotifications, end200); // :resourceId is used to hold page number
+app.get('/api/notification/:resourceId', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotification, end200);
 module.exports = app;
 // app.js and server.js are split for testing reasons

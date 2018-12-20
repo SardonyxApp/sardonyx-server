@@ -13,7 +13,7 @@ const request = require('request');
  * @param {Object} res
  * @param {Function} next
  */
-exports.loginTokenToBody = (req, res, next) => {
+exports.tokenToBody = (req, res, next) => {
   // Get the login token from header, otherwise set it to an empty object
   const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
 
@@ -37,7 +37,7 @@ exports.loginTokenToBody = (req, res, next) => {
  * @param {Object} res 
  * @param {FUnction} next 
  */
-exports.loginTokenToCookie = (req, res, next) => {
+exports.tokenToCookie = (req, res, next) => {
   const cookies = JSON.parse(req.headers['login-token'] || '{}') || {};
 
   if (cookies.cfduid && cookies.managebacSession) {
@@ -101,61 +101,70 @@ exports.loginToManagebac = (req, res, next) => {
 };
 
 /**
- * @description Retrieve any resource from Managebac 
+ * @description Create a Managebac URL
  * @param {String} resource 
  * resource can be any of the valid Managebac resources, like classes and groups
  * @param {String} destination 
  * destination can be any of the valid Managebac destinations, like assignments and messages
- * @example getResource('classes') with no parameters will GET /student/classes
- * @example getResource('classes') with req.params.resourceId will GET /student/classes/:classId
- * @example getResource('classes', 'assignments') without req.params.destinationId will GET /student/classes/:resourceId/assignments
- * @example getResource('classes', 'assignments') with req.params.destinationId will GET /student/classes/:resourceId/assignments/:destinationId
+ * @example loadUrl('classes') with no parameters will GET /student/classes
+ * @example loadUrl('classes') with req.params.resourceId will GET /student/classes/:classId
+ * @example loadUrl('classes', 'assignments') without req.params.destinationId will GET /student/classes/:resourceId/assignments
+ * @example loadUrl('classes', 'assignments') with req.params.destinationId will GET /student/classes/:resourceId/assignments/:destinationId
  */
-exports.getResource = (resource, destination) => {
+exports.loadUrl = (resource, destination) => {
   return (req, res, next) => {
-    const j = request.jar(); // Cookie jar 
-    j.setCookie(request.cookie(req.cookie.cfduid), 'https://kokusaiib.managebac.com');
-    j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
-    
-    let url = `https://kokusaiib.managebac.com/student`;
-    const id = req.params.resourceId || req.params.pageId; // Either use :resourceId or page number
-    if (resource && id) {
+    req.url = `https://kokusaiib.managebac.com/student`;
+    if (resource && req.params.resourceId) {
       if (destination) {
-        if (req.params.destinationId) url += `/${resource}/${id}/${destination}/${req.params.destinationId}`;
-        else url += `/${resource}/${id}/${destination}`;
+        if (req.params.destinationId) req.url += `/${resource}/${req.params.resourceId}/${destination}/${req.params.destinationId}`;
+        else req.url += `/${resource}/${req.params.resourceId}/${destination}`;
       } else {
-        url += `/${resource}/${id}`;
+        req.url += `/${resource}/${req.params.resourceId}`;
       }
     } else if (resource) {
-      url += `/${resource}`;
+      req.url += `/${resource}`;
     }
-    
-    request.get({
-      url: url,
-      jar: j,
-    }, (err, response) => {
-      if (err) {
-        console.error(err);
-        res.status(502).end();
-        return;
-      }
-      // Successfully returns class page 
-      if (response.statusCode === 200 && response.request.uri.href === url) {
-        const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-        const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
-        const payload = JSON.stringify({
-          cfduid: __cfduid,
-          managebacSession: _managebac_session
-        });
-        res.append('Login-Token', payload);
-        req.document = response.body;
-        return next();
-      }
 
-      //Nonexistent or invalid request, unauthorized 
-      res.status(401).end();
-    });
+    next();
   };
+};
+
+/**
+ * @description Retrieve any resource from Managebac
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.retrieve = (req, res, next) => {
+  const j = request.jar(); // Cookie jar 
+  j.setCookie(request.cookie(req.cookie.cfduid), 'https://kokusaiib.managebac.com');
+  j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
+  
+  request.get({
+    url: req.url,
+    jar: j,
+  }, (err, response) => {
+    if (err) {
+      console.error(err);
+      res.status(502).end();
+      return;
+    }
+    // Successfully returns class page 
+    if (response.statusCode === 200 && response.request.uri.href === req.url) {
+      const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+      const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
+      const payload = JSON.stringify({
+        cfduid: __cfduid,
+        managebacSession: _managebac_session
+      });
+      res.append('Login-Token', payload);
+      req.document = response.body;
+      return next();
+    }
+
+    //Nonexistent or invalid request, unauthorized 
+    res.status(401).end();
+  });
 };
 
 /**
