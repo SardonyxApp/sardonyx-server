@@ -53,8 +53,11 @@ GET /api/class/:classId/assignments
 ```
 
 Load class messages 
+
+Where `:pageParam` is the page number of the class messages list. If omitted, the app will retrieve page 1.
 ```
 GET /api/class/:classId/messages
+GET /api/class/:classId/messages?pageParam=:pageParam
 ```
 
 Required: `Login-Token` header with `cfduid` and `managebacSession`
@@ -66,8 +69,11 @@ GET /api/group/:groupId/overview
 ```
 
 Load group messages
+
+Where `:pageParam` is the page number of the group messages list. If omitted, the app will retrieve page 1. 
 ```
 GET /api/group/:groupId/messages
+GET /api/group/:groupId/messages?pageParam=:pageParam
 ```
 
 Required: `Login-Token` header with `cfduid` and `managebacSession`
@@ -94,13 +100,29 @@ Required: `Login-Token` header with `cfduid` and `managebacSession`
 
 #### Load notifications 
 Load notification list 
+
+Where `:pageId` is the page number of the notification list. If omitted, the app will retrieve page 1.
 ```
 GET /api/notification
+GET /api/notification?pageId=:pageId
 ```
 
 Load single notification 
 ```
 GET /api/notification/:notificationId
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
+#### Load CAS 
+Load CAS worksheet overview 
+```
+GET /api/cas 
+```
+
+Load CAS experience 
+```
+GET /api/cas/:casId
 ```
 
 Required: `Login-Token` header with `cfduid` and `managebacSession`
