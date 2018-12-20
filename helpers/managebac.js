@@ -289,7 +289,8 @@ exports.loadAssignments = (req, res, next) => {
  */
 exports.loadMessages = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    messages: retrieveMessages(req.document)
+    messages: retrieveMessages(req.document),
+    numberOfPages: retrieveNumberOfPages(req.document)
   }));
 
   next();
