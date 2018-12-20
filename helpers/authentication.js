@@ -118,12 +118,13 @@ exports.getResource = (resource, destination) => {
     j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
     
     let url = `https://kokusaiib.managebac.com/student`;
-    if (resource && req.params.resourceId) {
+    const id = req.params.resourceId || req.params.pageId; // Either use :resourceId or page number
+    if (resource && id) {
       if (destination) {
-        if (req.params.destinationId) url += `/${resource}/${req.params.resourceId}/${destination}/${req.params.destinationId}`;
-        else url += `/${resource}/${req.params.resourceId}/${destination}`;
+        if (req.params.destinationId) url += `/${resource}/${id}/${destination}/${req.params.destinationId}`;
+        else url += `/${resource}/${id}/${destination}`;
       } else {
-        url += `/${resource}/${req.params.resourceId}`;
+        url += `/${resource}/${id}`;
       }
     } else if (resource) {
       url += `/${resource}`;
