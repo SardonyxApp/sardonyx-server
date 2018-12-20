@@ -125,6 +125,9 @@ exports.loadUrl = (resource, destination) => {
       req.url += `/${resource}`;
     }
 
+    if (req.query.pageId) req.url += `/page/${req.query.pageId}`;
+    else if (req.query.pageParam) req.url += `?page=${req.query.pageParam}`;
+
     next();
   };
 };
@@ -149,6 +152,7 @@ exports.retrieve = (req, res, next) => {
       res.status(502).end();
       return;
     }
+
     // Successfully returns class page 
     if (response.statusCode === 200 && response.request.uri.href === req.url) {
       const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
