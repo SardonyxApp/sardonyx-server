@@ -58,7 +58,6 @@ app.get('/api/group/:resourceId/messages/:destinationId', auth.tokenToCookie, au
 
 // Load notifications 
 app.get('/api/notification', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotifications, end200);
-app.get('/api/notification/page/:resourceId', auth.tokenToCookie, auth.loadUrl('notifications/page'), auth.retrieve, mb.loadNotifications, end200); // :resourceId is used to hold page number
 app.get('/api/notification/:resourceId', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotification, end200);
 module.exports = app;
 // app.js and server.js are split for testing reasons
