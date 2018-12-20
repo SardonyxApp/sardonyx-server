@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-const request = require('request');
-const cheerio = require('cheerio');
+
+ const cheerio = require('cheerio');
 const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
 
 /**
@@ -220,6 +220,17 @@ const retrieveDropbox = document => {
 };
 
 /**
+ * @description Retrieve number of pages based on pagination buttons at the bottom of document
+ * @param {String} document 
+ * @returns {Number}
+ */
+const retrieveNumberOfPages = document => {
+  const $ = cheerio.load(document);
+
+  return $('.pagination').find('li').length - 2;
+}
+
+/**
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
@@ -328,7 +339,8 @@ exports.loadMessage = (req, res, next) => {
  */
 exports.loadNotifications = (req, res, next) => {
   res.append('Managebac-Data', JSON.stringify({
-    notifications: retrieveNotifications(req.document)
+    notifications: retrieveNotifications(req.document),
+    numberOfPages: retrieveNumberOfPages(req.document)
   }));
 
   next();
