@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Load message', () => {
   describe('GET /api/class/:resourceId/messages/:destinationId', () => {
     test('GET /api/class/:resourceId/messages should return valid cookies', done => {

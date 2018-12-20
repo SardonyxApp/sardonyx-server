@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Load group', () => {
   describe('GET /api/group/:resourceId/overview', () => {
     test('GET /api/group/:resourceId/overview should return valid cookies', done => {
