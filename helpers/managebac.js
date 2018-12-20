@@ -363,3 +363,13 @@ exports.loadNotification = (req, res) => {
 exports.loadCas = (req, res) => {
   res.status(200).end();
 };
+
+/**
+ * @description Load CAS experience 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ */
+exports.loadCasExperience = (req, res) => {
+  res.status(200).end();
+};

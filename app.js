@@ -58,6 +58,7 @@ app.get('/api/notification/:resourceId', auth.tokenToCookie, auth.loadUrl('notif
 
 // Load CAS
 app.get('/api/cas', auth.tokenToCookie, auth.loadUrl('ib/activity/cas'), auth.retrieve, mb.loadCas);
+app.get('/api/cas/:resourceId', auth.tokenToCookie, auth.loadUrl('ib/activity/cas'), auth.retrieve, mb.loadCasExperience);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
