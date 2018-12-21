@@ -31,12 +31,12 @@ const retrieveDeadlines = document => {
 
     payload.push({
       title: encodeURI($(el).find('h4.title').text()), 
-      link: $(el).find('.title a').attr('href') || false,
+      link: $(el).find('.title a').attr('href') || null,
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
       due: new Date(dueYear, dueMonth, $(el).find('.day').text(), dueHour, dueMinute),
-      author: $(el).find('.author').attr('title') || false,
-      avatar: $(el).find('.avatar').attr('src') || false
+      author: $(el).find('.author').attr('title') || null,
+      avatar: $(el).find('.avatar').attr('src') || null
     });
   });
 
@@ -59,7 +59,7 @@ const retrieveMessages = document => {
         title: encodeURI($(elem).find('h4.title').text()),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('src') || false, 
+        avatar: $(elem).find('.avatar').attr('src') || null, 
         date: createDate($(elem).find('.header').text())
       });
     });
@@ -74,7 +74,7 @@ const retrieveMessages = document => {
       link: $(el).find('.discussion-content h4.title a').attr('href'),
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       author: $(el).find('.discussion-content .header strong').text(),
-      avatar: $(el).find('.discussion-content .avatar').attr('src') || false,
+      avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
       date: createDate($(el).find('.header').text()),
       files: files,
       comments: comments
@@ -212,7 +212,7 @@ const retrieveDropbox = document => {
       title: encodeURI($(el).find('.details a').text()),
       link: $(el).find('.details a').attr('href'),
       date: createDate($(el).find('.details label').text()),
-      similarity: Number($(el).find('span.hidden-xs').next().text())
+      similarity: Number($(el).find('span.hidden-xs').next().text()) || null
     });
   });
 
@@ -228,7 +228,44 @@ const retrieveNumberOfPages = document => {
   const $ = cheerio.load(document);
 
   return $('.pagination').find('li').length - 2;
-}
+};
+
+/**
+ * @description Retrieve CAS activity list from document 
+ * @param {String} document 
+ * @returns {Array}
+ */
+const retrieveCas = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('.activity-tile').each((i, el) => {
+    // An experience can have multiple types 
+    const types = [];
+    if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-c')) types.push('creativity');
+    if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-a')) types.push('activity');
+    if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-s')) types.push('service');
+
+    const labels = [];
+    $(el).find('.labels-and-badges .label').each((i, elem) => {
+      labels.push($(elem).text());
+    });
+
+    payload.push({
+      title: encodeURI($(el).find('h4.title a').text()),
+      link: $(el).find('.details a').attr('href'),
+      description: encodeURI($(el).find('.description').text()),
+      types: types,
+      status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
+      labels: labels,
+      project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
+      commentCount: Number($(el).find('.comments-count').text().replace(/\n/g, '')),
+      reflectionCount: $(el).find('.reflections-count').text() // String, for convenience
+    });
+  });
+
+  return payload;
+};
 
 /**
  * @description Load dashboard
@@ -361,6 +398,10 @@ exports.loadNotification = (req, res) => {
  * @param {Object} res 
  */
 exports.loadCas = (req, res) => {
+  res.append('Managebac-Data', JSON.stringify({
+    cas: retrieveCas(req.document),
+    documents: retrieveDropbox(req.document)
+  }));
   res.status(200).end();
 };
 

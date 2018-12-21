@@ -38,6 +38,34 @@ describe('Load CAS', () => {
           done();
         });
     });
+
+    test('GET /api/cas should return a valid json', done => {
+      request(app)
+        .get('/api/cas')
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const cas = JSON.parse(response.headers['managebac-data']).cas;
+          cas.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof item.description).toBe('string');
+            expect(Array.isArray(item.types)).toBeTruthy();
+            expect(item.status).toMatch(/complete|approved|rejected|needs_approval/);
+            expect(Array.isArray(item.labels)).toBeTruthy();
+            expect(typeof item.project).toBe('boolean');
+            expect(typeof item.commentCount).toBe('number');
+            expect(typeof item.reflectionCount).toBe('string');
+          });
+          const documents = JSON.parse(response.headers['managebac-data']).documents;
+          documents.forEach(item => {
+            expect(typeof item.title).toBe('string');
+            expect(typeof item.link).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(item.similarity).toBe(null);
+          });
+          done();
+        });
+    });
   });
 
   describe('GET /api/cas/:resourceId', () => {

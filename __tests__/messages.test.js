@@ -69,7 +69,7 @@ describe('Load message', () => {
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
           expect(typeof message[0].author).toBe('string');
-          expect(typeof message[0].avatar === 'string' || message[0].avatar === false).toBeTruthy();
+          expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
           expect(typeof Date.parse(message[0].date)).toBe('number');
           expect(Array.isArray(message[0].files)).toBeTruthy();
@@ -78,7 +78,7 @@ describe('Load message', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
-            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
           });
@@ -150,7 +150,7 @@ describe('Load message', () => {
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
           expect(typeof message[0].author).toBe('string');
-          expect(typeof message[0].avatar === 'string' || message[0].avatar === false).toBeTruthy();
+          expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
           expect(typeof Date.parse(message[0].date)).toBe('number');
           expect(Array.isArray(message[0].files)).toBeTruthy();
@@ -159,7 +159,7 @@ describe('Load message', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
-            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
           });
