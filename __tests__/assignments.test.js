@@ -81,7 +81,7 @@ describe('Load assignment', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
-            expect(typeof item.similarity).toBe('number');
+            expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
           assignment.messages.forEach(item => {
             expect(typeof item.title).toBe('string');

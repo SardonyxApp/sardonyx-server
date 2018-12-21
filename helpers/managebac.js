@@ -179,7 +179,7 @@ const retrieveNotificationCount = document => {
  */
 const retrieveDetails = document => {
   const $ = cheerio.load(document);
-  return $('label:contains("Details")').next().html(); // This is potentially dangerous, XSS
+  return $('label:contains("Details")').next().html().replace(/\n/g, ''); // This is potentially dangerous, XSS
 };
 
 /**
@@ -254,17 +254,33 @@ const retrieveCas = document => {
     payload.push({
       title: encodeURI($(el).find('h4.title a').text()),
       link: $(el).find('.details a').attr('href'),
-      description: encodeURI($(el).find('.description').text()),
+      description: encodeURI($(el).find('.description').text()) || null,
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
       labels: labels,
       project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
       commentCount: Number($(el).find('.comments-count').text().replace(/\n/g, '')),
-      reflectionCount: $(el).find('.reflections-count').text() // String, for convenience
+      reflectionCount: $(el).find('.reflections-count').text() || null // String, for convenience
     });
   });
 
   return payload;
+};
+
+/**
+ * @description Retrieve CACS experience from document 
+ * @param {String} document 
+ * @returns {Object}
+ */
+const retrieveExperience = document => {
+  const $ = cheerio.load(document);
+  $('.content-block-header').remove();
+  $('.activity-tile').remove();
+  $('.divider.compact').prev().nextAll().remove();
+  return {
+    content: $('.content-block').html().replace(/\n/g, ''), // This is potentially dangerous, XSS
+    timespan: $('.cas-activity-calendar').text()
+  };
 };
 
 /**
@@ -402,6 +418,7 @@ exports.loadCas = (req, res) => {
     cas: retrieveCas(req.document),
     documents: retrieveDropbox(req.document)
   }));
+
   res.status(200).end();
 };
 
@@ -412,5 +429,9 @@ exports.loadCas = (req, res) => {
  * @param {Object} res 
  */
 exports.loadCasExperience = (req, res) => {
+  res.append('Managebac-Data', JSON.stringify({
+    cas: Object.assign(retrieveCas(req.document)[0], retrieveExperience(req.document))
+  }));
+
   res.status(200).end();
 };
