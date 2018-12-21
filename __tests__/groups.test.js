@@ -63,7 +63,7 @@ describe('Load group', () => {
             expect(typeof item.due).toBe('string');
             expect(typeof Date.parse(item.due)).toBe('number');
             expect(typeof item.author).toBe('string');
-            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });
           done();
         });
@@ -124,7 +124,7 @@ describe('Load group', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
-            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
@@ -189,7 +189,7 @@ describe('Load group', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
-            expect(typeof item.avatar === 'string' || item.avatar === false).toBeTruthy();
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
