@@ -69,7 +69,7 @@ describe('Load CAS', () => {
   });
 
   describe('GET /api/cas/:resourceId', () => {
-    test('GET /api/cas should return valid cookies', done => {
+    test('GET /api/cas/:resourceId should return valid cookies', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -101,7 +101,7 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas should return 401 with invalid resourceId', done => {
+    test('GET /api/cas/:resourceId should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/cas/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -129,5 +129,93 @@ describe('Load CAS', () => {
           done();
         });
     }); 
+  });
+
+  describe('GET /api/cas/:resourceId/answers', () => {
+    test('GET /api/cas/:resourceId/answers should return valid cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/answers`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/answers should return 401 with no cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/answers`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/cas/:resourceId/answers should return 401 with invalid cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/answers`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/answers should return 401 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/cas/foobar/answers`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+  });
+
+  describe('GET /api/cas/:resourceId/reflections', () => {
+    test('GET /api/cas/:resourceId/reflections should return valid cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/reflections`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/reflections should return 401 with no cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/reflections`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/cas/:resourceId/reflections should return 401 with invalid cookies', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/reflections`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/reflections should return 401 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/cas/foobar/reflections`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
   });
 });

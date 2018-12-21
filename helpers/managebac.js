@@ -428,10 +428,30 @@ exports.loadCas = (req, res) => {
  * req must have a document property 
  * @param {Object} res 
  */
-exports.loadCasExperience = (req, res) => {
+exports.loadExperience = (req, res) => {
   res.append('Managebac-Data', JSON.stringify({
     cas: Object.assign(retrieveCas(req.document)[0], retrieveExperience(req.document))
   }));
 
+  res.status(200).end();
+};
+
+/**
+ * @description Load CAS questions and answers 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ */
+exports.loadAnswers = (req, res) => {
+  res.status(200).end();
+};
+
+/**
+ * @description Load CAS reflections 
+ * @param {Object} req 
+ * req must have a document property 
+ * @param {Object} res 
+ */
+exports.loadReflections = (req, res) => {
   res.status(200).end();
 };

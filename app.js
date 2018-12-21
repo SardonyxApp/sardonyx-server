@@ -58,7 +58,9 @@ app.get('/api/notification/:resourceId', auth.tokenToCookie, auth.loadUrl('notif
 
 // Load CAS
 app.get('/api/cas', auth.tokenToCookie, auth.loadUrl('ib/activity/cas'), auth.retrieve, mb.loadCas);
-app.get('/api/cas/:resourceId', auth.tokenToCookie, auth.loadUrl('ib/activity/cas'), auth.retrieve, mb.loadCasExperience);
+app.get('/api/cas/:resourceId', auth.tokenToCookie, auth.loadUrl('ib/activity/cas'), auth.retrieve, mb.loadExperience);
+app.get('/api/cas/:resourceId/answers', auth.tokenToCookie, auth.loadUrl('ib/activity/cas', 'answers'), auth.retrieve, mb.loadAnswers);
+app.get('/api/cas/:resourceId/reflections', auth.tokenToCookie, auth.loadUrl('ib/activity/cas', 'reflections'), auth.retrieve, mb.loadReflections);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
