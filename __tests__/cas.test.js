@@ -100,5 +100,34 @@ describe('Load CAS', () => {
           done();
         });
     });
+
+    test('GET /api/cas should return 401 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/cas/foobar`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId should return a valid json', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const cas = JSON.parse(response.headers['managebac-data']).cas;
+          expect(typeof cas.title).toBe('string');
+          expect(typeof cas.link).toBe('string');
+          expect(cas.description).toBe(null);
+          expect(Array.isArray(cas.types)).toBeTruthy();
+          expect(cas.status).toMatch(/complete|approved|rejected|needs_approval/);
+          expect(Array.isArray(cas.labels)).toBeTruthy();
+          expect(typeof cas.project).toBe('boolean');
+          expect(typeof cas.commentCount).toBe('number');
+          expect(cas.reflectionCount).toBe(null);
+          done();
+        });
+    }); 
   });
 });
