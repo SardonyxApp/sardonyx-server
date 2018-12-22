@@ -24,8 +24,8 @@ const retrieveDeadlines = document => {
     });
 
     const due = $(el).find('.due').text();
-    const dueMinute = Number(due.match(/\d{2}(?= [AP]M)/)[0]);
-    const dueHour = due.match(/[APM]{2}$/) === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12;
+    const dueMinute = due.match(/\d{2}(?= [AP]M)/);
+    const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12;
     const dueMonth = getMonthFromAbbr($(el).find('.month').text());
     const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
@@ -155,7 +155,7 @@ const retrieveNotification = document => {
   const payload =  {
     title: encodeURI($('.content-block h3').text()),
     author: $('.message-details p:first-child strong').text(),
-    date: new Date(Number(date.match(/\d{4}/)), getMonth(date.match(/^\w+/)[0]), Number(date.match(/\d{1,2}(?=,)/)), Number(date.match(/\d{1,2}(?=:)/)), Number(date.match(/\d{2}$/)))
+    date: new Date(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/))
   };
   $('.message-notifications .message-details').remove();
   payload.content = $('.message-notifications').html();
@@ -316,6 +316,54 @@ const retrieveAnswers = document => {
       });
     });
   }
+
+  return payload;
+};
+
+/**
+ * @description Retrieve CAS reflections from document
+ * @param {String} document 
+ * @returns {Array}
+ */
+const retrieveReflections = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  $('.evidence').each((i, el) => {
+    const labels = [];
+    $('.labels-set .label').each((i, elem) => {
+      labels.push($(elem).text());
+    });
+
+    const obj = {
+      date: createDate($(el).find('h4.title').text(), true),
+      labels: labels
+    };
+
+    if ($(el).hasClass('journal-evidence')) { // Reflection
+      obj.type = 'reflection';
+      obj.content = encodeURI($(el).find('.fix-body-margins').html()); // This is potentially dangerous, XSS
+    } else if ($(el).hasClass('website-evidence')) { // Link
+      obj.type = 'link';
+      obj.title = encodeURI($(el).find('.body a').text().replace(/\n/g, ''));
+      obj.link = $(el).find('.body a').attr('href');
+      obj.description = encodeURI($(el).find('.body p').text());
+    } else if ($(el).hasClass('album-evidence')) { // Photo
+      obj.type = 'photo';
+      obj.photos = [];
+      $(el).find('.photo').each((i, elem) => {
+        obj.photos.push({
+          title: encodeURI($(elem).attr('title')),
+          link: $(elem).data('full-url')
+        });
+      });
+    } else { //File, Video
+      obj.type = 'other';
+      obj.content = 'Sardonyx: This type of evidence is not supported yet.';
+    }
+
+    payload.push(obj);
+  });
 
   return payload;
 };
@@ -494,5 +542,9 @@ exports.loadAnswers = (req, res) => {
  * @param {Object} res 
  */
 exports.loadReflections = (req, res) => {
+  res.append('Managebac-Data', JSON.stringify({
+    reflections: retrieveReflections(req.document)
+  }));
+
   res.status(200).end();
 };
