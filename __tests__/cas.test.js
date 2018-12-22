@@ -173,6 +173,22 @@ describe('Load CAS', () => {
           done();
         });
     });
+
+    test('GET /api/cas/:resourceId/answers should return a valid json', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/answers`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const answers = JSON.parse(response.headers['managebac-data']).answers;
+          expect(Array.isArray(answers)).toBeTruthy();
+          expect(answers.length).toBe(3);
+          answers.forEach(item => {
+            expect(typeof item.question).toBe('string');
+            expect(typeof item.answer).toBe('string');
+          });
+          done();
+        });
+    }); 
   });
 
   describe('GET /api/cas/:resourceId/reflections', () => {

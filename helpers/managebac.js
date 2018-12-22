@@ -284,6 +284,43 @@ const retrieveExperience = document => {
 };
 
 /**
+ * @description Retrieve CAS questions and answers from document 
+ * @param {String} document
+ * @returns {Array} 
+ */
+const retrieveAnswers = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+
+  if ($('.content-block form').length > 0) { // Ongoing CAS experience
+    $('.form-group').each((i,  el) => {
+      payload.push({
+        question: $(el).find('label').text(),
+        answer: encodeURI($(el).find('textarea').val())
+      });
+    });
+  } else { // Completed CAS experience
+    $('.content-block label').each((i, el) => {
+      let answer = '';
+      const addAnswer = elem => {
+        if ($(elem).next('p').length > 0) {
+          answer += '\n' + $(elem).next('p');
+          addAnswer($(elem).next('p'));
+        };
+      };
+      addAnswer(el);
+
+      payload.push({
+        question: $(el).text(),
+        answer: encodeURI(answer) // Not sure if this is the best way to recursively add paragraphs
+      });
+    });
+  }
+
+  return payload;
+};
+
+/**
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
@@ -443,6 +480,10 @@ exports.loadExperience = (req, res) => {
  * @param {Object} res 
  */
 exports.loadAnswers = (req, res) => {
+  res.append('Managebac-Data', JSON.stringify({
+    answers: retrieveAnswers(req.document)
+  }));
+
   res.status(200).end();
 };
 
