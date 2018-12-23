@@ -4,9 +4,13 @@
  * @license MIT
  */
 
-
- const cheerio = require('cheerio');
+const cheerio = require('cheerio');
 const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
+
+// Custom method for replacing \n characters 
+String.prototype.delNewlines = function() {
+  return this.replace(/\n/g, '');
+};
 
 /**
  * @description Retrieve upcoming deadlines from document
@@ -20,7 +24,7 @@ const retrieveDeadlines = document => {
   $('.agenda > .line').each((i, el) => {
     const labels = [];
     $(el).find('.label').each((i, label) => {
-      labels.push($(label).text().replace(/\n/g, '')); 
+      labels.push($(label).text().delNewlines()); 
     });
 
     const due = $(el).find('.due').text();
@@ -30,7 +34,7 @@ const retrieveDeadlines = document => {
     const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
 
     payload.push({
-      title: encodeURI($(el).find('h4.title').text()), 
+      title: encodeURI($(el).find('h4.title').text().delNewlines()), 
       link: $(el).find('.title a').attr('href') || null,
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
@@ -56,7 +60,7 @@ const retrieveMessages = document => {
     const comments = [];
     $(el).find('.reply').each((i, elem) => {
       comments.push({
-        title: encodeURI($(elem).find('h4.title').text()),
+        title: encodeURI($(elem).find('h4.title').text().delNewlines()),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || null, 
@@ -70,7 +74,7 @@ const retrieveMessages = document => {
     });
 
     payload.push({
-      title: encodeURI($(el).find('.discussion-content h4.title').text()),
+      title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
       link: $(el).find('.discussion-content h4.title a').attr('href'),
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       author: $(el).find('.discussion-content .header strong').text(),
@@ -95,7 +99,7 @@ const retrieveClasses = document => {
 
   $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
     payload.push({
-      title: encodeURI($(el).find('a').text().replace(/\n/g, '')),
+      title: encodeURI($(el).find('a').text().delNewlines()),
       link: $(el).find('a').attr('href')
     });
   });
@@ -114,7 +118,7 @@ const retrieveGroups = document => {
 
   $('#menu > .nav-menu > li.parent:nth-child(10) li').each((i, el) => {
     payload.push({
-      title: encodeURI($(el).find('a').text().replace(/\n/g, '')),
+      title: encodeURI($(el).find('a').text().delNewlines()),
       link: $(el).find('a').attr('href')
     });
   });
@@ -133,7 +137,7 @@ const retrieveNotifications = document => {
 
   $('tr.message').each((i, el) => {
     payload.push({
-      title: encodeURI($(el).find('.title a').text()),
+      title: encodeURI($(el).find('.title a').text().delNewlines()),
       link: $(el).find('.title a').attr('href'),
       author: $(el).find('td:nth-child(3)').text(),
       dateString: $(el).find('td:last-child').text(), // Not possible to obtain exact date in list view 
@@ -153,7 +157,7 @@ const retrieveNotification = document => {
   const $ = cheerio.load(document);
   const date = $('.message-details p:last-child strong').text();
   const payload =  {
-    title: encodeURI($('.content-block h3').text()),
+    title: encodeURI($('.content-block h3').text().delNewlines()),
     author: $('.message-details p:first-child strong').text(),
     date: new Date(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/))
   };
@@ -179,7 +183,7 @@ const retrieveNotificationCount = document => {
  */
 const retrieveDetails = document => {
   const $ = cheerio.load(document);
-  return $('label:contains("Details")').next().html().replace(/\n/g, ''); // This is potentially dangerous, XSS
+  return $('label:contains("Details")').next().html().delNewlines(); // This is potentially dangerous, XSS
 };
 
 /**
@@ -252,14 +256,14 @@ const retrieveCas = document => {
     });
 
     payload.push({
-      title: encodeURI($(el).find('h4.title a').text()),
+      title: encodeURI($(el).find('h4.title a').text().delNewlines()),
       link: $(el).find('.details a').attr('href'),
       description: encodeURI($(el).find('.description').text()) || null,
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
       labels: labels,
       project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
-      commentCount: Number($(el).find('.comments-count').text().replace(/\n/g, '')),
+      commentCount: Number($(el).find('.comments-count').text().delNewlines()),
       reflectionCount: $(el).find('.reflections-count').text() || null // String, for convenience
     });
   });
@@ -278,7 +282,7 @@ const retrieveExperience = document => {
   $('.activity-tile').remove();
   $('.divider.compact').prev().nextAll().remove();
   return {
-    content: $('.content-block').html().replace(/\n/g, ''), // This is potentially dangerous, XSS
+    content: $('.content-block').html().delNewlines(), // This is potentially dangerous, XSS
     timespan: $('.cas-activity-calendar').text()
   };
 };
@@ -345,7 +349,7 @@ const retrieveReflections = document => {
       obj.content = encodeURI($(el).find('.fix-body-margins').html()); // This is potentially dangerous, XSS
     } else if ($(el).hasClass('website-evidence')) { // Link
       obj.type = 'link';
-      obj.title = encodeURI($(el).find('.body a').text().replace(/\n/g, ''));
+      obj.title = encodeURI($(el).find('.body a').text().delNewlines());
       obj.link = $(el).find('.body a').attr('href');
       obj.description = encodeURI($(el).find('.body p').text());
     } else if ($(el).hasClass('album-evidence')) { // Photo
