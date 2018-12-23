@@ -104,6 +104,7 @@ const retrieveClasses = document => {
     });
   });
 
+  payload.pop(); // Remove last item which says "Join more classes"
   return payload;
 };
 
@@ -123,6 +124,7 @@ const retrieveGroups = document => {
     });
   });
 
+  payload.pop(); //Remove last item which says "Join more groups"
   return payload;
 };
 
