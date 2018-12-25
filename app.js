@@ -52,6 +52,10 @@ app.get('/api/class/:resourceId/assignments/:destinationId', auth.tokenToCookie,
 app.get('/api/class/:resourceId/messages/:destinationId', auth.tokenToCookie, auth.loadUrl('classes', 'discussions'), auth.retrieve, mb.loadMessage);
 app.get('/api/group/:resourceId/messages/:destinationId', auth.tokenToCookie, auth.loadUrl('groups', 'discussions'), auth.retrieve, mb.loadMessage);
 
+// Send message 
+app.post('/api/class/:resourceId/messages', auth.tokenToCookie, auth.loadUrl('classes', 'discussions'), mb.sendMessage);
+app.post('/api/group/:resourceId/messages', auth.tokenToCookie, auth.loadUrl('groups', 'discussions'), mb.sendMessage);
+
 // Load notifications 
 app.get('/api/notification', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotifications);
 app.get('/api/notification/:resourceId', auth.tokenToCookie, auth.loadUrl('notifications'), auth.retrieve, mb.loadNotification);

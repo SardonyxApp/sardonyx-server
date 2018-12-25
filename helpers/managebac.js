@@ -470,6 +470,15 @@ exports.loadMessage = (req, res) => {
 };
 
 /**
+ * @description Send a message 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.sendMessage = (req, res) => {
+  res.status(200).end();
+}
+
+/**
  * @description Load notification list
  * @param {Object} req 
  * req must have a document property 
