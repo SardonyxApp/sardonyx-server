@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load message', () => {
   describe('GET /api/class/:resourceId/messages/:destinationId', () => {
-    test('GET /api/class/:resourceId/messages should return valid cookies', done => {
+    test('GET /api/class/:resourceId/messages/:destinationId should return valid cookies', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -88,7 +88,7 @@ describe('Load message', () => {
   });
 
   describe('GET /api/group/:resourceId/messages/:destinationId', () => {
-    test('GET /api/group/:resourceId/messages should return valid cookies', done => {
+    test('GET /api/group/:resourceId/messages/:destinationId should return valid cookies', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
