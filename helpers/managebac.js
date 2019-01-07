@@ -47,8 +47,8 @@ exports.createUrl = (resource, destination) => {
  */
 exports.scrape = (req, res, next) => {
   const j = request.jar(); // Cookie jar 
-  j.setCookie(request.cookie(req.cookie.cfduid), 'https://kokusaiib.managebac.com');
-  j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
+  j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
+  j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
   
   request.get({
     url: req.url,
@@ -66,7 +66,8 @@ exports.scrape = (req, res, next) => {
       const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
       const payload = JSON.stringify({
         cfduid: __cfduid,
-        managebacSession: _managebac_session
+        managebacSession: _managebac_session,
+        csrfToken: parser.parseCSRFToken(response.body)
       });
       res.append('Login-Token', payload);
       req.document = response.body;
@@ -180,8 +181,8 @@ exports.loadMessage = (req, res) => {
  */
 exports.sendMessage = (req, res) => {
   const j = request.jar(); // Cookie jar 
-  j.setCookie(request.cookie(req.cookie.cfduid), 'https://kokusaiib.managebac.com');
-  j.setCookie(request.cookie(req.cookie.managebacSession), 'https://kokusaiib.managebac.com');
+  j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
+  j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
 
   req.body = JSON.parse(req.headers['message-data']);
   console.log(req.body);

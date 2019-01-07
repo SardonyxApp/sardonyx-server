@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load CAS', () => {
   describe('GET /api/cas', () => {
-    test('GET /api/cas should return valid cookies', done => {
+    test('GET /api/cas should return valid tokens', done => {
       request(app)
         .get('/api/cas')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -16,11 +16,12 @@ describe('Load CAS', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/cas should return 401 with no cookies', done => {
+    test('GET /api/cas should return 401 with no tokens', done => {
       request(app)
         .get('/api/cas')
         .then(response => {
@@ -29,7 +30,7 @@ describe('Load CAS', () => {
         });
     });    
 
-    test('GET /api/cas should return 401 with invalid cookies', done => {
+    test('GET /api/cas should return 401 with invalid tokens', done => {
       request(app)
         .get('/api/cas')
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -69,7 +70,7 @@ describe('Load CAS', () => {
   });
 
   describe('GET /api/cas/:resourceId', () => {
-    test('GET /api/cas/:resourceId should return valid cookies', done => {
+    test('GET /api/cas/:resourceId should return valid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -78,11 +79,12 @@ describe('Load CAS', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/cas/:resourceId should return 401 with no cookies', done => {
+    test('GET /api/cas/:resourceId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}`)
         .then(response => {
@@ -91,7 +93,7 @@ describe('Load CAS', () => {
         });
     });    
 
-    test('GET /api/cas/:resourceId should return 401 with invalid cookies', done => {
+    test('GET /api/cas/:resourceId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -132,7 +134,7 @@ describe('Load CAS', () => {
   });
 
   describe('GET /api/cas/:resourceId/answers', () => {
-    test('GET /api/cas/:resourceId/answers should return valid cookies', done => {
+    test('GET /api/cas/:resourceId/answers should return valid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/answers`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -141,11 +143,12 @@ describe('Load CAS', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/cas/:resourceId/answers should return 401 with no cookies', done => {
+    test('GET /api/cas/:resourceId/answers should return 401 with no tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/answers`)
         .then(response => {
@@ -154,7 +157,7 @@ describe('Load CAS', () => {
         });
     });    
 
-    test('GET /api/cas/:resourceId/answers should return 401 with invalid cookies', done => {
+    test('GET /api/cas/:resourceId/answers should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/answers`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -192,7 +195,7 @@ describe('Load CAS', () => {
   });
 
   describe('GET /api/cas/:resourceId/reflections', () => {
-    test('GET /api/cas/:resourceId/reflections should return valid cookies', done => {
+    test('GET /api/cas/:resourceId/reflections should return valid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/reflections`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -201,11 +204,12 @@ describe('Load CAS', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/cas/:resourceId/reflections should return 401 with no cookies', done => {
+    test('GET /api/cas/:resourceId/reflections should return 401 with no tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/reflections`)
         .then(response => {
@@ -214,7 +218,7 @@ describe('Load CAS', () => {
         });
     });    
 
-    test('GET /api/cas/:resourceId/reflections should return 401 with invalid cookies', done => {
+    test('GET /api/cas/:resourceId/reflections should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/cas/${process.env.CAS_ID}/reflections`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)

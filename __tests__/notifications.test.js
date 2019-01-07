@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load notifications', () => {
   describe('GET /api/notification', () => {
-    test('GET /api/notification should return valid cookies', done => {
+    test('GET /api/notification should return valid tokens', done => {
       request(app)
         .get('/api/notification')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -16,11 +16,12 @@ describe('Load notifications', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/notification should return 401 with no cookies', done => {
+    test('GET /api/notification should return 401 with no tokens', done => {
       request(app)
         .get('/api/notification')
         .then(response => {
@@ -29,7 +30,7 @@ describe('Load notifications', () => {
         });
     });    
 
-    test('GET /api/notification should return 401 with invalid cookies', done => {
+    test('GET /api/notification should return 401 with invalid tokens', done => {
       request(app)
         .get('/api/notification')
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -59,7 +60,7 @@ describe('Load notifications', () => {
   });
 
   describe('GET /api/notification?pageId=:pageId', () => {
-    test('GET /api/notification?pageId=:pageId should return valid cookies', done => {
+    test('GET /api/notification?pageId=:pageId should return valid tokens', done => {
       request(app)
         .get(`/api/notification?pageId=${process.env.NOTIFICATION_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -68,11 +69,12 @@ describe('Load notifications', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/notification?pageId=:pageId should return 401 with no cookies', done => {
+    test('GET /api/notification?pageId=:pageId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/notification?pageId=${process.env.NOTIFICATION_PAGE_ID}`)
         .then(response => {
@@ -81,7 +83,7 @@ describe('Load notifications', () => {
         });
     });    
 
-    test('GET /api/notification?pageId=:pageId should return 401 with invalid cookies', done => {
+    test('GET /api/notification?pageId=:pageId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/notification?pageId=${process.env.NOTIFICATION_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -112,7 +114,7 @@ describe('Load notifications', () => {
 
 describe('Load notification', () => {
   describe('GET /api/notification/:resourceId', () => {
-    test('GET /api/notification/:resourceId should return valid cookies', done => {
+    test('GET /api/notification/:resourceId should return valid tokens', done => {
       request(app)
         .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -121,11 +123,12 @@ describe('Load notification', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/notification/:resourceId should return 401 with no cookies', done => {
+    test('GET /api/notification/:resourceId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
         .then(response => {
@@ -134,7 +137,7 @@ describe('Load notification', () => {
         });
     });    
 
-    test('GET /api/notification/:resourceId should return 401 with invalid cookies', done => {
+    test('GET /api/notification/:resourceId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
