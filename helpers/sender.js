@@ -14,9 +14,7 @@ const { parseCSRFToken } = require('./parsers');
  * @param {Function} next 
  */
 module.exports = (req, res, next) => {
-  // In DELETE requests, the form will be empty. 
-  req.form = req.form || {};
-
+  console.log(req.url);
   // Set cookies 
   const j = request.jar();  
   j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
@@ -25,12 +23,9 @@ module.exports = (req, res, next) => {
   // Make request 
   request({
     url: req.url,
-    followAllRedirects: true,
+    // followAllRedirects: true,
     method: req.method.toLowerCase(),
-    form: {...req.form, ...{
-      utf8: '✓',
-      _method: req.method.toLowerCase()
-    }},
+    form: req.form || {}, // form empty for DELETE requests
     jar: j,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -42,6 +37,8 @@ module.exports = (req, res, next) => {
       res.status(502).end();
       return;
     }
+
+    console.log(response);
 
     // Redirected url should be index 
     const matchUrl = req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url;

@@ -67,6 +67,18 @@ app.patch('/api/group/:resourceId/messages/:destinationId', auth.createTokens, m
 app.delete('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), send, mb.loadMessages);
 app.delete('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), send, mb.loadMessages);
 
+// Send reply 
+app.post('/api/class/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
+app.post('/api/group/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
+
+// Edit reply 
+app.patch('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftReply, send, mb.loadMessages);
+app.patch('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftReply, send, mb.loadMessages);
+
+// Delete reply 
+app.delete('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), send, mb.loadMessages);
+app.delete('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), send, mb.loadMessages);
+
 // Load notifications 
 app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);
 app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotification);
