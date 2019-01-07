@@ -65,8 +65,8 @@ exports.craftNewMessage = (req, res, next) => {
   req.form = {
     'discussion[topic]': decodeURI(req.body.topic),
     'discussion[body]': decodeURI(req.body.body),
-    'discussion[notify_via_email]': req.body.notifyViaEmail,
-    'discussion[private]': req.body.privateMessage, // API naming slightly changed, private is a reserved word in strict mode 
+    'discussion[notify_via_email]': req.body.notifyViaEmail === 1 ? '[0, 1]' : 0,
+    'discussion[private]': req.body.privateMessage === 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
   };
 
   next();
@@ -98,8 +98,8 @@ exports.craftNewReply = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data']);
   req.form = {
     'reply[body]': decodeURI(req.body.body),
-    'reply[notify_via_email]': req.notifyViaEmail,
-    'reply[private]': req.privateMessage
+    'reply[notify_via_email]': req.notifyViaEmail === 1 ? '[0, 1]' : 0,
+    'reply[private]': req.privateMessage === 1 ? '[0, 1]' : 0
   };
 
   if (req.params.subitemId) {
