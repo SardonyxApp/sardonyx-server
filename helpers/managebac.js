@@ -200,7 +200,8 @@ exports.sendMessage = (req, res) => {
     },
     jar: j,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'X-CSRF-Token': req.token.csrfToken
     }
   }, (err, response) => {
     if (err) {
