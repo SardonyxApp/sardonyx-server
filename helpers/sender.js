@@ -14,6 +14,9 @@ const { parseCSRFToken } = require('./parsers');
  * @param {Function} next 
  */
 module.exports = (req, res, next) => {
+  // In DELETE requests, the form will be empty. 
+  req.form = req.form || {};
+
   // Set cookies 
   const j = request.jar();  
   j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
@@ -40,8 +43,10 @@ module.exports = (req, res, next) => {
       return;
     }
 
+    // Redirected url should be index 
+    const matchUrl = req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url;
     // Successfully returned page
-    if (response.statusCode === 200 && response.request.uri.href === req.url) {
+    if (response.statusCode === 200 && response.request.uri.href === matchUrl) {
       // Return new tokens 
       const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
       const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
