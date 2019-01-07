@@ -59,6 +59,14 @@ app.get('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.
 app.post('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
 app.post('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
 
+// Edit message 
+app.patch('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftMessage, send, mb.loadMessages);
+app.patch('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftMessage, send, mb.loadMessages);
+
+// Delete message 
+app.delete('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), send, mb.loadMessages);
+app.delete('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), send, mb.loadMessages);
+
 // Load notifications 
 app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);
 app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotification);

@@ -57,6 +57,22 @@ exports.craftNewMessage = (req, res, next) => {
 };
 
 /**
+ * @description Craft an edit message from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftMessage = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data']);
+  req.form = {
+    'discussion[topic]': req.body.topic,
+    'discussion[body]': req.body.body
+  };
+
+  next();
+};
+
+/**
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
