@@ -5,6 +5,7 @@
  */
 
 const request = require('request');
+const parser = require('./parsers');
 
 /**
  * @description Convert Login-Token header to req.body FormData
@@ -13,7 +14,7 @@ const request = require('request');
  * @param {Object} res
  * @param {Function} next
  */
-exports.tokenToBody = (req, res, next) => {
+exports.createBody = (req, res, next) => {
   // Get the login token from header, otherwise set it to an empty object
   const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
 
@@ -31,24 +32,34 @@ exports.tokenToBody = (req, res, next) => {
 };
 
 /**
- * @description Conver Login-Token header to req.cookie 
+ * @description Convert Login-Token header to req.token
  * @param {Object} req 
  * req should have the header 'Login-Token'
  * @param {Object} res 
  * @param {FUnction} next 
  */
-exports.tokenToCookie = (req, res, next) => {
-  const cookies = JSON.parse(req.headers['login-token'] || '{}') || {};
+exports.createTokens = (req, res, next) => {
+  const tokens = JSON.parse(req.headers['login-token'] || '{}') || {};
 
-  if (cookies.cfduid && cookies.managebacSession) {
-    req.cookie = {
-      cfduid: cookies.cfduid,
-      managebacSession: cookies.managebacSession
+  if (req.method == 'GET' && tokens.cfduid && tokens.managebacSession) { 
+    // GET requests do not need CSRF Token
+    req.token = {
+      cfduid: tokens.cfduid,
+      managebacSession: tokens.managebacSession,
+    };
+
+    next();
+  } else if (tokens.cfduid && tokens.managebacSession && tokens.crsfToken) { 
+    // CSRF Token is included for other methods 
+    req.token = {
+      cfduid: tokens.cfduid,
+      managebacSession: tokens.managebacSession,
+      csrfToken: tokens.csrfToken
     };
 
     next();
   } else {
-    // The request did not contain cookie information, redirect them to reissue
+    // The request did not contain token information, redirect them to reissue
     res.status(401).end();
   }
 };
@@ -87,6 +98,7 @@ exports.loginToManagebac = (req, res, next) => {
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session,
+        csrfToken: parser.parseCSRFToken(response.body),
         login: login,
         password: password
       });

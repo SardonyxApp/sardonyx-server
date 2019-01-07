@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load group', () => {
   describe('GET /api/group/:resourceId/overview', () => {
-    test('GET /api/group/:resourceId/overview should return valid cookies', done => {
+    test('GET /api/group/:resourceId/overview should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -16,11 +16,12 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/group/:resourceId/overview should return 401 with no cookies', done => {
+    test('GET /api/group/:resourceId/overview should return 401 with no tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/overview`)
         .then(response => {
@@ -29,7 +30,7 @@ describe('Load group', () => {
         });
     });    
 
-    test('GET /api/group/:resourceId/overview should return 401 with invalid cookies', done => {
+    test('GET /api/group/:resourceId/overview should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/overview`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -71,7 +72,7 @@ describe('Load group', () => {
   });
 
   describe('GET /api/group/:resourceId/messages', () => {
-    test('GET /api/group/:resourceId/messages should return valid cookies', done => {
+    test('GET /api/group/:resourceId/messages should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -80,11 +81,12 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/group/:resourceId/messages should return 401 with no cookies', done => {
+    test('GET /api/group/:resourceId/messages should return 401 with no tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages`)
         .then(response => {
@@ -93,7 +95,7 @@ describe('Load group', () => {
         });
     });    
 
-    test('GET /api/group/:resourceId/messages should return 401 with invalid cookies', done => {
+    test('GET /api/group/:resourceId/messages should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -136,7 +138,7 @@ describe('Load group', () => {
   });
 
   describe('GET /api/group/:resourceId/messages?pageParam=:pageParam', () => {
-    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return valid cookies', done => {
+    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages?pageParam=${process.env.GROUP_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -145,11 +147,12 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 401 with no cookies', done => {
+    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 401 with no tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages?pageParam=${process.env.GROUP_MESSAGE_PAGE_ID}`)
         .then(response => {
@@ -158,7 +161,7 @@ describe('Load group', () => {
         });
     });    
 
-    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 401 with invalid cookies', done => {
+    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages?pageParam=${process.env.GROUP_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)

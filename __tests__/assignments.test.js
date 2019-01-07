@@ -7,20 +7,21 @@ jest.setTimeout(30000);
 
 describe('Load assignment', () => {
   describe('GET /api/class/:resourceId/assignments/:destinationId', () => {
-    test('GET /api/class/:resourceId/assignments should return valid cookies', done => {
+    test('GET /api/class/:resourceId/assignments should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
-        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)
         .then(response => {
           expect(response.statusCode).toBe(200);
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with no cookies', done => {
+    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .then(response => {
@@ -29,7 +30,7 @@ describe('Load assignment', () => {
         });
     });    
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with invalid cookies', done => {
+    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)

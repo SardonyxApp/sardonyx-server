@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load message', () => {
   describe('GET /api/class/:resourceId/messages/:destinationId', () => {
-    test('GET /api/class/:resourceId/messages/:destinationId should return valid cookies', done => {
+    test('GET /api/class/:resourceId/messages/:destinationId should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -16,11 +16,12 @@ describe('Load message', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with no cookies', done => {
+    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .then(response => {
@@ -29,7 +30,7 @@ describe('Load message', () => {
         });
     });    
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with invalid cookies', done => {
+    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -88,7 +89,7 @@ describe('Load message', () => {
   });
 
   describe('GET /api/group/:resourceId/messages/:destinationId', () => {
-    test('GET /api/group/:resourceId/messages/:destinationId should return valid cookies', done => {
+    test('GET /api/group/:resourceId/messages/:destinationId should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -97,11 +98,12 @@ describe('Load message', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with no cookies', done => {
+    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .then(response => {
@@ -110,7 +112,7 @@ describe('Load message', () => {
         });
     });    
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with invalid cookies', done => {
+    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)

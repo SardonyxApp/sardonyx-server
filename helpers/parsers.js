@@ -13,6 +13,16 @@ String.prototype.delNewlines = function() {
 };
 
 /**
+ * @description Parse CSRF token in the document 
+ * @param {String} document 
+ * @returns {String}
+ */
+exports.parseCSRFToken = document => {
+  const $ = cheerio.load(document);
+  return $('meta[name="csrf-token"]').attr('content');
+};
+
+/**
  * @description Parse upcoming deadlines from document
  * @param {String} document 
  * @returns {Array}
