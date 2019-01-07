@@ -7,28 +7,44 @@
 const parser = require('./parsers');
 
 /**
- * @description Create a Managebac URL
+ * @description Create a Managebac URL (up to 3 layers)
  * @param {String} resource 
  * resource can be any of the valid Managebac resources, like classes and groups
  * @param {String} destination 
  * destination can be any of the valid Managebac destinations, like assignments and messages
- * @example loadUrl('classes') with no parameters will GET /student/classes
- * @example loadUrl('classes') with req.params.resourceId will GET /student/classes/:classId
- * @example loadUrl('classes', 'assignments') without req.params.destinationId will GET /student/classes/:resourceId/assignments
- * @example loadUrl('classes', 'assignments') with req.params.destinationId will GET /student/classes/:resourceId/assignments/:destinationId
+ * @param {String} subitem 
+ * @example createUrl('classes') with no parameters will return /students/classes
+ * @example createUrl('classes') with :resouceId will return /student/classes/:classId
+ * @example createUrl('classes', 'assignments') without :destinationId will return /student/classes/:resourceId/assignments
+ * @example createUrl('classes', 'assignments') with params will return /student/classes/:resourceId/assignments/:destinationId
+ * @example createUrl('classes', 'messages', 'replies') without :subitemId will return /student/classes/:resourceId/messages/:destinationId/replies
+ * @example createUrl('classes', 'messages', 'replies') with params will return /student/classes/:resourceId/messages/:destinationId/replies/:subitemId
  */
-exports.createUrl = (resource, destination) => {
+exports.createUrl = (resource, destination, subitem) => {
   return (req, res, next) => {
     req.url = `https://kokusaiib.managebac.com/student`;
-    if (resource && req.params.resourceId) {
-      if (destination) {
-        if (req.params.destinationId) req.url += `/${resource}/${req.params.resourceId}/${destination}/${req.params.destinationId}`;
-        else req.url += `/${resource}/${req.params.resourceId}/${destination}`;
-      } else {
-        req.url += `/${resource}/${req.params.resourceId}`;
+
+    // This is nasty, but it is more readable than a recursive function with its own recursive params 
+    if (resource) {
+      req.url += `/${resource}`
+
+      if (req.params.resourceId) {
+        req.url += `/${req.params.resourceId}`;
+
+        if(destination) {
+          req.url += `/${destination}`;
+
+          if (req.params.destinationId) {
+            req.url += `/${req.params.destinationId}`;
+
+            if (subitem) {
+              req.url += `/${subitem}`;
+
+              if (req.params.subitemId) req.url += `/${req.params.subitemId}`;
+            }
+          }
+        }
       }
-    } else if (resource) {
-      req.url += `/${resource}`;
     }
 
     if (req.query.pageId) req.url += `/page/${req.query.pageId}`;
@@ -67,6 +83,38 @@ exports.craftMessage = (req, res, next) => {
   req.form = {
     'discussion[topic]': req.body.topic,
     'discussion[body]': req.body.body
+  };
+
+  next();
+};
+
+/**
+ * @description Craft a new reply from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftNewReply = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data']);
+  req.form = {
+    'reply[body]': req.body.body,
+    'reply[notify_via_email]': req.notifyViaEmail,
+    'reply[private]': req.privateMessage
+  };
+
+  next();
+};
+
+/**
+ * @description Craft an edit message from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftReply = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data']);
+  req.form = {
+    'reply[body]': req.body.body
   };
 
   next();
