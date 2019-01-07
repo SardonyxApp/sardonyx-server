@@ -6,8 +6,11 @@ const upload = multer(); // Used to parse multipart/form-data
 
 require('dotenv').config(); // Used to parse .env
 
+// Custom helper utilities 
 const auth = require('./helpers/authentication');
 const mb = require('./helpers/managebac');
+const scrape = require('./helpers/scraper');
+const send = require('./helpers/sender');
 
 app.use(express.static('public'));
 
@@ -37,34 +40,34 @@ app.get('/api/login', auth.createBody, auth.loginToManagebac, (req, res) => {
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults);
 
 // Load class
-app.get('/api/class/:resourceId/overview', auth.createTokens, mb.createUrl('classes'), mb.scrape, mb.loadOverview);
-app.get('/api/class/:resourceId/assignments', auth.createTokens, mb.createUrl('classes', 'assignments'), mb.scrape, mb.loadAssignments);
-app.get('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.scrape, mb.loadMessages);
+app.get('/api/class/:resourceId/overview', auth.createTokens, mb.createUrl('classes'), scrape, mb.loadOverview);
+app.get('/api/class/:resourceId/assignments', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignments);
+app.get('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessages);
 
 // Load group 
-app.get('/api/group/:resourceId/overview', auth.createTokens, mb.createUrl('groups'), mb.scrape, mb.loadOverview);
-app.get('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.scrape, mb.loadMessages);
+app.get('/api/group/:resourceId/overview', auth.createTokens, mb.createUrl('groups'), scrape, mb.loadOverview);
+app.get('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessages);
 
 // Load assignment
-app.get('/api/class/:resourceId/assignments/:destinationId', auth.createTokens, mb.createUrl('classes', 'assignments'), mb.scrape, mb.loadAssignment);
+app.get('/api/class/:resourceId/assignments/:destinationId', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignment);
 
 // Load message 
-app.get('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.scrape, mb.loadMessage);
-app.get('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.scrape, mb.loadMessage);
+app.get('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessage);
+app.get('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessage);
 
 // Send message 
-app.post('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.sendMessage);
-app.post('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.sendMessage);
+app.post('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
+app.post('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
 
 // Load notifications 
-app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), mb.scrape, mb.loadNotifications);
-app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifications'), mb.scrape, mb.loadNotification);
+app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);
+app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotification);
 
 // Load CAS
-app.get('/api/cas', auth.createTokens, mb.createUrl('ib/activity/cas'), mb.scrape, mb.loadCas);
-app.get('/api/cas/:resourceId', auth.createTokens, mb.createUrl('ib/activity/cas'), mb.scrape, mb.loadExperience);
-app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), mb.scrape, mb.loadAnswers);
-app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.scrape, mb.loadReflections);
+app.get('/api/cas', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadCas);
+app.get('/api/cas/:resourceId', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadExperience);
+app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), scrape, mb.loadAnswers);
+app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), scrape, mb.loadReflections);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons

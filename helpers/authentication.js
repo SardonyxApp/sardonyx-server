@@ -16,7 +16,7 @@ const parser = require('./parsers');
  */
 exports.createBody = (req, res, next) => {
   // Get the login token from header, otherwise set it to an empty object
-  const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
+  const credentials = JSON.parse(req.headers['login-token'] || '{}');
 
   if (credentials.login && credentials.password) {
     req.body = {
@@ -39,7 +39,7 @@ exports.createBody = (req, res, next) => {
  * @param {FUnction} next 
  */
 exports.createTokens = (req, res, next) => {
-  const tokens = JSON.parse(req.headers['login-token'] || '{}') || {};
+  const tokens = JSON.parse(req.headers['login-token'] || '{}');
 
   if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
     // GET requests do not need CSRF Token

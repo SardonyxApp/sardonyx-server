@@ -4,7 +4,6 @@
  * @license MIT
  */
 
-const request = require('request');
 const parser = require('./parsers');
 
 /**
@@ -40,43 +39,21 @@ exports.createUrl = (resource, destination) => {
 };
 
 /**
- * @description Scrape any resource from Managebac
+ * @description Craft a new message from data
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next 
  */
-exports.scrape = (req, res, next) => {
-  const j = request.jar(); // Cookie jar 
-  j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
-  j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
-  
-  request.get({
-    url: req.url,
-    jar: j,
-  }, (err, response) => {
-    if (err) {
-      console.error(err);
-      res.status(502).end();
-      return;
-    }
+exports.craftNewMessage = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data']);
+  req.form = {
+    'discussion[topic]': req.body.topic,
+    'discussion[body]': req.body.body,
+    'discussion[notify_via_email]': req.body.notifyViaEmail,
+    'discussion[private]': req.body.privateMessage, // API naming slightly changed, private is a reserved word in strict mode 
+  };
 
-    // Successfully returns class page 
-    if (response.statusCode === 200 && response.request.uri.href === req.url) {
-      const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-      const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
-      const payload = JSON.stringify({
-        cfduid: __cfduid,
-        managebacSession: _managebac_session,
-        csrfToken: parser.parseCSRFToken(response.body)
-      });
-      res.append('Login-Token', payload);
-      req.document = response.body;
-      return next();
-    }
-
-    //Nonexistent or invalid request, unauthorized 
-    res.status(401).end();
-  });
+  next();
 };
 
 /**
@@ -173,48 +150,6 @@ exports.loadMessage = (req, res) => {
 
   res.status(200).end();
 };
-
-/**
- * @description Send a message 
- * @param {Object} req 
- * @param {Object} res 
- */
-exports.sendMessage = (req, res) => {
-  const j = request.jar(); // Cookie jar 
-  j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
-  j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
-
-  req.body = JSON.parse(req.headers['message-data']);
-  console.log(req.body);
-
-  request.post({
-    url: req.url,
-    form: {
-      utf8: '✓',
-      _method: 'post',
-      'discussion[topic]': req.body.topic,
-      'discussion[body]': req.body.body,
-      'discussion[notify_via_email]': req.body.notifyViaEmail,
-      'discussion[private]': req.body.privateMessage, // API naming slightly changed, private is a reserved word in strict mode 
-      commit: 'Add Message'
-    },
-    jar: j,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'X-CSRF-Token': req.token.csrfToken
-    }
-  }, (err, response) => {
-    if (err) {
-      console.error(err);
-      res.status(502).end();
-      return;
-    }
-
-    console.log(response.statusCode);
-  });
-  
-  res.status(200).end();
-}
 
 /**
  * @description Load notification list
