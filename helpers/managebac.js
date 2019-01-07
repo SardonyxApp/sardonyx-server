@@ -102,6 +102,11 @@ exports.craftNewReply = (req, res, next) => {
     'reply[private]': req.privateMessage
   };
 
+  if (req.params.subitemId) {
+    req.url = req.url.replace(`/${req.params.subitemId}`, ''); // Here, form is sent to .../replies 
+    req.form['reply[parent_id]'] = req.params.subitemId;
+  } 
+
   next();
 };
 
