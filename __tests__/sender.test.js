@@ -21,7 +21,7 @@ describe('Send messages', () => {
   test('POST /api/group/:resourceId/messages should send message', done => {
     request(app)
       .post(`/api/group/${process.env.GROUP_ID}/messages`)
-      .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+      .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)
       .set('Message-Data', `{"topic": "${topic}", "body": "${messageWithoutStyle}", "notifyViaEmail": "${notifyViaEmail}", "privateMessage": "${privateMessage}"}`)
       .then(response => {
         expect(response.statusCode).toBe(200);
