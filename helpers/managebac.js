@@ -63,8 +63,8 @@ exports.createUrl = (resource, destination, subitem) => {
 exports.craftNewMessage = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data']);
   req.form = {
-    'discussion[topic]': req.body.topic,
-    'discussion[body]': req.body.body,
+    'discussion[topic]': decodeURI(req.body.topic),
+    'discussion[body]': decodeURI(req.body.body),
     'discussion[notify_via_email]': req.body.notifyViaEmail,
     'discussion[private]': req.body.privateMessage, // API naming slightly changed, private is a reserved word in strict mode 
   };
@@ -81,8 +81,8 @@ exports.craftNewMessage = (req, res, next) => {
 exports.craftMessage = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data']);
   req.form = {
-    'discussion[topic]': req.body.topic,
-    'discussion[body]': req.body.body
+    'discussion[topic]': decodeURI(req.body.topic),
+    'discussion[body]': decodeURI(req.body.body)
   };
 
   next();
@@ -97,7 +97,7 @@ exports.craftMessage = (req, res, next) => {
 exports.craftNewReply = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data']);
   req.form = {
-    'reply[body]': req.body.body,
+    'reply[body]': decodeURI(req.body.body),
     'reply[notify_via_email]': req.notifyViaEmail,
     'reply[private]': req.privateMessage
   };
@@ -114,7 +114,7 @@ exports.craftNewReply = (req, res, next) => {
 exports.craftReply = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data']);
   req.form = {
-    'reply[body]': req.body.body
+    'reply[body]': decodeURI(req.body.body)
   };
 
   next();
