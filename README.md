@@ -107,8 +107,13 @@ GET /api/group/:groupId/messages/:messageId
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
 #### Send a message 
+Send a class message
 ```
 POST /api/class/:classId/messages
+```
+
+Send a group message 
+```
 POST /api/group/:groupId/messages
 ```
 
@@ -125,8 +130,13 @@ Required: `Message-Data` header with JSON:
 ```
 
 #### Edit a message 
+Edit a class message
 ```
 PATCH /api/class/:classId/messages/:messageId
+```
+
+Edit a group message 
+```
 PATCH /api/group/:groupId/messages/:messageId
 ```
 
@@ -140,11 +150,17 @@ Required: `Message-Data` header with JSON:
 }
 ```
 
-#### Delete a message 
+#### Delete a message
+Delete a class essage 
 ```
 DELETE /api/class/:classId/messages/:messageId
+```
+
+Delete a group message
+```
 DELETE /api/class/:classId/messages/:messageId
 ```
+
 Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
 
 #### Send a comment
@@ -155,17 +171,25 @@ Message
 > > Comment (2nd level)
 ```
 
-Send a comment (1st level)
+Send a comment (1st level) to a class message
 ```
 POST /api/class/:classId/messages/:messageId/reply
+```
+
+Send a comment (1st level) to a group message
+```
 POST /api/group/:groupId/messages/:messageId/reply
 ```
 
-Send a comment (2nd level)
-
 If `:replyId` is specified, it will send a comment under the provided comment. Provided comment must be first level. 
+
+Send a comment (2nd level) to a class message
 ```
 POST /api/class/:classId/messages/:messageId/reply/:replyId
+```
+
+Send a comment (2nd level) to a group message
+```
 POST /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
@@ -181,9 +205,13 @@ Required: `Message-Data` header with JSON:
 ```
 
 #### Edit a comment
-Edit a comment (of any level) 
+Edit a comment (of any level) under a class message
 ```
 PATCH /api/class/:classId/messages/:messageId/reply/:replyId
+```
+
+Edit a comment (of any level) under a group message
+```
 PATCH /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
@@ -197,9 +225,13 @@ Required: `Message-Data` header with JSON:
 ```
 
 #### Delete a comment 
-Delete a comment (of any level)
+Delete a comment (of any level) under a class message
 ```
 DELETE /api/class/:classId/messages/:messageId/reply/:replyId
+```
+
+Delete a comment (of any level) under a group message
+```
 DELETE /api/class/:classId/messages/:messageId/reply/:replyId
 ```
 Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
