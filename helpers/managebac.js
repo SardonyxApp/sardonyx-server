@@ -126,6 +126,33 @@ exports.craftReply = (req, res, next) => {
 };
 
 /**
+ * @description Craft a new reflection from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftNewReflection = (req, res, next) => {
+  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
+  req.form = {
+    'evidence[type]': 'JournalEvidence',
+    'evidence[body]': req.body.body,
+    'evidence[educational_outcome_ids]': req.body.educationalOutcomeIds.length > 0 ? `[${req.body.educationalOutcomeIds}]` : []
+  };
+
+  next();
+};
+
+exports.craftReflection = (req, res, next) => {
+  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
+  req.form = {
+    'evidence[body]': req.body,
+    'evidence[educational_outcome_ids]': req.body.educationalOutcomeIds.length > 0 ? `[${req.body.educationalOutcomeIds}]` : []
+  };
+
+  next();
+}
+
+/**
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
