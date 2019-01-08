@@ -50,3 +50,12 @@ exports.createDate = (dateString, fullMonth = false) => {
   const year = dateString.match(/\d{4}/);
   return new Date(year, month, day, hour, minute);
 };
+
+/**
+ * @description End request with 200 OK
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.end200 = (req, res) => {
+  res.status(200).end();
+};

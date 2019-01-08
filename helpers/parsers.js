@@ -243,7 +243,8 @@ exports.parseDropbox = document => {
 exports.parseNumberOfPages = document => {
   const $ = cheerio.load(document);
 
-  return $('.pagination').find('li').length - 2;
+  const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
+  return len === -2 ? 1: len; // If there are no buttons, len = -2. In that case there is 1 page
 };
 
 /**
