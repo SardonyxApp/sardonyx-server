@@ -41,6 +41,14 @@ GET /api/login
 Required: `Login-Token` header with `login` and `password` for `https://kokusaiib.managebac.com`
 
 ### Managebac API
+
+#### Load dashboard 
+```
+GET /api/dashboard
+```
+
+Required: `Login-Token` header with `cfduid` and `managebacSession`
+
 #### Load class 
 Load class overview 
 ```

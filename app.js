@@ -38,6 +38,9 @@ app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
 // use upload.none() when it's only text fields
 app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults);
 
+// Load dashboard 
+app.get('/api/dashboard', auth.createTokens, mb.createUrl(), scrape, mb.loadDefaults);
+
 // Load class
 app.get('/api/class/:resourceId/overview', auth.createTokens, mb.createUrl('classes'), scrape, mb.loadOverview);
 app.get('/api/class/:resourceId/assignments', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignments);
