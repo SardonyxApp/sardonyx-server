@@ -11,6 +11,7 @@ const auth = require('./helpers/authentication');
 const mb = require('./helpers/managebac');
 const scrape = require('./helpers/scraper');
 const send = require('./helpers/sender');
+const { end200 } = require('./helpers/helpers');
 
 app.use(express.static('public'));
 
@@ -31,9 +32,7 @@ app.use('/api', (req, res, next) => {
 app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
 
 // Reissue tokens
-app.get('/api/login', auth.createBody, auth.loginToManagebac, (req, res) => {
-  res.status(200).end();
-});
+app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
@@ -68,20 +67,20 @@ app.delete('/api/class/:resourceId/messages/:destinationId', auth.createTokens, 
 app.delete('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), send, mb.loadMessages);
 
 // Send reply 
-app.post('/api/class/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
-app.post('/api/group/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
+app.post('/api/class/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/group/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
 
 // Send reply to reply
-app.post('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
-app.post('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, mb.loadMessages);
+app.post('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
 
 // Edit reply 
-app.patch('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftReply, send, mb.loadMessages);
-app.patch('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftReply, send, mb.loadMessages);
+app.patch('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftReply, send, end200);
+app.patch('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftReply, send, end200);
 
 // Delete reply 
-app.delete('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), send, mb.loadMessages);
-app.delete('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), send, mb.loadMessages);
+app.delete('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), send, end200);
+app.delete('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), send, end200);
 
 // Load notifications 
 app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);

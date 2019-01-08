@@ -61,12 +61,12 @@ exports.createUrl = (resource, destination, subitem) => {
  * @param {Function} next 
  */
 exports.craftNewMessage = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data']);
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'discussion[topic]': decodeURI(req.body.topic),
     'discussion[body]': decodeURI(req.body.body),
-    'discussion[notify_via_email]': req.body.notifyViaEmail === 1 ? '[0, 1]' : 0,
-    'discussion[private]': req.body.privateMessage === 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
+    'discussion[notify_via_email]': req.body.notifyViaEmail == 1 ? '[0, 1]' : 0, // == comparison, compares string to number
+    'discussion[private]': req.body.privateMessage == 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
   };
 
   next();
@@ -79,7 +79,7 @@ exports.craftNewMessage = (req, res, next) => {
  * @param {Function} next 
  */
 exports.craftMessage = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data']);
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'discussion[topic]': decodeURI(req.body.topic),
     'discussion[body]': decodeURI(req.body.body)
@@ -95,15 +95,15 @@ exports.craftMessage = (req, res, next) => {
  * @param {Function} next 
  */
 exports.craftNewReply = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data']);
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'reply[body]': decodeURI(req.body.body),
-    'reply[notify_via_email]': req.notifyViaEmail === 1 ? '[0, 1]' : 0,
-    'reply[private]': req.privateMessage === 1 ? '[0, 1]' : 0
+    'reply[notify_via_email]': req.notifyViaEmail == 1 ? '[0, 1]' : 0,
+    'reply[private]': req.privateMessage == 1 ? '[0, 1]' : 0
   };
 
   if (req.params.subitemId) {
-    req.url = req.url.replace(`/${req.params.subitemId}`, ''); // Here, form is sent to .../replies 
+    req.url = req.url.replace(`/${req.params.subitemId}`, ''); // Here, form is sent to .../replies even if it is replied to a reply
     req.form['reply[parent_id]'] = req.params.subitemId;
   } 
 
@@ -117,7 +117,7 @@ exports.craftNewReply = (req, res, next) => {
  * @param {Function} next 
  */
 exports.craftReply = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data']);
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'reply[body]': decodeURI(req.body.body)
   };

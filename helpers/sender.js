@@ -14,7 +14,6 @@ const { parseCSRFToken } = require('./parsers');
  * @param {Function} next 
  */
 module.exports = (req, res, next) => {
-  console.log(req.url);
   // Set cookies 
   const j = request.jar();  
   j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
@@ -24,12 +23,13 @@ module.exports = (req, res, next) => {
   request({
     url: req.url,
     // followAllRedirects: true,
-    method: req.method.toLowerCase(),
+    followAllRedirects: true,
+    method: req.method,
     form: req.form || {}, // form empty for DELETE requests
     jar: j,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'X-CSRF-Token': req.token.csrfToken
+      'X-CSRF-Token': req.token.csrfToken,
+      accept: '*/*'
     }
   }, (err, response) => {
     if (err) {
@@ -38,12 +38,27 @@ module.exports = (req, res, next) => {
       return;
     }
 
-    console.log(response);
+    let option = (() => {
+      if (response.statusCode === 401) return 1;
 
-    // Redirected url should be index 
-    const matchUrl = req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url;
-    // Successfully returned page
-    if (response.statusCode === 200 && response.request.uri.href === matchUrl) {
+      // Process response for messages 
+      // Successful messages are redirected to index action
+      if (response.request.uri.href === (req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url)) return 2;
+
+      // Process response for replies 
+      if (/^\$discussion/.test(response.body)) {
+        if (response.body.includes('has-error')) return 0;
+        return 2;
+      }
+
+      return 0; // Nonexistent or invalid request 
+    })();
+    // 0 ... 400 Bad Request  
+    // 1 ... 401 Unauthorized
+    // 2 ... 200 OK
+
+    // Successful requests
+    if (option === 2) {
       // Return new tokens 
       const __cfduid = j.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
       const _managebac_session = j.getCookieString('https://kokusaiib.managebac.com').split(';')[1];
@@ -54,13 +69,14 @@ module.exports = (req, res, next) => {
       });
       res.append('Login-Token', payload);
 
-      // Append response HTML for parsing 
+      // Append response HTML for parsing (only parsed when middleware is connected)
       req.document = response.body;
 
       return next();
     }
 
-    //Nonexistent or invalid request, unauthorized 
-    res.status(401).end();
+    // Nonexistent or invalid request 
+    if (option === 1) res.status(401).end();
+    else res.status(400).end(); 
   });
 }
