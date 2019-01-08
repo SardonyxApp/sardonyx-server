@@ -1,5 +1,5 @@
 /**
- * @fileoverview Abstraction to scrape any page from Managebac
+ * @fileoverview Abstraction to scrape any page from Managebac.
  * @author SardonyxApp
  * @license MIT 
  */

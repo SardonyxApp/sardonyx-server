@@ -23,7 +23,7 @@ exports.parseCSRFToken = document => {
 };
 
 /**
- * @description Parse upcoming deadlines from document
+ * @description Parse upcoming deadlines and events from overview document
  * @param {String} document 
  * @returns {Array}
  */
@@ -37,18 +37,20 @@ exports.parseDeadlines = document => {
       labels.push($(label).text().delNewlines()); 
     });
 
-    const due = $(el).find('.due').text();
+    // Because the date format is different for this one, it uses a different implementation
+    const due = $(el).find('.due').text(); // Ex: Wednesday at 8:30 PM
     const dueMinute = due.match(/\d{2}(?= [AP]M)/);
-    const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12;
-    const dueMonth = getMonthFromAbbr($(el).find('.month').text());
-    const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth);
+    const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
+    const dueDay = $(el).find('.day').text(); // Match from icon
+    const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
+    const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth); // listed as upcoming deadline or past deadline
 
     payload.push({
       title: encodeURI($(el).find('h4.title').text().delNewlines()), 
-      link: $(el).find('.title a').attr('href') || null,
+      link: $(el).find('.title a').attr('href') || null, // TODO: convert to sardonyx link
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-      due: new Date(dueYear, dueMonth, $(el).find('.day').text(), dueHour, dueMinute),
+      due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
       author: $(el).find('.author').attr('title') || null,
       avatar: $(el).find('.avatar').attr('src') || null
     });
@@ -68,6 +70,8 @@ exports.parseMessages = document => {
 
   $('.discussion').each((i, el) => {
     const comments = [];
+    // TODO: parse comments of comments
+    // TODO: supply message and comment id 
     $(el).find('.reply').each((i, elem) => {
       comments.push({
         title: encodeURI($(elem).find('h4.title').text().delNewlines()),
@@ -85,7 +89,7 @@ exports.parseMessages = document => {
 
     payload.push({
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
-      link: $(el).find('.discussion-content h4.title a').attr('href'),
+      link: $(el).find('.discussion-content h4.title a').attr('href'), // TODO: convert to sardonyx link
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
@@ -150,7 +154,7 @@ exports.parseNotifications = document => {
   $('tr.message').each((i, el) => {
     payload.push({
       title: encodeURI($(el).find('.title a').text().delNewlines()),
-      link: $(el).find('.title a').attr('href'),
+      link: $(el).find('.title a').attr('href'), // TODO: convert to sardonyx link
       author: $(el).find('td:nth-child(3)').text(),
       dateString: $(el).find('td:last-child').text(), // Not possible to obtain exact date in list view 
       unread: $(el).hasClass('unread') // Boolean
@@ -259,6 +263,7 @@ exports.parseCas = document => {
   $('.activity-tile').each((i, el) => {
     // An experience can have multiple types 
     const types = [];
+    // Check labels 
     if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-c')) types.push('creativity');
     if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-a')) types.push('activity');
     if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-s')) types.push('service');
@@ -270,7 +275,7 @@ exports.parseCas = document => {
 
     payload.push({
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
-      link: $(el).find('.details a').attr('href'),
+      link: $(el).find('.details a').attr('href'), // TODO: convert to sardonyx link
       description: encodeURI($(el).find('.description').text()) || null,
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
@@ -291,6 +296,7 @@ exports.parseCas = document => {
  */
 exports.parseExperience = document => {
   const $ = cheerio.load(document);
+  // These elements are included in .content-block so remove them before parsing
   $('.content-block-header').remove();
   $('.activity-tile').remove();
   $('.divider.compact').prev().nextAll().remove();
@@ -352,10 +358,11 @@ exports.parseReflections = document => {
       labels.push($(elem).text());
     });
 
+    // Common for all types of evidences / reflections 
     const obj = {
       date: createDate($(el).find('h4.title').text(), true),
       labels: labels
-    };
+    }; 
 
     if ($(el).hasClass('journal-evidence')) { // Reflection
       obj.type = 'reflection';
