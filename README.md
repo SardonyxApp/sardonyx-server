@@ -254,14 +254,14 @@ GET /api/notification/:notificationId
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
 #### Load CAS 
-Load CAS worksheet overview 
+Load CAS worksheet 
 ```
 GET /api/cas 
 ```
 
-Load CAS experience 
+Load CAS experience overview
 ```
-GET /api/cas/:casId
+GET /api/cas/:casId/overview
 ```
 
 Load CAS questions and answers 

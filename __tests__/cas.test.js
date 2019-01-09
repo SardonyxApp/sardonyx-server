@@ -69,10 +69,10 @@ describe('Load CAS', () => {
     });
   });
 
-  describe('GET /api/cas/:resourceId', () => {
-    test('GET /api/cas/:resourceId should return valid tokens', done => {
+  describe('GET /api/cas/:resourceId/overview', () => {
+    test('GET /api/cas/:resourceId/overview should return valid tokens', done => {
       request(app)
-        .get(`/api/cas/${process.env.CAS_ID}`)
+        .get(`/api/cas/${process.env.CAS_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(200);
@@ -84,18 +84,18 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId should return 401 with no tokens', done => {
+    test('GET /api/cas/:resourceId/overview should return 401 with no tokens', done => {
       request(app)
-        .get(`/api/cas/${process.env.CAS_ID}`)
+        .get(`/api/cas/${process.env.CAS_ID}/overview`)
         .then(response => {
           expect(response.statusCode).toBe(401);
           done();
         });
     });    
 
-    test('GET /api/cas/:resourceId should return 401 with invalid tokens', done => {
+    test('GET /api/cas/:resourceId/overview should return 401 with invalid tokens', done => {
       request(app)
-        .get(`/api/cas/${process.env.CAS_ID}`)
+        .get(`/api/cas/${process.env.CAS_ID}/overview`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
@@ -103,9 +103,9 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId should return 401 with invalid resourceId', done => {
+    test('GET /api/cas/:resourceId/overview should return 401 with invalid resourceId', done => {
       request(app)
-        .get(`/api/cas/foobar`)
+        .get(`/api/cas/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(401);
@@ -113,9 +113,9 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId should return a valid json', done => {
+    test('GET /api/cas/:resourceId/overview should return a valid json', done => {
       request(app)
-        .get(`/api/cas/${process.env.CAS_ID}`)
+        .get(`/api/cas/${process.env.CAS_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           const cas = JSON.parse(response.headers['managebac-data']).cas;
