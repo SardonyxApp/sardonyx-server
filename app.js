@@ -51,39 +51,39 @@ app.get('/api/group/:resourceId/overview', auth.createTokens, mb.createUrl('grou
 app.get('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessages);
 
 // Load assignment
-app.get('/api/class/:resourceId/assignments/:destinationId', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignment);
+app.get('/api/class/:resourceId/assignments/:subresourceId', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignment);
 
 // Load message 
-app.get('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessage);
-app.get('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessage);
+app.get('/api/class/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessage);
+app.get('/api/group/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessage);
 
 // Send message 
 app.post('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
 app.post('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);
 
 // Edit message 
-app.patch('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftMessage, send, mb.loadMessages);
-app.patch('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftMessage, send, mb.loadMessages);
+app.patch('/api/class/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftMessage, send, mb.loadMessages);
+app.patch('/api/group/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('groups', 'discussions'), mb.craftMessage, send, mb.loadMessages);
 
 // Delete message 
-app.delete('/api/class/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('classes', 'discussions'), send, mb.loadMessages);
-app.delete('/api/group/:resourceId/messages/:destinationId', auth.createTokens, mb.createUrl('groups', 'discussions'), send, mb.loadMessages);
+app.delete('/api/class/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('classes', 'discussions'), send, mb.loadMessages);
+app.delete('/api/group/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('groups', 'discussions'), send, mb.loadMessages);
 
 // Send reply 
-app.post('/api/class/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
-app.post('/api/group/:resourceId/messages/:destinationId/reply', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/class/:resourceId/messages/:subresourceId/reply', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/group/:resourceId/messages/:subresourceId/reply', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
 
 // Send reply to reply
-app.post('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
-app.post('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/class/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftNewReply, send, end200);
+app.post('/api/group/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftNewReply, send, end200);
 
 // Edit reply 
-app.patch('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftReply, send, end200);
-app.patch('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftReply, send, end200);
+app.patch('/api/class/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftReply, send, end200);
+app.patch('/api/group/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftReply, send, end200);
 
 // Delete reply 
-app.delete('/api/class/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), send, end200);
-app.delete('/api/group/:resourceId/messages/:destinationId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), send, end200);
+app.delete('/api/class/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), send, end200);
+app.delete('/api/group/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), send, end200);
 
 // Load notifications 
 app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);
@@ -95,8 +95,8 @@ app.get('/api/cas/:resourceId', auth.createTokens, mb.createUrl('ib/activity/cas
 app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), scrape, mb.loadAnswers);
 app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), scrape, mb.loadReflections);
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
-app.patch('/api/cas/:resourceId/reflections/:destinationId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
-app.delete('/api/cas/:resourceId/reflections/:destinationId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
+app.patch('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
+app.delete('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons

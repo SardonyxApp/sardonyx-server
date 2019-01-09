@@ -10,17 +10,17 @@ const parser = require('./parsers');
  * @description Create a Managebac URL (up to 3 layers)
  * @param {String} resource 
  * resource can be any of the valid Managebac resources, like classes and groups
- * @param {String} destination 
- * destination can be any of the valid Managebac destinations, like assignments and messages
+ * @param {String} subresource 
+ * subresource can be any of the valid Managebac subresources, like assignments and messages
  * @param {String} subitem 
  * @example createUrl('classes') with no parameters will return /students/classes
  * @example createUrl('classes') with :resouceId will return /student/classes/:classId
- * @example createUrl('classes', 'assignments') without :destinationId will return /student/classes/:resourceId/assignments
- * @example createUrl('classes', 'assignments') with params will return /student/classes/:resourceId/assignments/:destinationId
- * @example createUrl('classes', 'messages', 'replies') without :subitemId will return /student/classes/:resourceId/messages/:destinationId/replies
- * @example createUrl('classes', 'messages', 'replies') with params will return /student/classes/:resourceId/messages/:destinationId/replies/:subitemId
+ * @example createUrl('classes', 'assignments') without :subresourceId will return /student/classes/:resourceId/assignments
+ * @example createUrl('classes', 'assignments') with params will return /student/classes/:resourceId/assignments/:subresourceId
+ * @example createUrl('classes', 'messages', 'replies') without :subitemId will return /student/classes/:resourceId/messages/:subresourceId/replies
+ * @example createUrl('classes', 'messages', 'replies') with params will return /student/classes/:resourceId/messages/:subresourceId/replies/:subitemId
  */
-exports.createUrl = (resource, destination, subitem) => {
+exports.createUrl = (resource, subresource, subitem) => {
   return (req, res, next) => {
     req.url = `https://kokusaiib.managebac.com/student`;
 
@@ -31,11 +31,11 @@ exports.createUrl = (resource, destination, subitem) => {
       if (req.params.resourceId) {
         req.url += `/${req.params.resourceId}`;
 
-        if(destination) {
-          req.url += `/${destination}`;
+        if(subresource) {
+          req.url += `/${subresource}`;
 
-          if (req.params.destinationId) {
-            req.url += `/${req.params.destinationId}`;
+          if (req.params.subresourceId) {
+            req.url += `/${req.params.subresourceId}`;
 
             if (subitem) {
               req.url += `/${subitem}`;

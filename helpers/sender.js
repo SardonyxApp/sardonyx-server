@@ -45,7 +45,7 @@ module.exports = (req, res, next) => {
 
       // Process response for messages and reflections
       // Successful messages/reflections are redirected to index action
-      if (response.request.uri.href === (req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url)) return 2;
+      if (response.request.uri.href === (req.params.subresourceId ? req.url.replace(`/${req.params.subresourceId}`, '') : req.url)) return 2;
 
       // Process response for replies 
       if (/^\$discussion/.test(response.body)) {
