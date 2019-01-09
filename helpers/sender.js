@@ -37,12 +37,14 @@ module.exports = (req, res, next) => {
       res.status(502).end();
       return;
     }
+    console.log(response);
 
     let option = (() => {
       if (response.statusCode === 401) return 1;
+      if (response.statusCode === 404) return 0;
 
-      // Process response for messages 
-      // Successful messages are redirected to index action
+      // Process response for messages and reflections
+      // Successful messages/reflections are redirected to index action
       if (response.request.uri.href === (req.params.destinationId ? req.url.replace(`/${req.params.destinationId}`, '') : req.url)) return 2;
 
       // Process response for replies 
