@@ -276,5 +276,31 @@ GET /api/cas/:casId/reflections
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
+#### Create/Edit/Delete CAS Reflections
+Create a CAS reflection
+```
+POST /api/cas/:casId/reflections
+```
+
+Edit a CAS reflection
+```
+PATCH /api/cas/:casId/reflections/:reflectionId
+```
+
+Delete a CAS reflection
+```
+DELETE /api/cas/:casId/reflections/:reflectionId
+```
+
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+
+Required: `Reflection-Data` header with JSON:
+```typescript
+{
+  body: string, // body of the CAS reflection, encoded as URI
+  educationalOutcomeIds: string // Omit for now, as this feature is not implemented yet
+}
+```
+
 ## Contribution
 For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.

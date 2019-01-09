@@ -135,7 +135,7 @@ exports.craftNewReflection = (req, res, next) => {
   req.body = JSON.parse(req.headers['reflection-data'] || '{}');
   req.form = {
     'evidence[type]': 'JournalEvidence',
-    'evidence[body]': req.body.body,
+    'evidence[body]': decodeURI(req.body.body),
     // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
   };
 
@@ -145,12 +145,10 @@ exports.craftNewReflection = (req, res, next) => {
 exports.craftReflection = (req, res, next) => {
   req.body = JSON.parse(req.headers['reflection-data'] || '{}');
   req.form = {
-    'evidence[body]': req.body.body,
+    'evidence[body]': decodeURI(req.body.body),
     // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
   };
-
-  console.log(req.form);
-
+  
   next();
 };
 
