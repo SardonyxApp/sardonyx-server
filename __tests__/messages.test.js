@@ -6,8 +6,8 @@ require('dotenv').config();
 jest.setTimeout(30000);
 
 describe('Load message', () => {
-  describe('GET /api/class/:resourceId/messages/:destinationId', () => {
-    test('GET /api/class/:resourceId/messages/:destinationId should return valid tokens', done => {
+  describe('GET /api/class/:resourceId/messages/:subresourceId', () => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -21,7 +21,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with no tokens', done => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .then(response => {
@@ -30,7 +30,7 @@ describe('Load message', () => {
         });
     });    
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with invalid tokens', done => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -40,7 +40,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -50,7 +50,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return 401 with invalid destinationId', done => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return 401 with invalid subresourceId', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -60,7 +60,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages/:destinationId should return a valid json', done => {
+    test('GET /api/class/:resourceId/messages/:subresourceId should return a valid json', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -88,8 +88,8 @@ describe('Load message', () => {
     });
   });
 
-  describe('GET /api/group/:resourceId/messages/:destinationId', () => {
-    test('GET /api/group/:resourceId/messages/:destinationId should return valid tokens', done => {
+  describe('GET /api/group/:resourceId/messages/:subresourceId', () => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -103,7 +103,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with no tokens', done => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .then(response => {
@@ -112,7 +112,7 @@ describe('Load message', () => {
         });
     });    
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with invalid tokens', done => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -122,7 +122,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with invalid resourceId', done => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -132,7 +132,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return 401 with invalid destinationId', done => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return 401 with invalid subresourceId', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -142,7 +142,7 @@ describe('Load message', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages/:destinationId should return a valid json', done => {
+    test('GET /api/group/:resourceId/messages/:subresourceId should return a valid json', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)

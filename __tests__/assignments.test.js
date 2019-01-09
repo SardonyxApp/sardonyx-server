@@ -6,7 +6,7 @@ require('dotenv').config();
 jest.setTimeout(30000);
 
 describe('Load assignment', () => {
-  describe('GET /api/class/:resourceId/assignments/:destinationId', () => {
+  describe('GET /api/class/:resourceId/assignments/:subresourceId', () => {
     test('GET /api/class/:resourceId/assignments should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
@@ -21,7 +21,7 @@ describe('Load assignment', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with no tokens', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with no tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .then(response => {
@@ -30,7 +30,7 @@ describe('Load assignment', () => {
         });
     });    
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with invalid tokens', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
@@ -40,7 +40,7 @@ describe('Load assignment', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -50,7 +50,7 @@ describe('Load assignment', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return 401 with invalid destinationId', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid subresourceId', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -60,7 +60,7 @@ describe('Load assignment', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:destinationId should return a valid json', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return a valid json', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
