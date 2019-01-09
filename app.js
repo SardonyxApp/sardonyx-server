@@ -91,7 +91,7 @@ app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifi
 
 // Load CAS
 app.get('/api/cas', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadCas);
-app.get('/api/cas/:resourceId', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadExperience);
+app.get('/api/cas/:resourceId/overview', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadExperience);
 app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), scrape, mb.loadAnswers);
 app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), scrape, mb.loadReflections);
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
