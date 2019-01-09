@@ -96,7 +96,7 @@ app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/acti
 app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), scrape, mb.loadReflections);
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
 app.patch('/api/cas/:resourceId/reflections/:destinationId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
-app.delete('/api/cas/:resourceId/reflections/:destinationId', aith.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
+app.delete('/api/cas/:resourceId/reflections/:destinationId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
