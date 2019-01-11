@@ -5,7 +5,7 @@
  */
 
 const cheerio = require('cheerio');
-const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate } = require('./helpers');
+const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate, toSardonyxUrl } = require('./helpers');
 
 // Custom method for replacing \n characters 
 String.prototype.delNewlines = function() {
@@ -47,7 +47,7 @@ exports.parseDeadlines = document => {
 
     payload.push({
       title: encodeURI($(el).find('h4.title').text().delNewlines()), 
-      link: $(el).find('.title a').attr('href') || null, // TODO: convert to sardonyx link
+      link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
       labels: labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
       due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
@@ -89,7 +89,7 @@ exports.parseMessages = document => {
 
     payload.push({
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
-      link: $(el).find('.discussion-content h4.title a').attr('href'), // TODO: convert to sardonyx link
+      link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
@@ -154,7 +154,7 @@ exports.parseNotifications = document => {
   $('tr.message').each((i, el) => {
     payload.push({
       title: encodeURI($(el).find('.title a').text().delNewlines()),
-      link: $(el).find('.title a').attr('href'), // TODO: convert to sardonyx link
+      link: toSardonyxUrl($(el).find('.title a').attr('href')), 
       author: $(el).find('td:nth-child(3)').text(),
       dateString: $(el).find('td:last-child').text(), // Not possible to obtain exact date in list view 
       unread: $(el).hasClass('unread') // Boolean
@@ -275,7 +275,7 @@ exports.parseCas = document => {
 
     payload.push({
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
-      link: $(el).find('.details a').attr('href'), // TODO: convert to sardonyx link
+      link: toSardonyxUrl($(el).find('.details a').attr('href')),
       description: encodeURI($(el).find('.description').text()) || null,
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
