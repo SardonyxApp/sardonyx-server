@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 
 describe('Load assignment', () => {
   describe('GET /api/class/:resourceId/assignments/:subresourceId', () => {
-    test('GET /api/class/:resourceId/assignments should return valid tokens', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)

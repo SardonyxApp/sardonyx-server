@@ -52,6 +52,51 @@ exports.createDate = (dateString, fullMonth = false) => {
 };
 
 /**
+ * @description Convert Managebac url to Sardonyx API url
+ * @param {String} url
+ * @returns {String} 
+ */
+exports.toSardonyxUrl = url => {
+  if (!url) return;
+  url = url
+    .replace(/^https:\/\/managebac\.com/, '') // If full url, cut the domain
+    .replace(/\/student\/?/, '') // Cut student 
+    .split('/');
+
+  for (let i = 0; i < url.length; i++) { // doing this with an array prototype method will sacrifice simplicity 
+    if (i === 0) continue;
+    // if current and previous element is not an id (integer), join them together
+    if (isNaN(Number(url[i])) && isNaN(Number(url[i - 1]))) {
+      url[i] = url[i - 1] + '/' + url[i];
+      url[i - 1] = null; // Return null to filter them out later 
+    }
+  }
+
+  url = url.filter(val => val !== null);
+  
+  // Process resource type 
+  if (url[0] === 'classes') url[0] = 'class';
+  if (url[0] === 'groups') url[0] = 'group';
+  if (url[0] === 'notifications') url[0] = 'notification';
+  if (url[0] === 'ib/activity/cas') url[0] = 'cas';
+  if (!url[0]) url[0] = 'dashboard';
+
+  // Process subresource type 
+  if (url[2] === 'discussions') url[2] = 'messages';
+  if (!url[2] && url[1]) url[2] = 'overview';
+  
+  // Process subitem type 
+  if (url[4] === 'replies') url[4] = 'reply';
+
+  // More will be added later as API is developed...
+
+  // Prepend /api
+  url.unshift('/api');
+
+  return url.join('/');
+};
+
+/**
  * @description End request with 200 OK
  * @param {Object} req 
  * @param {Object} res 
