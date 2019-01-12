@@ -75,7 +75,7 @@ describe('Load message', () => {
           expect(typeof message[0].date).toBe('string');
           expect(typeof Date.parse(message[0].date)).toBe('number');
           expect(Array.isArray(message[0].files)).toBeTruthy();
-          expect(message[0]).toHaveProperty('comments');
+          expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
@@ -84,6 +84,7 @@ describe('Load message', () => {
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
+            expect(typeof item.comments).toBe('boolean');
           });
           done();
         });
@@ -159,7 +160,7 @@ describe('Load message', () => {
           expect(typeof message[0].date).toBe('string');
           expect(typeof Date.parse(message[0].date)).toBe('number');
           expect(Array.isArray(message[0].files)).toBeTruthy();
-          expect(message[0]).toHaveProperty('comments');
+          expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
@@ -168,6 +169,7 @@ describe('Load message', () => {
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
+            expect(typeof item.comments).toBe('boolean');
           });
           done();
         });

@@ -195,6 +195,7 @@ describe('Load class', () => {
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
+            expect(typeof item.comments).toBe('number');
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
@@ -256,11 +257,13 @@ describe('Load class', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
+            expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
+            expect(typeof item.comments).toBe('number');
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
