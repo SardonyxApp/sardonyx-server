@@ -69,7 +69,7 @@ exports.parseMessages = document => {
   const payload = [];
 
   $('.discussion').each((i, el) => {
-    const comments = [];
+    let comments = [];
     // TODO: parse comments of comments
     // TODO: supply message and comment id 
     $(el).find('.reply').each((i, elem) => {
@@ -79,9 +79,15 @@ exports.parseMessages = document => {
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || null, 
-        date: createDate($(elem).find('.header').text())
+        date: createDate($(elem).find('.header').text()),
+        comments: !!$(elem).find('.show-reply').length
       });
     });
+
+    if (comments.length === 0 && !!$(el).find('.cell a:not(.btn)').length) { 
+      // No comments attached, however there may be an indication of the number of comments
+      comments = Number($(el).find('.cell a:not(.btn)').text().match(/\d+/)[0]);
+    }
 
     const files = [];
     $(el).find('.list-unstyled a').each((i, elem) => {
