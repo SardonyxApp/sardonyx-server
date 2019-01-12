@@ -76,6 +76,7 @@ exports.parseMessages = document => {
       comments.push({
         title: encodeURI($(elem).find('h4.title').text().delNewlines()),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+        onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || null, 
         date: createDate($(elem).find('.header').text())
@@ -91,6 +92,7 @@ exports.parseMessages = document => {
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
+      onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
       date: createDate($(el).find('.header').text()),

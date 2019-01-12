@@ -69,6 +69,7 @@ describe('Load message', () => {
           expect(typeof message[0].title).toBe('string');
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
+          expect(typeof message[0].onlyVisibleForTeachers).toBe('boolean');
           expect(typeof message[0].author).toBe('string');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
@@ -78,6 +79,7 @@ describe('Load message', () => {
           message[0].comments.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
+            expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
@@ -151,6 +153,7 @@ describe('Load message', () => {
           expect(typeof message[0].title).toBe('string');
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
+          expect(typeof message[0].onlyVisibleForTeachers).toBe('boolean');
           expect(typeof message[0].author).toBe('string');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
@@ -160,6 +163,7 @@ describe('Load message', () => {
           message[0].comments.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
+            expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
