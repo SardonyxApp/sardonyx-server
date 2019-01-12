@@ -77,6 +77,7 @@ describe('Load message', () => {
           expect(Array.isArray(message[0].files)).toBeTruthy();
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
+            expect(typeof item.id).toBe('number');
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
@@ -162,6 +163,7 @@ describe('Load message', () => {
           expect(Array.isArray(message[0].files)).toBeTruthy();
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
+            expect(typeof item.id).toBe('number');
             expect(typeof item.title).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');

@@ -71,16 +71,16 @@ exports.parseMessages = document => {
   $('.discussion').each((i, el) => {
     let comments = [];
     // TODO: parse comments of comments
-    // TODO: supply message and comment id 
     $(el).find('.reply').each((i, elem) => {
       comments.push({
+        id: Number($(elem).attr('id').match(/\d+/)[0]),
         title: encodeURI($(elem).find('h4.title').text().delNewlines()),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || null, 
         date: createDate($(elem).find('.header').text()),
-        comments: !!$(elem).find('.show-reply').length
+        comments: !!$(elem).find('.show-reply').length // Boolean
       });
     });
 
