@@ -47,6 +47,9 @@ module.exports = (req, res, next) => {
       // Successful messages/reflections are redirected to index action
       if (response.request.uri.href === (req.params.subresourceId ? req.url.replace(`/${req.params.subresourceId}`, '') : req.url)) return 2;
 
+      // Process response for answers 
+      if (response.request.uri.href === req.url.replace('/update_answers', '')) return 2;
+
       // Process response for replies 
       if (/^\$discussion/.test(response.body)) {
         if (response.body.includes('has-error')) return 0;

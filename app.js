@@ -89,10 +89,15 @@ app.delete('/api/group/:resourceId/messages/:subresourceId/reply/:subitemId', au
 app.get('/api/notification', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotifications);
 app.get('/api/notification/:resourceId', auth.createTokens, mb.createUrl('notifications'), scrape, mb.loadNotification);
 
-// Load CAS
+// CAS
 app.get('/api/cas', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadCas);
 app.get('/api/cas/:resourceId/overview', auth.createTokens, mb.createUrl('ib/activity/cas'), scrape, mb.loadExperience);
+
+// CAS Answers
 app.get('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), scrape, mb.loadAnswers);
+app.post('/api/cas/:resourceId/answers', auth.createTokens, mb.createUrl('ib/activity/cas', 'answers'), mb.craftAnswers, send, mb.loadAnswers);
+
+// CAS Reflections
 app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), scrape, mb.loadReflections);
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
 app.patch('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
