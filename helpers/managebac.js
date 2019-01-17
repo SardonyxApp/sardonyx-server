@@ -126,6 +126,25 @@ exports.craftReply = (req, res, next) => {
 };
 
 /**
+ * @description Craft CAS answers from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftAnswers = (req, res, next) => {
+  req.body = JSON.parse(req.headers['answers-data'] || '{}');
+  req.form = {
+    'cas_answers[answers[10195989]]': req.body.answers[0], 
+    'cas_answers[answers[10195990]]': req.body.answers[1],
+    'cas_answers[answers[10195991]]': req.body.answers[2]
+  };
+
+  req.url += '/update_answers'; // Here, form is sent to .../answers/update_answers
+
+  next();
+};
+
+/**
  * @description Craft a new reflection from data 
  * @param {Object} req 
  * @param {Object} res 
