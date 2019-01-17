@@ -55,123 +55,6 @@ exports.createUrl = (resource, subresource, subitem) => {
 };
 
 /**
- * @description Craft a new message from data
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftNewMessage = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data'] || '{}');
-  req.form = {
-    'discussion[topic]': decodeURI(req.body.topic),
-    'discussion[body]': decodeURI(req.body.body),
-    'discussion[notify_via_email]': req.body.notifyViaEmail == 1 ? '[0, 1]' : 0, // == comparison, compares string to number
-    'discussion[private]': req.body.privateMessage == 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
-  };
-
-  next();
-};
-
-/**
- * @description Craft an edit message from data 
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftMessage = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data'] || '{}');
-  req.form = {
-    'discussion[topic]': decodeURI(req.body.topic),
-    'discussion[body]': decodeURI(req.body.body)
-  };
-
-  next();
-};
-
-/**
- * @description Craft a new reply from data 
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftNewReply = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data'] || '{}');
-  req.form = {
-    'reply[body]': decodeURI(req.body.body),
-    'reply[notify_via_email]': req.notifyViaEmail == 1 ? '[0, 1]' : 0,
-    'reply[private]': req.privateMessage == 1 ? '[0, 1]' : 0
-  };
-
-  if (req.params.subitemId) {
-    req.url = req.url.replace(`/${req.params.subitemId}`, ''); // Here, form is sent to .../replies even if it is replied to a reply
-    req.form['reply[parent_id]'] = req.params.subitemId;
-  } 
-
-  next();
-};
-
-/**
- * @description Craft an edit message from data 
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftReply = (req, res, next) => {
-  req.body = JSON.parse(req.headers['message-data'] || '{}');
-  req.form = {
-    'reply[body]': decodeURI(req.body.body)
-  };
-
-  next();
-};
-
-/**
- * @description Craft CAS answers from data 
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftAnswers = (req, res, next) => {
-  req.body = JSON.parse(req.headers['answers-data'] || '{}');
-  req.form = {
-    'cas_answers[answers[10195989]]': req.body.answers[0], 
-    'cas_answers[answers[10195990]]': req.body.answers[1],
-    'cas_answers[answers[10195991]]': req.body.answers[2]
-  };
-
-  req.url += '/update_answers'; // Here, form is sent to .../answers/update_answers
-
-  next();
-};
-
-/**
- * @description Craft a new reflection from data 
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next 
- */
-exports.craftNewReflection = (req, res, next) => {
-  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
-  req.form = {
-    'evidence[type]': 'JournalEvidence',
-    'evidence[body]': decodeURI(req.body.body),
-    // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
-  };
-
-  next();
-};
-
-exports.craftReflection = (req, res, next) => {
-  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
-  req.form = {
-    'evidence[body]': decodeURI(req.body.body),
-    // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
-  };
-  
-  next();
-};
-
-/**
  * @description Load dashboard
  * @param {Object} req
  * @param {Object} res 
@@ -267,6 +150,77 @@ exports.loadMessage = (req, res) => {
 };
 
 /**
+ * @description Craft a new message from data
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftNewMessage = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
+  req.form = {
+    'discussion[topic]': decodeURI(req.body.topic),
+    'discussion[body]': decodeURI(req.body.body),
+    'discussion[notify_via_email]': req.body.notifyViaEmail == 1 ? '[0, 1]' : 0, // == comparison, compares string to number
+    'discussion[private]': req.body.privateMessage == 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
+  };
+
+  next();
+};
+
+/**
+ * @description Craft an edit message from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftMessage = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
+  req.form = {
+    'discussion[topic]': decodeURI(req.body.topic),
+    'discussion[body]': decodeURI(req.body.body)
+  };
+
+  next();
+};
+
+/**
+ * @description Craft a new reply from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftNewReply = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
+  req.form = {
+    'reply[body]': decodeURI(req.body.body),
+    'reply[notify_via_email]': req.notifyViaEmail == 1 ? '[0, 1]' : 0,
+    'reply[private]': req.privateMessage == 1 ? '[0, 1]' : 0
+  };
+
+  if (req.params.subitemId) {
+    req.url = req.url.replace(`/${req.params.subitemId}`, ''); // Here, form is sent to .../replies even if it is replied to a reply
+    req.form['reply[parent_id]'] = req.params.subitemId;
+  } 
+
+  next();
+};
+
+/**
+ * @description Craft an edit reply from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftReply = (req, res, next) => {
+  req.body = JSON.parse(req.headers['message-data'] || '{}');
+  req.form = {
+    'reply[body]': decodeURI(req.body.body)
+  };
+
+  next();
+};
+
+/**
  * @description Load notification list
  * @param {Object} req 
  * req must have a document property 
@@ -339,6 +293,25 @@ exports.loadAnswers = (req, res) => {
 };
 
 /**
+ * @description Craft CAS answers from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftAnswers = (req, res, next) => {
+  req.body = JSON.parse(req.headers['answers-data'] || '{}');
+  req.form = {
+    'cas_answers[answers[10195989]]': req.body.answers[0], 
+    'cas_answers[answers[10195990]]': req.body.answers[1],
+    'cas_answers[answers[10195991]]': req.body.answers[2]
+  };
+
+  req.url += '/update_answers'; // Here, form is sent to .../answers/update_answers
+
+  next();
+};
+
+/**
  * @description Load CAS reflections 
  * @param {Object} req 
  * req must have a document property 
@@ -350,4 +323,37 @@ exports.loadReflections = (req, res) => {
   }));
 
   res.status(200).end();
+};
+
+/**
+ * @description Craft a new reflection from data 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftNewReflection = (req, res, next) => {
+  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
+  req.form = {
+    'evidence[type]': 'JournalEvidence',
+    'evidence[body]': decodeURI(req.body.body),
+    // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
+  };
+
+  next();
+};
+
+/**
+ * @description Craft an edit reflection from data
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftReflection = (req, res, next) => {
+  req.body = JSON.parse(req.headers['reflection-data'] || '{}');
+  req.form = {
+    'evidence[body]': decodeURI(req.body.body),
+    // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
+  };
+  
+  next();
 };
