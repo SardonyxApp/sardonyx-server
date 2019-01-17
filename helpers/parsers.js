@@ -207,7 +207,11 @@ exports.parseNotificationCount = document => {
  */
 exports.parseDetails = document => {
   const $ = cheerio.load(document);
-  return $('label:contains("Details")').next().html().delNewlines(); // This is potentially dangerous, XSS
+  try {
+    return $('label:contains("Details")').next().html().delNewlines(); // This is potentially dangerous, XSS
+  } catch (e) {
+    return null; // If the assignment/event has no details, it will throw an error
+  }
 };
 
 /**
