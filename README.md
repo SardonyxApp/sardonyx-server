@@ -86,11 +86,17 @@ GET /api/group/:groupId/messages?pageParam=:pageParam
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
-#### Load single assignment 
+#### Load single assignment or event
 Load single class assignment 
 ```
 GET /api/class/:classId/assignments/:assignmentId
 ```
+
+Load single event 
+```
+GET /api/event/:eventId
+```
+
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
 #### Load single message
@@ -275,6 +281,25 @@ GET /api/cas/:casId/reflections
 ```
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
+
+#### Update CAS Answers 
+Update a CAS Answer 
+```
+POST /api/cas/:casId/answers 
+```
+
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+
+Required: `Reflection-Data` header with JSON:
+```typescript
+{
+  answers: [
+    string, // Answer to the first question
+    string, // Answer to the second question
+    string // Ansewr to the third question 
+  ]
+}
+```
 
 #### Create/Edit/Delete CAS Reflections
 Create a CAS reflection

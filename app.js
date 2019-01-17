@@ -50,8 +50,9 @@ app.get('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('clas
 app.get('/api/group/:resourceId/overview', auth.createTokens, mb.createUrl('groups'), scrape, mb.loadOverview);
 app.get('/api/group/:resourceId/messages', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessages);
 
-// Load assignment
+// Load assignment or event
 app.get('/api/class/:resourceId/assignments/:subresourceId', auth.createTokens, mb.createUrl('classes', 'assignments'), scrape, mb.loadAssignment);
+app.get('/api/event/:resourceId', auth.createTokens, mb.createUrl('ib/events'), scrape, mb.loadAssignment);
 
 // Load message and replies 
 app.get('/api/class/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessage);
