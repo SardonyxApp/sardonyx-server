@@ -122,7 +122,7 @@ exports.parseClasses = document => {
   $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
     payload.push({
       title: encodeURI($(el).find('a').text().delNewlines()),
-      link: $(el).find('a').attr('href')
+      link: toSardonyxUrl($(el).find('a').attr('href'))
     });
   });
 
@@ -142,7 +142,7 @@ exports.parseGroups = document => {
   $('#menu > .nav-menu > li.parent:nth-child(10) li').each((i, el) => {
     payload.push({
       title: encodeURI($(el).find('a').text().delNewlines()),
-      link: $(el).find('a').attr('href')
+      link: toSardonyxUrl($(el).find('a').attr('href'))
     });
   });
 
