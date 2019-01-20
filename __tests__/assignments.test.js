@@ -72,8 +72,8 @@ describe('Load assignment or event', () => {
           expect(assignment.deadline).toBeFalsy();
           expect(typeof assignment.due).toBe('string');
           expect(typeof Date.parse(assignment.due)).toBe('number');
-          expect(assignment.author).toBeFalsy();
-          expect(assignment.avatar).toBeFalsy();
+          expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
@@ -155,8 +155,8 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
           expect(typeof Date.parse(assignment.due)).toBe('number');
-          expect(assignment.author).toBeFalsy();
-          expect(assignment.avatar).toBeFalsy();
+          expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
@@ -250,8 +250,8 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
           expect(typeof Date.parse(assignment.due)).toBe('number');
-          expect(assignment.author).toBeFalsy();
-          expect(assignment.avatar).toBeFalsy();
+          expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();

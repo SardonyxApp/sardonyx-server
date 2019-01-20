@@ -129,7 +129,7 @@ exports.loadAssignment = (req, res) => {
       attachments: parser.parseAttachments(req.document),
       dropbox: parser.parseDropbox(req.document),
       messages: parser.parseMessages(req.document)
-    })
+    }, parser.parseAuthorOnTheSide(req.document))
   }));
 
   res.status(200).end();
