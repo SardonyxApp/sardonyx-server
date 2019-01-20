@@ -252,6 +252,20 @@ exports.parseDropbox = document => {
 };
 
 /**
+ * @description Parse author listed to the side 
+ * @param {String} document 
+ * @returns {Object} merge this with the main object 
+ */
+exports.parseAuthorOnTheSide = document => {
+  const $ = cheerio.load(document);
+
+  return {
+    author: $('.mini-profile .user-name').text().delNewlines(),
+    avatar: $('.mini-profile .avatar').attr('src') || null
+  };
+};
+
+/**
  * @description Parse number of pages based on pagination buttons at the bottom of document
  * @param {String} document 
  * @returns {Number}
