@@ -97,6 +97,16 @@ Load single event
 GET /api/event/:eventId
 ```
 
+Load single class event 
+```
+GET /api/class/:classId/events/:eventId
+```
+
+Load single group event 
+```
+GET /api/group/:groupId/events/:eventId
+```
+
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
 #### Load single message

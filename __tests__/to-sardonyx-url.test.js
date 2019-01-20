@@ -44,11 +44,23 @@ describe('Groups', () => {
   });
 });
 
-describe('Assignments', () => {
+describe('Assignments or events', () => {
   test('/student/classes/:resourceId/assignments/:subresourceId', done => {
     expect(toSardonyxUrl(`/student/classes/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)).toBe(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`);
     done();
   });
+
+  test('/student/ib/events/:resourceId/', done => {
+    expect(toSardonyxUrl(`/student/ib/events/${process.env.EVENT_ID}`)).toBe(`/api/event/${process.env.EVENT_ID}`);
+    done();
+  });
+
+  // Not testing class events here, because none have existed.
+
+  test('/student/groups/:resourceId/events/:subresourceId', done => {
+    expect(toSardonyxUrl(`/student/groups/${process.env.GROUP_ID}/events/${process.env.GROUP_EVENT_ID}`)).toBe(`/api/group/${process.env.GROUP_ID}/events/${process.env.GROUP_EVENT_ID}`);
+    done();
+  })
 });
 
 describe('Messages', () => {
