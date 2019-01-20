@@ -79,11 +79,12 @@ exports.toSardonyxUrl = url => {
   if (url[0] === 'groups') url[0] = 'group';
   if (url[0] === 'notifications') url[0] = 'notification';
   if (url[0] === 'ib/activity/cas') url[0] = 'cas';
+  if (url[0] === 'ib/events') url[0] = 'event';
   if (!url[0]) url[0] = 'dashboard';
 
   // Process subresource type 
   if (url[2] === 'discussions') url[2] = 'messages';
-  if (!url[2] && url[1]) url[2] = 'overview';
+  if (!url[2] && url[1] && url[0] !== 'event') url[2] = 'overview'; // Temporary solution 
   
   // Process subitem type 
   if (url[4] === 'replies') url[4] = 'reply';
