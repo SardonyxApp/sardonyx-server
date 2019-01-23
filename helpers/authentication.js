@@ -51,7 +51,7 @@ exports.createTokens = (req, res, next) => {
 
     next();
   } else if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
-    // Most GET requests do not need CSRF Tokens (This is not 100% error proof)
+    // GET requests do not need CSRF Tokens
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
