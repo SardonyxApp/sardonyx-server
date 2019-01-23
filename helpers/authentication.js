@@ -41,20 +41,20 @@ exports.createBody = (req, res, next) => {
 exports.createTokens = (req, res, next) => {
   const tokens = JSON.parse(req.headers['login-token'] || '{}');
 
-  if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
-    // GET requests do not need CSRF Token
-    req.token = {
-      cfduid: tokens.cfduid,
-      managebacSession: tokens.managebacSession,
-    };
-
-    next();
-  } else if (tokens.cfduid && tokens.managebacSession && tokens.csrfToken) { 
-    // CSRF Token is included for other methods 
+  if (tokens.cfduid && tokens.managebacSession && tokens.csrfToken) { 
+    // All authentication properties are included 
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
       csrfToken: tokens.csrfToken
+    };
+
+    next();
+  } else if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
+    // Most GET requests do not need CSRF Tokens (This is not 100% error proof)
+    req.token = {
+      cfduid: tokens.cfduid,
+      managebacSession: tokens.managebacSession,
     };
 
     next();

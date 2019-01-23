@@ -1,5 +1,5 @@
 /**
- * @fileoverview Abstraction to send POST/PATCH requests to send/edit content.
+ * @fileoverview Abstraction to send requests to Managebac to scrape/send/edit content.
  * @author SardonyxApp
  * @license MIT 
  */
@@ -9,7 +9,9 @@ const { parseCSRFToken } = require('./parsers');
 
 /**
  * @param {Object} req
- * req must contain form and token properties 
+ * req must contain: req.token 
+ * req can contain: req.form, req.headerOptions
+ * req will change: req.document 
  * @param {Object} res 
  * @param {Function} next 
  */
@@ -19,44 +21,52 @@ module.exports = (req, res, next) => {
   j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
   j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
 
+  // Add these default headers to the header options 
+  req.formOptions = { ...req.formOptions, ...{
+    accept: '*/*'
+  } };
+  if (req.token.csrfToken) req.formOptions['X-CSRF-Token'] = req.token.csrfToken;
+
   // Make request 
   request({
     url: req.url,
-    // followAllRedirects: true,
     followAllRedirects: true,
     method: req.method,
-    form: req.form || {}, // form empty for DELETE requests
+    form: req.form || {}, // form is not required 
     jar: j,
-    headers: {
-      'X-CSRF-Token': req.token.csrfToken,
-      accept: '*/*'
-    }
+    headers: req.formOptions,
   }, (err, response) => {
     if (err) {
       console.error(err);
       res.status(502).end();
       return;
     }
-    console.log(response);
 
     let option = (() => {
       if (response.statusCode === 401) return 1;
       if (response.statusCode === 404) return 0;
+      if (response.statusCode === 500) return 0;
 
-      // Process response for messages and reflections
-      // Successful messages/reflections are redirected to index action
-      if (response.request.uri.href === (req.params.subresourceId ? req.url.replace(`/${req.params.subresourceId}`, '') : req.url)) return 2;
+      // Check for indications of success 
+      if (response.statusCode === 200) {
+        // Process response for messages and reflections
+        // Successful messages/reflections are redirected to index action
+        if (response.request.uri.href === (req.params.subresourceId ? req.url.replace(`/${req.params.subresourceId}`, '') : req.url)) return 2;
 
-      // Process response for answers 
-      if (response.request.uri.href === req.url.replace('/update_answers', '')) return 2;
+        // Process response for answers 
+        if (response.request.uri.href === req.url.replace('/update_answers', '')) return 2;
 
-      // Process response for replies 
-      if (/^\$discussion/.test(response.body)) {
-        if (response.body.includes('has-error')) return 0;
-        return 2;
+        // Process response for replies 
+        if (/^\$discussion/.test(response.body)) {
+          if (response.body.includes('has-error')) return 0;
+          return 2;
+        }
+
+        // Normal requests should return 200 with the same url 
+        if (response.request.uri.href === req.url) return 2;
       }
 
-      return 0; // Nonexistent or invalid request 
+      return 0; // Other unsuccessful response 
     })();
     // 0 ... 400 Bad Request  
     // 1 ... 401 Unauthorized

@@ -150,6 +150,41 @@ exports.loadMessage = (req, res) => {
 };
 
 /**
+ * @description Specialized middleware to manipulate request to load reply before sending
+ * @param {Object} req 
+ * req must have url and token properties 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.craftRequestForReplyOfReply = (req, res, next) => {
+  // Since this type of request is special, the url has to be tweaked. 
+  req.url = req.url.replace(/\/\d+$/, `?page=1&parent_id=${req.params.subitemId}`); // url should be .../replies?page=1&parent_id=:subitemId 
+
+  req.formOptions = {
+    'X-Requested-With': 'XMLHttpRequest',
+  };
+
+  next();
+};
+
+/**
+ * @description Load replies of reply 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.loadReplyOfReply = (req, res) => {
+  req.document = req.document
+    .match(/(?<!\\)'.{0,}?(?<!\\)'/g)[1] // HTML part
+    .replace(/\\\\/g, '') // remove unnecessary backslashes 
+    .replace(/\\(?=['"\/])/g, '')
+  res.append('Managebac-Data', JSON.stringify({
+    replyOfReply: parser.parseReplyOfReply(req.document)
+  }));
+
+  res.status(200).end();
+};
+
+/**
  * @description Craft a new message from data
  * @param {Object} req 
  * @param {Object} res 
