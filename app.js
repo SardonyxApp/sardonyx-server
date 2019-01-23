@@ -56,9 +56,13 @@ app.get('/api/event/:resourceId', auth.createTokens, mb.createUrl('ib/events'), 
 app.get('/api/class/:resourceId/events/:subresourceId', auth.createTokens, mb.createUrl('classes', 'events'), scrape, mb.loadAssignment);
 app.get('/api/group/:resourceId/events/:subresourceId', auth.createTokens, mb.createUrl('groups', 'events'), scrape, mb.loadAssignment);
 
-// Load message and replies 
+// Load message and replies  
 app.get('/api/class/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('classes', 'discussions'), scrape, mb.loadMessage);
 app.get('/api/group/:resourceId/messages/:subresourceId', auth.createTokens, mb.createUrl('groups', 'discussions'), scrape, mb.loadMessage);
+
+// Load repies of reply 
+app.get('/api/class/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('classes', 'discussions', 'replies'), mb.craftRequestForReplyOfReply, send, mb.loadReplyOfReply);
+app.get('/api/group/:resourceId/messages/:subresourceId/reply/:subitemId', auth.createTokens, mb.createUrl('groups', 'discussions', 'replies'), mb.craftRequestForReplyOfReply, send, mb.loadReplyOfReply);
 
 // Send message 
 app.post('/api/class/:resourceId/messages', auth.createTokens, mb.createUrl('classes', 'discussions'), mb.craftNewMessage, send, mb.loadMessages);

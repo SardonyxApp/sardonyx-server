@@ -60,57 +60,6 @@ exports.parseDeadlines = document => {
 };
 
 /**
- * @description Parse class messages from document
- * @param {String} document 
- * @returns {Array}
- */
-exports.parseMessages = document => {
-  const $ = cheerio.load(document);
-  const payload = [];
-
-  $('.discussion').each((i, el) => {
-    let comments = [];
-    // TODO: parse comments of comments
-    $(el).find('.reply').each((i, elem) => {
-      comments.push({
-        id: Number($(elem).attr('id').match(/\d+/)[0]),
-        title: encodeURI($(elem).find('h4.title').text().delNewlines()),
-        content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
-        onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
-        author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('src') || null, 
-        date: createDate($(elem).find('.header').text()),
-        comments: !!$(elem).find('.show-reply').length // Boolean
-      });
-    });
-
-    if (comments.length === 0 && !!$(el).find('.cell a:not(.btn)').length) { 
-      // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.cell a:not(.btn)').text().match(/\d+/)[0]);
-    }
-
-    const files = [];
-    $(el).find('.list-unstyled a').each((i, elem) => {
-      files.push($(elem).attr('href'));
-    });
-
-    payload.push({
-      title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
-      link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
-      content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
-      onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
-      author: $(el).find('.discussion-content .header strong').text(),
-      avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
-      date: createDate($(el).find('.header').text()),
-      files: files,
-      comments: comments
-    });
-  });
-
-  return payload;
-};
-
-/**
  * @description Parse class list from document hamburger menu
  * @param {String} document
  * @returns {Array}
@@ -148,6 +97,16 @@ exports.parseGroups = document => {
 
   payload.pop(); //Remove last item which says "Join more groups"
   return payload;
+};
+
+/** 
+ * @description Parse notification count from document
+ * @param {String} document 
+ * @returns {Number}
+ */
+exports.parseNotificationCount = document => {
+  const $ = cheerio.load(document);
+  return $('.notifications-count').data('count');
 };
 
 /**
@@ -188,16 +147,6 @@ exports.parseNotification = document => {
   $('.message-notifications .message-details').remove();
   payload.content = $('.message-notifications').html();
   return payload;
-};
-
-/** 
- * @description Parse notification count from document
- * @param {String} document 
- * @returns {Number}
- */
-exports.parseNotificationCount = document => {
-  const $ = cheerio.load(document);
-  return $('.notifications-count').data('count');
 };
 
 /**
@@ -266,15 +215,75 @@ exports.parseAuthorOnTheSide = document => {
 };
 
 /**
- * @description Parse number of pages based on pagination buttons at the bottom of document
+ * @description Parse class messages from document
  * @param {String} document 
- * @returns {Number}
+ * @returns {Array}
  */
-exports.parseNumberOfPages = document => {
+exports.parseMessages = document => {
   const $ = cheerio.load(document);
+  const payload = [];
 
-  const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
-  return len === -2 ? 1: len; // If there are no buttons, len = -2. In that case there is 1 page
+  $('.discussion').each((i, el) => {
+    let comments = [];
+    $(el).find('.reply').each((i, elem) => {
+      comments.push({
+        id: Number($(elem).attr('id').match(/\d+/)[0]),
+        title: encodeURI($(elem).find('h4.title').text().delNewlines()),
+        content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+        onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
+        author: $(elem).find('.header strong').text(),
+        avatar: $(elem).find('.avatar').attr('src') || null, 
+        date: createDate($(elem).find('.header').text()),
+        comments: !!$(elem).find('.show-reply').length // Boolean
+      });
+    });
+
+    if (comments.length === 0 && !!$(el).find('.cell a:not(.btn)').length) { 
+      // No comments attached, however there may be an indication of the number of comments
+      comments = Number($(el).find('.cell a:not(.btn)').text().match(/\d+/)[0]);
+    }
+
+    const files = [];
+    $(el).find('.list-unstyled a').each((i, elem) => {
+      files.push($(elem).attr('href'));
+    });
+
+    payload.push({
+      title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
+      link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
+      content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
+      onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
+      author: $(el).find('.discussion-content .header strong').text(),
+      avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
+      date: createDate($(el).find('.header').text()),
+      files: files,
+      comments: comments
+    });
+  });
+
+  return payload;
+};
+
+/**
+ * @description Parse reply of reply 
+ * @param {String} document 
+ * @returns {Array} 
+ */
+exports.parseReplyOfReply = document => {
+  const $ = cheerio.load(document);
+  let comments = [];
+
+  $('.reply').each((i, elem) => {
+    comments.push({
+      id: Number($(elem).attr('id').match(/\d+/)[0]),
+      content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+      onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
+      author: $(elem).find('.header strong').text(),
+      avatar: $(elem).find('.avatar').attr('src') || null, 
+      date: createDate($(elem).find('.header').text()),
+    });
+  });
+  return comments;
 };
 
 /**
@@ -416,4 +425,16 @@ exports.parseReflections = document => {
   });
 
   return payload;
+};
+
+/**
+ * @description Parse number of pages based on pagination buttons at the bottom of document
+ * @param {String} document 
+ * @returns {Number}
+ */
+exports.parseNumberOfPages = document => {
+  const $ = cheerio.load(document);
+
+  const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
+  return len === -2 ? 1: len; // If there are no buttons, len = -2. In that case there is 1 page
 };

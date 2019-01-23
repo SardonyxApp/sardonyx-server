@@ -177,4 +177,90 @@ describe('Load message', () => {
         });
     });
   });
+
+  // GET /api/class/:resourceId/messages/:subresourceId/reply/:subitemId is not tested 
+
+  describe('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId', () => {
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return valid tokens', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          // no CSRF Token for JavaScript responses 
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return 401 with no tokens', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return 401 with invalid tokens', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return 400 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/group/foobar/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(400);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return 400 with invalid subresourceId', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/foobar/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(400);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return 400 with invalid subitemId', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/foobar`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(400);
+          done();
+        });
+    });
+
+    test('GET /api/group/:resourceId/messages/:subresourceId/reply/:subitemId should return a valid json', done => {
+      request(app)
+        .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const replyOfReply = JSON.parse(response.headers['managebac-data']).replyOfReply;
+          replyOfReply.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(typeof item.content).toBe('string');
+            expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
+            expect(typeof item.author).toBe('string');
+            expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
+            expect(typeof item.date).toBe('string');
+            expect(typeof Date.parse(item.date)).toBe('number');
+          });
+          done();
+        });
+    });
+  });
 });
