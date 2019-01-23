@@ -120,6 +120,14 @@ Load single group message
 GET /api/group/:groupId/messages/:messageId
 ```
 
+Load comments to a comment message
+```
+GET /api/class/:classId/messages/:messageId/reply/:replyId
+GET /api/group/:groupId/messages/:messageId/reply/:replyId
+```
+
+Note: requests loading comments to a comment message will not return new CSRF Tokens in the header.
+
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
 #### Send a message 

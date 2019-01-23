@@ -228,7 +228,6 @@ exports.parseMessages = document => {
     $(el).find('.reply').each((i, elem) => {
       comments.push({
         id: Number($(elem).attr('id').match(/\d+/)[0]),
-        title: encodeURI($(elem).find('h4.title').text().delNewlines()),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
