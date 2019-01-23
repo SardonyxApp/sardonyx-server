@@ -40,12 +40,12 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/overview should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/overview should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -105,12 +105,12 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/assignments should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/assignments`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -170,12 +170,12 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/messages should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -237,12 +237,12 @@ describe('Load class', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/messages?pageParam=:pageParam should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/messages?pageParam=:pageParam should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/messages?pageParam=${process.env.CLASS_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
