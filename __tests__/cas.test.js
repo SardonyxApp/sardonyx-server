@@ -103,12 +103,12 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId/overview should return 401 with invalid resourceId', done => {
+    test('GET /api/cas/:resourceId/overview should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/cas/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -167,12 +167,12 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId/answers should return 401 with invalid resourceId', done => {
+    test('GET /api/cas/:resourceId/answers should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/cas/foobar/answers`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -228,12 +228,12 @@ describe('Load CAS', () => {
         });
     });
 
-    test('GET /api/cas/:resourceId/reflections should return 401 with invalid resourceId', done => {
+    test('GET /api/cas/:resourceId/reflections should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/cas/foobar/reflections`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });

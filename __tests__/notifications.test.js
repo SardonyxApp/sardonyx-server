@@ -147,12 +147,12 @@ describe('Load notification', () => {
         });
     });
 
-    test('GET /api/notification/:resourceId should return 401 with invalid resourceId', done => {
+    test('GET /api/notification/:resourceId should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/notification/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });

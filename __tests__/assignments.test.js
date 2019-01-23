@@ -40,22 +40,21 @@ describe('Load assignment or event', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/class/foobar/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
-
-    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid subresourceId', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 400 with invalid subresourceId', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -133,12 +132,12 @@ describe('Load assignment or event', () => {
         });
     });
 
-    test('GET /api/event/:resourceId should return 401 with invalid resourceId', done => {
+    test('GET /api/event/:resourceId should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/event/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -218,22 +217,22 @@ describe('Load assignment or event', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:subresourceId should return 401 with invalid resourceId', done => {
+    test('GET /api/class/:resourceId/assignments/:subresourceId should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/events/${process.env.GROUP_EVENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
 
-    test('GET /api/group/:resourceId/events/:subresourceId should return 401 with invalid subresourceId', done => {
+    test('GET /api/group/:resourceId/events/:subresourceId should return 400 with invalid subresourceId', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/events/foobar`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });

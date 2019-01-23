@@ -40,12 +40,12 @@ describe('Load group', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/overview should return 401 with invalid resourceId', done => {
+    test('GET /api/group/:resourceId/overview should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -105,12 +105,12 @@ describe('Load group', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages should return 401 with invalid resourceId', done => {
+    test('GET /api/group/:resourceId/messages should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
@@ -171,12 +171,12 @@ describe('Load group', () => {
         });
     });
 
-    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 401 with invalid resourceId', done => {
+    test('GET /api/group/:resourceId/messages?pageParam=:pageParam should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/messages?pageParam=${process.env.GROUP_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          expect(response.statusCode).toBe(401);
+          expect(response.statusCode).toBe(400);
           done();
         });
     });
