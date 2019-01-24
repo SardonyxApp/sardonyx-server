@@ -10,7 +10,7 @@ describe('Load assignment or event', () => {
     test('GET /api/class/:resourceId/assignments/:subresourceId should return valid tokens', done => {
       request(app)
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
-        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(200);
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
@@ -66,9 +66,9 @@ describe('Load assignment or event', () => {
         .then(response => {
           const assignment = JSON.parse(response.headers['managebac-data']).assignment;
           expect(typeof assignment.title).toBe('string');
-          expect(assignment.link).toBeFalsy();
+          expect(assignment.link).toBeNull();
           expect(Array.isArray(assignment.labels)).toBeTruthy();
-          expect(assignment.deadline).toBeFalsy();
+          expect(assignment.deadline).toBe(false);
           expect(typeof assignment.due).toBe('string');
           expect(typeof Date.parse(assignment.due)).toBe('number');
           expect(typeof assignment.author).toBe('string');
@@ -102,7 +102,7 @@ describe('Load assignment or event', () => {
     test('GET /api/event/:resourceId should return valid tokens', done => {
       request(app)
         .get(`/api/event/${process.env.EVENT_ID}`)
-        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(200);
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
@@ -149,7 +149,7 @@ describe('Load assignment or event', () => {
         .then(response => {
           const assignment = JSON.parse(response.headers['managebac-data']).assignment;
           expect(typeof assignment.title).toBe('string');
-          expect(assignment.link).toBeFalsy();
+          expect(assignment.link).toBeNull();
           expect(Array.isArray(assignment.labels)).toBeTruthy();
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
@@ -187,7 +187,7 @@ describe('Load assignment or event', () => {
     test('GET /api/group/:resourceId/events/:subresourceId should return valid tokens', done => {
       request(app)
         .get(`/api/group/${process.env.GROUP_ID}/events/${process.env.GROUP_EVENT_ID}`)
-        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}", "csrfToken": "${process.env.CSRF_TOKEN}"}`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           expect(response.statusCode).toBe(200);
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
@@ -217,7 +217,7 @@ describe('Load assignment or event', () => {
         });
     });
 
-    test('GET /api/class/:resourceId/assignments/:subresourceId should return 400 with invalid resourceId', done => {
+    test('GET /api/group/:resourceId/events/:subresourceId should return 400 with invalid resourceId', done => {
       request(app)
         .get(`/api/group/foobar/events/${process.env.GROUP_EVENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
@@ -244,7 +244,7 @@ describe('Load assignment or event', () => {
         .then(response => {
           const assignment = JSON.parse(response.headers['managebac-data']).assignment;
           expect(typeof assignment.title).toBe('string');
-          expect(assignment.link).toBeFalsy();
+          expect(assignment.link).toBeNull();
           expect(Array.isArray(assignment.labels)).toBeTruthy();
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
