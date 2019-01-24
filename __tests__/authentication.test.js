@@ -3,6 +3,8 @@ const app = require('../app');
 
 require('dotenv').config();
 
+jest.setTimeout(30000);
+
 describe('Authentication API', () => {
   describe('GET /api/validate', () => {
     test('GET /api/validate should return 401 without credentials', (done) => {
@@ -53,7 +55,8 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('login');
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('cfdiud');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
@@ -108,7 +111,8 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('login');
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('cfdiud');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
@@ -171,7 +175,8 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('login');
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('cfdiud');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('csrfToken');
           done();
         });
     });
