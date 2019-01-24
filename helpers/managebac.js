@@ -73,7 +73,6 @@ exports.loadDefaults = (req, res) => {
 /**
  * @description Load class/group overview
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadOverview = (req, res) => {
@@ -87,7 +86,6 @@ exports.loadOverview = (req, res) => {
 /**
  * @description Load class assignment list 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadAssignments = (req, res) => {
@@ -104,7 +102,6 @@ exports.loadAssignments = (req, res) => {
 /**
  * @description Load class/group messages 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadMessages = (req, res) => {
@@ -119,7 +116,6 @@ exports.loadMessages = (req, res) => {
 /**
  * @description Load single assignment 
  * @param {Object} req
- * req must have a document property
  * @param {Object} res 
  */
 exports.loadAssignment = (req, res) => {
@@ -138,7 +134,6 @@ exports.loadAssignment = (req, res) => {
 /**
  * @description Load single message
  * @param {Object} req
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadMessage = (req, res) => {
@@ -150,9 +145,8 @@ exports.loadMessage = (req, res) => {
 };
 
 /**
- * @description Specialized middleware to manipulate request to load reply before sending
+ * @description Manipulate request to load reply before sending
  * @param {Object} req 
- * req must have url and token properties 
  * @param {Object} res 
  * @param {Function} next 
  */
@@ -176,7 +170,8 @@ exports.loadReplyOfReply = (req, res) => {
   req.document = req.document
     .match(/(?<!\\)'.{0,}?(?<!\\)'/g)[1] // HTML part
     .replace(/\\\\/g, '') // remove unnecessary backslashes 
-    .replace(/\\(?=['"\/])/g, '')
+    .replace(/\\(?=['"\/])/g, '');
+
   res.append('Managebac-Data', JSON.stringify({
     replyOfReply: parser.parseReplyOfReply(req.document)
   }));
@@ -203,7 +198,7 @@ exports.craftNewMessage = (req, res, next) => {
 };
 
 /**
- * @description Craft an edit message from data 
+ * @description Craft an edited message from data 
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next 
@@ -241,7 +236,7 @@ exports.craftNewReply = (req, res, next) => {
 };
 
 /**
- * @description Craft an edit reply from data 
+ * @description Craft an edited reply from data 
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next 
@@ -258,7 +253,6 @@ exports.craftReply = (req, res, next) => {
 /**
  * @description Load notification list
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadNotifications = (req, res) => {
@@ -273,7 +267,6 @@ exports.loadNotifications = (req, res) => {
 /**
  * @description Load single notification 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadNotification = (req, res) => {
@@ -287,7 +280,6 @@ exports.loadNotification = (req, res) => {
 /**
  * @description Load CAS dashboard 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadCas = (req, res) => {
@@ -302,7 +294,6 @@ exports.loadCas = (req, res) => {
 /**
  * @description Load CAS experience 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadExperience = (req, res) => {
@@ -316,7 +307,6 @@ exports.loadExperience = (req, res) => {
 /**
  * @description Load CAS questions and answers 
  * @param {Object} req 
- * req must have a document property 
  * @param {Object} res 
  */
 exports.loadAnswers = (req, res) => {
@@ -378,7 +368,7 @@ exports.craftNewReflection = (req, res, next) => {
 };
 
 /**
- * @description Craft an edit reflection from data
+ * @description Craft an edited reflection from data
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next 

@@ -62,7 +62,7 @@ describe('Load CAS', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
-            expect(item.similarity).toBe(null);
+            expect(item.similarity).toBeNull();
           });
           done();
         });
@@ -121,13 +121,13 @@ describe('Load CAS', () => {
           const cas = JSON.parse(response.headers['managebac-data']).cas;
           expect(typeof cas.title).toBe('string');
           expect(typeof cas.link).toBe('string');
-          expect(cas.description).toBe(null);
+          expect(cas.description).toBeNull();
           expect(Array.isArray(cas.types)).toBeTruthy();
           expect(cas.status).toMatch(/complete|approved|rejected|needs_approval/);
           expect(Array.isArray(cas.labels)).toBeTruthy();
           expect(typeof cas.project).toBe('boolean');
           expect(typeof cas.commentCount).toBe('number');
-          expect(cas.reflectionCount).toBe(null);
+          expect(cas.reflectionCount).toBeNull();
           done();
         });
     }); 

@@ -1,18 +1,18 @@
 /**
- * @fileoverview Miscellaneous helper functions
+ * @fileoverview Miscellaneous helper modules
  * @author SardonyxApp
  * @license MIT
  */
 
 /**
- * @description Return month from abbreviation
+ * @description Return month index from abbreviation
  * @param {String} abbr
  * @return {Number}
  */
 exports.getMonthFromAbbr = abbr => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(abbr);
 
 /**
- * @description Return month 
+ * @description Return month index from full month name
  * @param {String} str 
  * @return {Number}
  */
@@ -31,7 +31,7 @@ exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonth() ? new
  * @param {Number} monthIndex 
  * @return {Number}
  */
-exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new Date().getFullYear() : new Date().getFullYear() + 1;
+exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new Date().getFullYear() : new Date().getFullYear() - 1;
 // Not going to be correct for dates two or more years ago
 
 /**

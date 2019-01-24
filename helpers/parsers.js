@@ -5,11 +5,22 @@
  */
 
 const cheerio = require('cheerio');
-const { getMonthFromAbbr, getMonth, guessFutureYear, guessPastYear, createDate, toSardonyxUrl } = require('./helpers');
+const { 
+  getMonthFromAbbr, 
+  getMonth, 
+  guessFutureYear, 
+  guessPastYear, 
+  createDate, 
+  toSardonyxUrl 
+} = require('./helpers');
 
-// Custom method for replacing \n characters 
-String.prototype.delNewlines = function() {
-  return this.replace(/\n/g, '');
+/**
+ * @description Custom method for replacing \n characters 
+ * @param {String} str 
+ * @returns {String}
+ */
+String.prototype.delNewlines = function(str = '') { // replace with '' by default 
+  return this.replace(/\n/g, str);
 };
 
 /**
@@ -159,7 +170,7 @@ exports.parseDetails = document => {
   try {
     return $('label:contains("Details")').next().html().delNewlines(); // This is potentially dangerous, XSS
   } catch (e) {
-    return null; // If the assignment/event has no details, it will throw an error
+    return null; // If the assignment/event has no details, it will throw an error which will be catched here
   }
 };
 
@@ -270,7 +281,7 @@ exports.parseMessages = document => {
  */
 exports.parseReplyOfReply = document => {
   const $ = cheerio.load(document);
-  let comments = [];
+  const comments = [];
 
   $('.reply').each((i, elem) => {
     comments.push({
@@ -435,5 +446,5 @@ exports.parseNumberOfPages = document => {
   const $ = cheerio.load(document);
 
   const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
-  return len === -2 ? 1: len; // If there are no buttons, len = -2. In that case there is 1 page
+  return len === -2 ? 1 : len; // If there are no buttons, len = -2. In that case there is 1 page
 };
