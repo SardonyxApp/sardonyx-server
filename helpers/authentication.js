@@ -5,21 +5,25 @@
  */
 
 const request = require('request');
+const parser = require('./parsers');
 
 /**
  * @description Convert Login-Token header to req.body FormData
- * @param {Object} req should have the header 'Login-Token'
+ * @param {Object} req 
+ * req should have the header 'Login-Token'
  * @param {Object} res
  * @param {Function} next
  */
-exports.loginTokenToBody = (req, res, next) => {
+exports.createBody = (req, res, next) => {
   // Get the login token from header, otherwise set it to an empty object
-  const credentials = JSON.parse(req.headers['login-token'] || '{}') || {};
+  const credentials = JSON.parse(req.headers['login-token'] || '{}');
 
   if (credentials.login && credentials.password) {
-    req.body = req.body || {}; // Define req.body in case of GET requests
-    req.body.login = credentials.login;
-    req.body.password = credentials.password;
+    req.body = {
+      login: credentials.login,
+      password: credentials.password
+    };
+
     next();
   } else {
     // The request did not contain a login-token, unauthorize them before sending useless requests
@@ -27,6 +31,38 @@ exports.loginTokenToBody = (req, res, next) => {
   }
 };
 
+/**
+ * @description Convert Login-Token header to req.token
+ * @param {Object} req 
+ * req should have the header 'Login-Token'
+ * @param {Object} res 
+ * @param {FUnction} next 
+ */
+exports.createTokens = (req, res, next) => {
+  const tokens = JSON.parse(req.headers['login-token'] || '{}');
+
+  if (tokens.cfduid && tokens.managebacSession && tokens.csrfToken) { 
+    // All authentication properties are included 
+    req.token = {
+      cfduid: tokens.cfduid,
+      managebacSession: tokens.managebacSession,
+      csrfToken: tokens.csrfToken
+    };
+
+    next();
+  } else if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
+    // GET requests do not need CSRF Tokens
+    req.token = {
+      cfduid: tokens.cfduid,
+      managebacSession: tokens.managebacSession,
+    };
+
+    next();
+  } else {
+    // The request did not contain token information, redirect them to reissue
+    res.status(401).end();
+  }
+};
 
 /**
  * @description Validate login in req.body using Managebac
@@ -38,32 +74,36 @@ exports.loginToManagebac = (req, res, next) => {
   const additionalFormData = {
     'remember_me': 1
   };
+  const cookieJar = request.jar();
 
   // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
-    form: { ...req.body, ...additionalFormData } // Combine data
+    form: { ...req.body, ...additionalFormData },
+    jar: cookieJar,
+    followAllRedirects: true,
   }, (err, response) => {
     if (err) {
       console.error(err);
-      res.status(502).write('There was an error accessing Managebac.').end();
+      res.status(502).end();
       return;
     }
 
-    // ManageBac returns a 302 redirection from /sessions to /student on success
-    // Check if the destination is /student, then keep all the information to send back to client
-    if (response.caseless.dict.location && response.caseless.dict.location.includes('/student')) {
-      const __cfdiud = response.headers['set-cookie'][0].split(';')[0];
-      const _managebac_session = response.headers['set-cookie'][2].split(';')[0];
+    // Successfully returns student page
+    if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
+      const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
       const login = req.body.login;
       const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
-        cfdiud: __cfdiud,
+        cfduid: __cfduid,
         managebacSession: _managebac_session,
+        csrfToken: parser.parseCSRFToken(response.body),
         login: login,
         password: password
       });
       res.append('Login-Token', payload);
+      req.document = response.body;
       return next();
     }
 
