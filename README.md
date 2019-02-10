@@ -126,6 +126,8 @@ GET /api/class/:classId/messages/:messageId/reply/:replyId
 GET /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
+Note: `:replyId` is the id of the 2nd level comment being loaded, not the 1st level comment or the original message.
+
 Note: requests loading comments to a comment message will not return new CSRF Tokens in the header.
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
@@ -147,7 +149,7 @@ Required: `Message-Data` header with JSON:
 ```typescript
 {
   topic: string, // title of the mesage, encoded as URI
-  body: string, // body of the message, encoded as URI
+  body: string, // body of the message in markdown, encoded as URI
   notifyViaEmail: number, // 0 for false, 1 for true
   privateMessage: number // 0 for false, 1 for true 
 }
@@ -170,7 +172,7 @@ Required: `Message-Data` header with JSON:
 ```typescript
 {
   topic: string, // title of the mesage, encoded as URI
-  body: string // body of the message, encoded as URI
+  body: string // body of the message in markdown, encoded as URI
 }
 ```
 
@@ -222,7 +224,7 @@ Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`
 Required: `Message-Data` header with JSON:
 ```typescript
 {
-  body: string, // body of the message, encoded as URI
+  body: string, // body of the message in markdown, encoded as URI
   notifyViaEmail: number, // 0 for false, 1 for true
   privateMessage: number // 0 for false, 1 for true 
 }
@@ -244,7 +246,7 @@ Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`
 Required: `Message-Data` header with JSON:
 ```typescript
 {
-  body: string // body of the message, encoded as URI
+  body: string // body of the message in markdown, encoded as URI
 }
 ```
 
@@ -340,7 +342,7 @@ Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`
 Required: `Reflection-Data` header with JSON:
 ```typescript
 {
-  body: string, // body of the CAS reflection, encoded as URI
+  body: string, // body of the CAS reflection in markdown, encoded as URI
   educationalOutcomeIds: string // Omit for now, as this feature is not implemented yet
 }
 ```
