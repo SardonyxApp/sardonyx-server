@@ -3,11 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: {
-		'index': ['@babel/polyfill', './src/App.js']
+		'index': ['@babel/polyfill', './src/index.js'],
+		'login': './src/login/login.js'
 	},
 	output: {
 		path: path.join(__dirname, 'public'),
-		filename: '[name].js'
+		filename: 'scripts/[name].js'
 	},
 	module: {
 		rules: [
@@ -34,7 +35,12 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			chunks: ['index'],
 			template: './src/index.html',
-			favicon: './src/Icon.svg'
-		})
+			filename: 'index.html',
+		}),
+		new HtmlWebpackPlugin({
+      chunks: ['login'],
+      template: './src/login/login.html',
+			filename: './login/index.html',
+    })
 	]
 };

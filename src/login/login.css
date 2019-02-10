@@ -1,0 +1,116 @@
+/* font */
+@import 'https://indestructibletype.com/fonts/Jost.css';
+
+/* general settings */
+body, h1, h2, h3, p {
+  margin: 0;
+  font-family: Jost, sans-serif;
+  font-weight: 400;
+}
+
+/* full screen container */
+#login {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* container */
+#login-box {
+  background-color: #eee;
+  border-radius: 16px;
+  width: 80vw;
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+/* general */
+input {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+p, label {
+  font-size: 14px;
+}
+
+/* individual components */
+h1 {
+  font-size: 28px;
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+svg {
+  height: 100px;
+  width: 100px;
+}
+
+#try-again {
+  color: #f44138;
+}
+
+form {
+  text-align: left;
+  margin: 5px 0;
+}
+
+#session_login, #session_password {
+  border: none;
+  border-radius: 4px;
+  border-bottom: 2px solid transparent;
+  width: calc(100% - 24px);
+  font-size: 16px;
+  line-height: 16px;
+  padding: 12px;
+  margin: 5px 0 10px 0;
+}
+
+form > p {
+  text-align: right;
+  /* ONLY ADD P FOR RIGHT ALIGN PURPOSES */
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #d17b46;
+}
+
+a:hover {
+  filter: brightness(1.25);
+}
+
+.checkbox {
+  margin: 10px 0;
+}
+
+input[type="checkbox"], .checkbox > label {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 5px 0 0;
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  background-color: #ed8a50;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0 0 0;
+  padding: 12px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  filter: brightness(1.25);
+}
+
+input[type="submit"]:active {
+  transform: translateY(4px);
+}
