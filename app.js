@@ -14,6 +14,9 @@ const { end200 } = require('./helpers/helpers');
 
 app.use(express.static('public'));
 
+// Favicon, implemented for now
+app.use('/favicon.ico', express.static(__dirname + '/public/Icon.svg'));
+
 // Route to return a random response code of either 401 or 200
 app.all('/random', (req, res) => {
   const random = Math.floor(Math.random() * 2); // Generate either 0 or 1
