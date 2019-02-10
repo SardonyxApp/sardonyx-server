@@ -6,6 +6,20 @@
 
 const parser = require('./parsers');
 
+// Markdown to HTML parser
+const showdown = require('showdown'); 
+const converter = new showdown.Converter({simplifiedAutoLink: true, strikethrough: true, simpleLineBreaks: true});
+converter.setFlavor('github'); // For now
+
+/**
+ * @description Custom method for replacing \n characters 
+ * @param {String} str 
+ * @returns {String}
+ */
+String.prototype.delNewlines = function(str = '') { // replace with '' by default 
+  return this.replace(/\n/g, str);
+};
+
 /**
  * @description Create a Managebac URL (up to 3 layers)
  * @param {String} resource 
@@ -189,7 +203,7 @@ exports.craftNewMessage = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'discussion[topic]': decodeURI(req.body.topic),
-    'discussion[body]': decodeURI(req.body.body),
+    'discussion[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines(),
     'discussion[notify_via_email]': req.body.notifyViaEmail == 1 ? '[0, 1]' : 0, // == comparison, compares string to number
     'discussion[private]': req.body.privateMessage == 1 ? '[0, 1]' : 0, // API naming slightly changed, private is a reserved word in strict mode 
   };
@@ -207,7 +221,7 @@ exports.craftMessage = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
     'discussion[topic]': decodeURI(req.body.topic),
-    'discussion[body]': decodeURI(req.body.body)
+    'discussion[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines(),
   };
 
   next();
@@ -222,7 +236,7 @@ exports.craftMessage = (req, res, next) => {
 exports.craftNewReply = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
-    'reply[body]': decodeURI(req.body.body),
+    'reply[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines(),
     'reply[notify_via_email]': req.notifyViaEmail == 1 ? '[0, 1]' : 0,
     'reply[private]': req.privateMessage == 1 ? '[0, 1]' : 0
   };
@@ -244,7 +258,7 @@ exports.craftNewReply = (req, res, next) => {
 exports.craftReply = (req, res, next) => {
   req.body = JSON.parse(req.headers['message-data'] || '{}');
   req.form = {
-    'reply[body]': decodeURI(req.body.body)
+    'reply[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines()
   };
 
   next();
@@ -326,9 +340,9 @@ exports.loadAnswers = (req, res) => {
 exports.craftAnswers = (req, res, next) => {
   req.body = JSON.parse(req.headers['answers-data'] || '{}');
   req.form = {
-    'cas_answers[answers[10195989]]': req.body.answers[0], 
-    'cas_answers[answers[10195990]]': req.body.answers[1],
-    'cas_answers[answers[10195991]]': req.body.answers[2]
+    'cas_answers[answers[10195989]]': decodeURI(req.body.answers[0]), 
+    'cas_answers[answers[10195990]]': decodeURI(req.body.answers[1]),
+    'cas_answers[answers[10195991]]': decodeURI(req.body.answers[2])
   };
 
   req.url += '/update_answers'; // Here, form is sent to .../answers/update_answers
@@ -360,7 +374,7 @@ exports.craftNewReflection = (req, res, next) => {
   req.body = JSON.parse(req.headers['reflection-data'] || '{}');
   req.form = {
     'evidence[type]': 'JournalEvidence',
-    'evidence[body]': decodeURI(req.body.body),
+    'evidence[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines(),
     // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
   };
 
@@ -376,7 +390,7 @@ exports.craftNewReflection = (req, res, next) => {
 exports.craftReflection = (req, res, next) => {
   req.body = JSON.parse(req.headers['reflection-data'] || '{}');
   req.form = {
-    'evidence[body]': decodeURI(req.body.body),
+    'evidence[body]': converter.makeHtml(decodeURI(req.body.body)).delNewlines(),
     // 'evidence[educational_outcome_ids][]': req.body.educationalOutcomeIds
   };
   
