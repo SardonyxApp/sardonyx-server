@@ -20,7 +20,6 @@ class LoginForm extends React.Component {
 
       const login = document.getElementById('session_login');
       const password = document.getElementById('session_password');
-      const agreement = document.getElementById('session_agreement');
 
       const isEmail = txt => txt.match(/[^@]+@[^@]+\.[^@]+/);
       // Match string with only one "@" and at least one "." after the "@"
@@ -31,12 +30,36 @@ class LoginForm extends React.Component {
       if (password.value === '') insufficient(password);
       else sufficient(password);
 
-      if (agreement.checked === false) {
-        insufficient(agreement.parentNode);
-      } else sufficient(agreement.parentNode);
-
       if (!pass) e.preventDefault();
+      if (!pass) this.props.onValidationError('email');
     });
+  }
+
+  onSubmit() {
+    let pass = true;
+
+    const sufficient = (el) => {
+      el.style.borderBottom = '2px solid transparent';
+    };
+
+    const insufficient = (el) => {
+      el.style.borderBottom = '2px solid #ed8a50';
+      pass = false;
+    };
+
+    const login = document.getElementById('session_login');
+    const password = document.getElementById('session_password');
+
+    const isEmail = txt => txt.match(/[^@]+@[^@]+\.[^@]+/);
+    // Match string with only one "@" and at least one "." after the "@"
+
+    if (login.value === '' || !isEmail(login.value)) insufficient(login);
+    else sufficient(login);
+
+    if (password.value === '') insufficient(passowrd);
+    else sufficient(password);
+
+    if (!pass) e.preventDefault();
   }
 
   render() {
@@ -46,16 +69,10 @@ class LoginForm extends React.Component {
         <input id="session_login" name="login" type="email" autoFocus/>
         <label htmlFor="session_password">Password</label>
         <input id="session_password" name="password" type="password"/>
-        <p><a href="https://kokusaiib.managebac.com/reset-password/new" target="_blank">Forgot password?</a></p>
-        <div className="checkbox">
-          <input id="session_remember_me" name="remember_me" type="checkbox" value="1"/>
-          <label htmlFor="session_remember_me">Remember me. (This is a trusted computer that only I have access to)</label>
-        </div>
-        <div className="checkbox">
-          <input id="session_agreement" type="checkbox" value="1"/>
-          <label htmlFor="session_agreement">I have read and agreed to the <a href="">Terms of Service</a> and <a href="">Privacy Policy.</a></label>
-        </div>
-        <input name="commit" type="submit" value="Sign in" />
+        <p id="forgot-password"><a href="https://kokusaiib.managebac.com/reset-password/new" target="_blank">Forgot password?</a></p>
+        <p>Sardonyx is not affiliated, associated, authorized, endorsed by, or in any way officially connected with ManageBac, or any of its subsidiaries or its affiliates.</p>
+        <p>By accessing Sardonyx, you agree to our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>.</p>
+        <input name="commit" type="submit" value="Sign in" onClick={this.onSubmit} />
       </form>
     );
   }
@@ -65,9 +82,16 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      invalid: location.search.includes('?invalid=true') ? 'visible' : 'hidden'
+      errorMessage: location.search.includes('?invalid=true') ? 'Login failed. Please try again.' : null
     };
-    // Show warning message when invalid
+
+    this.handleValidationError = this.handleValidationError.bind(this);
+  }
+
+  handleValidationError() {
+    this.setState({
+      errorMessage: 'Please enter a valid email and password.'
+    });
   }
 
   render() {
@@ -77,8 +101,8 @@ class Login extends React.Component {
           {svgs.icon}
           <h1>Welcome</h1>
           <p>Please use your Kokusai High School ManageBac information to log in to Sardonyx</p>
-          <p id="try-again" style={{visibility: this.state.invalid}}>Login failed. Please try again.</p>
-          <LoginForm />
+          <p id="try-again">{this.state.errorMessage}</p>
+          <LoginForm onValidationError={this.handleValidationError} />
         </div>
       </div>
     );
