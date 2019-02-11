@@ -19,8 +19,7 @@ const { end200 } = require('./helpers/helpers');
 // Serve html files 
 app.use(express.static('public'));
 
-// Favicon, implemented for now
-app.use('/favicon.ico', express.static(__dirname + '/public/Icon.svg'));
+app.use('/favicon.ico', express.static(__dirname + '/public/Icon.png'));
 
 /**
  * API
