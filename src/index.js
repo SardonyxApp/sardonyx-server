@@ -11,7 +11,7 @@ class Root extends React.Component {
         {svgs.icon}
         <p>The web app is under development.</p>
         <p>Source code is on <a href="https://github.com/SardonyxApp">Github</a>.</p>
-        <a href="login">Login</a>
+        <a href="login">Student Login</a> | <a href="login?teacher=true">Teacher Login</a>
       </div>
     );
   }

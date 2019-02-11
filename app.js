@@ -130,7 +130,9 @@ app.delete('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens,
  */
 
 // Student login through web client
-app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.createSardonyxToken, end200);
+app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.createSardonyxToken, (req, res) => {
+  res.redirect('/app');
+});
 
 // Teacher login through web client 
 app.post('/login/teacher', upload.none(), (req, res) => {
