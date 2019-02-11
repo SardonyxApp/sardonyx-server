@@ -22,10 +22,21 @@ body, h1, h2, h3, p {
 #login-box {
   background-color: #eee;
   border-radius: 16px;
-  width: 80vw;
   padding: 20px;
   margin: auto;
   text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+  #login-box {
+    width: 80vw;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  #login-box {
+    width: 640px;
+  }
 }
 
 /* general */
