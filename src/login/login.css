@@ -70,9 +70,8 @@ form {
   margin: 5px 0 10px 0;
 }
 
-form > p {
+#forgot-password {
   text-align: right;
-  /* ONLY ADD P FOR RIGHT ALIGN PURPOSES */
 }
 
 a, a:visited {
@@ -86,13 +85,6 @@ a:hover {
 
 .checkbox {
   margin: 10px 0;
-}
-
-input[type="checkbox"], .checkbox > label {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 5px 0 0;
-  cursor: pointer;
 }
 
 input[type="submit"] {
