@@ -66,50 +66,51 @@ exports.createTokens = (req, res, next) => {
 
 /**
  * @description Validate login in req.body using Managebac
- * @param {Object} req Request with body containing keys 'login' and 'password'
- * @param {Object} res 
- * @param {Function} next
+ * @param {String} redir URL to redirect to upon failure, or the middleware will return 401
  */
-exports.loginToManagebac = (req, res, next) => {
-  const additionalFormData = {
-    'remember_me': 1
+exports.loginToManagebac = redir => {
+  return (req, res, next) => {
+    const additionalFormData = {
+      'remember_me': 1
+    };
+    const cookieJar = request.jar();
+
+    // Relay POST request with 'login' and 'password' to ManageBac
+    request.post({
+      url: 'https://kokusaiib.managebac.com/sessions',
+      form: { ...req.body, ...additionalFormData },
+      jar: cookieJar,
+      followAllRedirects: true,
+    }, (err, response) => {
+      if (err) {
+        console.error(err);
+        res.status(502).end();
+        return;
+      }
+
+      // Successfully returns student page
+      if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
+        const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+        const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
+        const login = req.body.login;
+        const password = req.body.password; // Encrypt this in the future
+        const payload = JSON.stringify({
+          cfduid: __cfduid,
+          managebacSession: _managebac_session,
+          csrfToken: parser.parseCSRFToken(response.body),
+          login: login,
+          password: password
+        });
+        res.append('Login-Token', payload);
+        req.document = response.body;
+        return next();
+      }
+
+      // Nonexistent or incorrect redirection, unauthorized
+      if (redir) res.redirect(redir);
+      else res.status(401).end();
+    });
   };
-  const cookieJar = request.jar();
-
-  // Relay POST request with 'login' and 'password' to ManageBac
-  request.post({
-    url: 'https://kokusaiib.managebac.com/sessions',
-    form: { ...req.body, ...additionalFormData },
-    jar: cookieJar,
-    followAllRedirects: true,
-  }, (err, response) => {
-    if (err) {
-      console.error(err);
-      res.status(502).end();
-      return;
-    }
-
-    // Successfully returns student page
-    if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
-      const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
-      const login = req.body.login;
-      const password = req.body.password; // Encrypt this in the future
-      const payload = JSON.stringify({
-        cfduid: __cfduid,
-        managebacSession: _managebac_session,
-        csrfToken: parser.parseCSRFToken(response.body),
-        login: login,
-        password: password
-      });
-      res.append('Login-Token', payload);
-      req.document = response.body;
-      return next();
-    }
-
-    // Nonexistent or incorrect redirection, unauthorized
-    res.status(401).end();
-  });
 };
 
 /**
