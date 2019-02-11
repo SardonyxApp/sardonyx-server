@@ -12,10 +12,19 @@ const mb = require('./helpers/managebac');
 const send = require('./helpers/sender');
 const { end200 } = require('./helpers/helpers');
 
+/**
+ * Public 
+ */
+
+// Serve html files 
 app.use(express.static('public'));
 
 // Favicon, implemented for now
 app.use('/favicon.ico', express.static(__dirname + '/public/Icon.svg'));
+
+/**
+ * API
+ */
 
 // Route to return a random response code of either 401 or 200
 app.all('/random', (req, res) => {
@@ -30,15 +39,19 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
+/**
+ * Managebac 
+ */
+
 // Initial validation
-app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
+app.get('/api/validate', auth.createBody, auth.loginToManagebac(), mb.loadDefaults);
 
 // Reissue tokens
-app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
+app.get('/api/login', auth.createBody, auth.loginToManagebac(), end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac, auth.createSardonyxToken, mb.loadDefaults);
+app.post('/api/login', upload.none(), auth.loginToManagebac(), auth.createSardonyxToken, mb.loadDefaults);
 
 // Load dashboard 
 app.get('/api/dashboard', auth.createTokens, mb.createUrl(), send, mb.loadDefaults);
@@ -111,6 +124,18 @@ app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
 app.patch('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
 app.delete('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
+
+/**
+ * Sardonyx Web
+ */
+
+// Student login through web client
+app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.createSardonyxToken, end200);
+
+// Teacher login through web client 
+app.post('/login/teacher', upload.none(), (req, res) => {
+  res.status(200).send('Teacher logins are not supported yet.');
+});
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
