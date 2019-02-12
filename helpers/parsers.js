@@ -406,7 +406,7 @@ exports.parseReflections = document => {
 
   $('.evidence').each((i, el) => {
     const labels = [];
-    $('.labels-set .label').each((i, elem) => {
+    $(el).find('.labels-set .label').each((i, elem) => {
       labels.push($(elem).text());
     });
 
