@@ -353,7 +353,7 @@ exports.parseExperience = document => {
 
   return {
     description: extractContents($('h4').eq(1).nextUntil('h4')), 
-    learningOutcomes: extractContents($('h4').eq(2).nextUntil('.divider.compact')),
+    learningOutcomes: extractContents($('h4').eq(2).nextUntil('.divider.compact')), // does not parse IDs
     timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
@@ -442,6 +442,25 @@ exports.parseReflections = document => {
   });
 
   return payload;
+};
+
+/**
+ * @description Parse learning outcomes form form data 
+ * @param {String} document 
+ * @returns {Array} 
+ */
+exports.parseLearningOutcomes = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+  
+  $('input[type="checkbox"]').each((i, el) => {
+    payload.push({
+      id: Number($(el).attr('value')),
+      name: $(el).parent().text()
+    });
+  });
+
+  return payload; 
 };
 
 /**

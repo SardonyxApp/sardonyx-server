@@ -121,11 +121,13 @@ describe('Load CAS', () => {
           const cas = JSON.parse(response.headers['managebac-data']).cas;
           expect(typeof cas.title).toBe('string');
           expect(typeof cas.link).toBe('string');
-          expect(cas.description).toBeNull();
+          expect(typeof cas.description).toBe('string');
+          expect(typeof cas.learningOutcomes).toBe('string');
           expect(Array.isArray(cas.types)).toBeTruthy();
           expect(cas.status).toMatch(/complete|approved|rejected|needs_approval/);
           expect(Array.isArray(cas.labels)).toBeTruthy();
           expect(typeof cas.project).toBe('boolean');
+          expect(typeof cas.timespan).toBe('string');
           expect(typeof cas.commentCount).toBe('number');
           expect(cas.reflectionCount).toBeNull();
           done();
@@ -261,6 +263,65 @@ describe('Load CAS', () => {
             } else {
               expect(item.content).toBe('Sardonyx: This type of evidence is not supported yet.');
             }
+          });
+          done();
+        });
+    }); 
+  });
+
+  describe('GET /api/cas/:resourceId/learning_outcomes', () => {
+    test('GET /api/cas/:resourceId/learning_outcomes should return valid tokens', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/learning_outcomes`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(200);
+          const credentials = JSON.parse(response.headers['login-token'] || '{}');
+          expect(credentials).toHaveProperty('cfduid');
+          expect(credentials).toHaveProperty('managebacSession');
+          expect(credentials).toHaveProperty('csrfToken');
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/learning_outcomes should return 401 with no tokens', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/learning_outcomes`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });    
+
+    test('GET /api/cas/:resourceId/learning_outcomes should return 401 with invalid tokens', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/learning_outcomes`)
+        .set('Login-Token', `{"cfduid": "foobar", "managebacSession": "foobar"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/learning_outcomes should return 400 with invalid resourceId', done => {
+      request(app)
+        .get(`/api/cas/foobar/learning_outcomes`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          expect(response.statusCode).toBe(400);
+          done();
+        });
+    });
+
+    test('GET /api/cas/:resourceId/learning_outcomes should return a valid json', done => {
+      request(app)
+        .get(`/api/cas/${process.env.CAS_ID}/learning_outcomes`)
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const learningOutcomes = JSON.parse(response.headers['managebac-data']).learningOutcomes;
+          learningOutcomes.forEach(outcome => {
+            expect(typeof outcome.id).toBe('number');
+            expect(typeof outcome.name).toBe('string');
           });
           done();
         });
