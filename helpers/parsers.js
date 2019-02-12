@@ -321,13 +321,13 @@ exports.parseCas = document => {
     payload.push({
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.details a').attr('href')),
-      description: encodeURI($(el).find('.description').text()) || null,
+      description: encodeURI($(el).find('.description').text()) || null, // Doesn't exist for experiences
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
       labels: labels,
       project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
       commentCount: Number($(el).find('.comments-count').text().delNewlines()),
-      reflectionCount: $(el).find('.reflections-count').text() || null // String, for convenience
+      reflectionCount: $(el).find('.reflections-count').text() || null // Only exists for CAS dashhboard 
     });
   });
 
@@ -341,13 +341,20 @@ exports.parseCas = document => {
  */
 exports.parseExperience = document => {
   const $ = cheerio.load(document);
-  // These elements are included in .content-block so remove them before parsing
-  $('.content-block-header').remove();
-  $('.activity-tile').remove();
-  $('.divider.compact').prev().nextAll().remove();
+
+  const extractContents = els => {
+    let str = '';  
+    els.each((i, elem) => {
+      if (i !== 0) str += '\n';
+      str += $(elem).text();
+    });
+    return encodeURI(str);
+  }
+
   return {
-    content: $('.content-block').html().delNewlines(), // This is potentially dangerous, XSS
-    timespan: $('.cas-activity-calendar').text()
+    description: extractContents($('h4').eq(1).nextUntil('h4')), 
+    learningOutcomes: extractContents($('h4').eq(2).nextUntil('.divider.compact')),
+    timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
 
