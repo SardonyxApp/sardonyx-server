@@ -123,6 +123,7 @@ app.get('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/
 app.post('/api/cas/:resourceId/reflections', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftNewReflection, send, mb.loadReflections);
 app.patch('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), mb.craftReflection, send, mb.loadReflections);
 app.delete('/api/cas/:resourceId/reflections/:subresourceId', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections'), send, mb.loadReflections);
+app.get('/api/cas/:resourceId/learning_outcomes', auth.createTokens, mb.createUrl('ib/activity/cas', 'reflections/new'), send, mb.loadLearningOutcomes);
 
 /**
  * Sardonyx Web

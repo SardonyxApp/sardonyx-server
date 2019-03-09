@@ -5,7 +5,7 @@
  */
 
 const request = require('request');
-const { parseCSRFToken } = require('./parsers');
+const { parseAuthenticityToken } = require('./parsers');
 
 /**
  * @param {Object} req
@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
   req.formOptions = { ...req.formOptions, ...{
     accept: '*/*'
   } };
-  if (req.token.csrfToken) req.formOptions['X-CSRF-Token'] = req.token.csrfToken;
+  if (req.token.authenticityToken) req.formOptions['X-CSRF-Token'] = req.token.authenticityToken;
 
   // Make request 
   request({
@@ -80,7 +80,7 @@ module.exports = (req, res, next) => {
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session,
-        csrfToken: parseCSRFToken(response.body)
+        authenticityToken: parseAuthenticityToken(response.body)
       });
       res.append('Login-Token', payload);
 
