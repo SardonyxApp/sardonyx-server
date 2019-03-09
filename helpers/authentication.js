@@ -41,17 +41,17 @@ exports.createBody = (req, res, next) => {
 exports.createTokens = (req, res, next) => {
   const tokens = JSON.parse(req.headers['login-token'] || '{}');
 
-  if (tokens.cfduid && tokens.managebacSession && tokens.csrfToken) { 
+  if (tokens.cfduid && tokens.managebacSession && tokens.authenticityToken) { 
     // All authentication properties are included 
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
-      csrfToken: tokens.csrfToken
+      authenticityToken: tokens.authenticityToken
     };
 
     next();
   } else if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
-    // GET requests do not need CSRF Tokens
+    // GET requests do not need Authenticity Tokens
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
@@ -88,23 +88,23 @@ exports.loginToManagebac = redir => {
         return;
       }
 
-      // Successfully returns student page
-      if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
-        const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-        const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
-        const login = req.body.login;
-        const password = req.body.password; // Encrypt this in the future
-        const payload = JSON.stringify({
-          cfduid: __cfduid,
-          managebacSession: _managebac_session,
-          csrfToken: parser.parseCSRFToken(response.body),
-          login: login,
-          password: password
-        });
-        res.append('Login-Token', payload);
-        req.document = response.body;
-        return next();
-      }
+    // Successfully returns student page
+    if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
+      const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
+      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[3];
+      const login = req.body.login;
+      const password = req.body.password; // Encrypt this in the future
+      const payload = JSON.stringify({
+        cfduid: __cfduid,
+        managebacSession: _managebac_session,
+        authenticityToken: parser.parseAuthenticityToken(response.body),
+        login: login,
+        password: password
+      });
+      res.append('Login-Token', payload);
+      req.document = response.body;
+      return next();
+    }
 
       // Nonexistent or incorrect redirection, unauthorized
       if (redir) res.redirect(redir);
