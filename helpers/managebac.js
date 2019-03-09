@@ -396,3 +396,15 @@ exports.craftReflection = (req, res, next) => {
   
   next();
 };
+
+/**
+ * @description Load learning outcomes and ids from form data 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.loadLearningOutcomes = (req, res) => {
+  res.append('Managebac-Data', JSON.stringify({
+    learningOutcomes: parser.parseLearningOutcomes(req.document)
+  }));
+  res.status(200).end();
+};

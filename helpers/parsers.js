@@ -24,11 +24,11 @@ String.prototype.delNewlines = function(str = '') { // replace with '' by defaul
 };
 
 /**
- * @description Parse CSRF token in the document 
+ * @description Parse Authenticity token in the document 
  * @param {String} document 
  * @returns {String}
  */
-exports.parseCSRFToken = document => {
+exports.parseAuthenticityToken = document => {
   const $ = cheerio.load(document);
   return $('meta[name="csrf-token"]').attr('content');
 };
@@ -248,9 +248,9 @@ exports.parseMessages = document => {
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.cell a:not(.btn)').length) { 
+    if (comments.length === 0 && !!$(el).find('.divider').next().find('a:not(.btn)').length) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.cell a:not(.btn)').text().match(/\d+/)[0]);
+      comments = Number($(el).find('.divider').next().find('a:not(.btn)').text().match(/\d+/)[0]);
     }
 
     const files = [];
@@ -321,13 +321,13 @@ exports.parseCas = document => {
     payload.push({
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.details a').attr('href')),
-      description: encodeURI($(el).find('.description').text()) || null,
+      description: encodeURI($(el).find('.description').text()) || null, // Doesn't exist for experiences
       types: types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
       labels: labels,
       project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
       commentCount: Number($(el).find('.comments-count').text().delNewlines()),
-      reflectionCount: $(el).find('.reflections-count').text() || null // String, for convenience
+      reflectionCount: $(el).find('.reflections-count').text() || null // Only exists for CAS dashhboard 
     });
   });
 
@@ -341,13 +341,20 @@ exports.parseCas = document => {
  */
 exports.parseExperience = document => {
   const $ = cheerio.load(document);
-  // These elements are included in .content-block so remove them before parsing
-  $('.content-block-header').remove();
-  $('.activity-tile').remove();
-  $('.divider.compact').prev().nextAll().remove();
+
+  const extractContents = els => {
+    let str = '';  
+    els.each((i, elem) => {
+      if (i !== 0) str += '\n';
+      str += $(elem).text();
+    });
+    return encodeURI(str);
+  }
+
   return {
-    content: $('.content-block').html().delNewlines(), // This is potentially dangerous, XSS
-    timespan: $('.cas-activity-calendar').text()
+    description: extractContents($('h4').eq(1).nextUntil('h4')), 
+    learningOutcomes: extractContents($('h4').eq(2).nextUntil('.divider.compact')), // does not parse IDs
+    timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
 
@@ -399,7 +406,7 @@ exports.parseReflections = document => {
 
   $('.evidence').each((i, el) => {
     const labels = [];
-    $('.labels-set .label').each((i, elem) => {
+    $(el).find('.labels-set .label').each((i, elem) => {
       labels.push($(elem).text());
     });
 
@@ -435,6 +442,25 @@ exports.parseReflections = document => {
   });
 
   return payload;
+};
+
+/**
+ * @description Parse learning outcomes form form data 
+ * @param {String} document 
+ * @returns {Array} 
+ */
+exports.parseLearningOutcomes = document => {
+  const $ = cheerio.load(document);
+  const payload = [];
+  
+  $('input[type="checkbox"]').each((i, el) => {
+    payload.push({
+      id: Number($(el).attr('value')),
+      name: $(el).parent().text()
+    });
+  });
+
+  return payload; 
 };
 
 /**
