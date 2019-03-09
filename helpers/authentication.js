@@ -92,7 +92,7 @@ exports.loginToManagebac = (req, res, next) => {
     // Successfully returns student page
     if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
       const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[2];
+      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[3];
       const login = req.body.login;
       const password = req.body.password; // Encrypt this in the future
       const payload = JSON.stringify({
