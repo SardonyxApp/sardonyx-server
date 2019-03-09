@@ -16,7 +16,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -81,7 +81,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -130,6 +130,7 @@ describe('Load group', () => {
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
+            expect(typeof item.comments).toBe('number');
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
@@ -147,7 +148,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -196,6 +197,7 @@ describe('Load group', () => {
             expect(typeof item.date).toBe('string');
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(Array.isArray(item.files)).toBeTruthy();
+            expect(typeof item.comments).toBe('number');
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
