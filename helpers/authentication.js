@@ -41,12 +41,12 @@ exports.createBody = (req, res, next) => {
 exports.createTokens = (req, res, next) => {
   const tokens = JSON.parse(req.headers['login-token'] || '{}');
 
-  if (tokens.cfduid && tokens.managebacSession && tokens.csrfToken) { 
+  if (tokens.cfduid && tokens.managebacSession && tokens.authenticity_token) { 
     // All authentication properties are included 
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
-      csrfToken: tokens.csrfToken
+      authenticity_token: tokens.authenticity_token
     };
 
     next();
@@ -98,7 +98,7 @@ exports.loginToManagebac = (req, res, next) => {
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session,
-        csrfToken: parser.parseCSRFToken(response.body),
+        authenticity_token: parser.parseCSRFToken(response.body),
         login: login,
         password: password
       });
