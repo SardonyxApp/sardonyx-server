@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
   req.formOptions = { ...req.formOptions, ...{
     accept: '*/*'
   } };
-  if (req.token.csrfToken) req.formOptions['X-CSRF-Token'] = req.token.csrfToken;
+  if (req.token.authenticity_token) req.formOptions['X-CSRF-Token'] = req.token.authenticity_token;
 
   // Make request 
   request({
@@ -80,7 +80,7 @@ module.exports = (req, res, next) => {
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session,
-        csrfToken: parseCSRFToken(response.body)
+        authenticity_token: parseCSRFToken(response.body)
       });
       res.append('Login-Token', payload);
 

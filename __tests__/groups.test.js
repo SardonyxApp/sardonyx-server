@@ -16,7 +16,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('csrfToken');
+          expect(credentials).toHaveProperty('authenticity_token');
           done();
         });
     });
@@ -81,7 +81,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('csrfToken');
+          expect(credentials).toHaveProperty('authenticity_token');
           done();
         });
     });
@@ -147,7 +147,7 @@ describe('Load group', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('csrfToken');
+          expect(credentials).toHaveProperty('authenticity_token');
           done();
         });
     });
