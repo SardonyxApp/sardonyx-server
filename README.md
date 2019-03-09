@@ -128,7 +128,7 @@ GET /api/group/:groupId/messages/:messageId/reply/:replyId
 
 Note: `:replyId` is the id of the 2nd level comment being loaded, not the 1st level comment or the original message.
 
-Note: requests loading comments to a comment message will not return new CSRF Tokens in the header.
+Note: requests loading comments to a comment message will not return new Authenticity Tokens in the header.
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
@@ -143,7 +143,7 @@ Send a group message
 POST /api/group/:groupId/messages
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Message-Data` header with JSON:
 ```typescript
@@ -166,7 +166,7 @@ Edit a group message
 PATCH /api/group/:groupId/messages/:messageId
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Message-Data` header with JSON:
 ```typescript
@@ -187,7 +187,7 @@ Delete a group message
 DELETE /api/class/:classId/messages/:messageId
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 #### Send a comment
 Managebac allows users to comment on a comment, as long as the parent comment is a first level comment. 2nd level comments can be edited/updated like a 1st level comment. 
@@ -219,7 +219,7 @@ Send a comment (2nd level) to a group message
 POST /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Message-Data` header with JSON:
 ```typescript
@@ -241,7 +241,7 @@ Edit a comment (of any level) under a group message
 PATCH /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Message-Data` header with JSON:
 ```typescript
@@ -260,7 +260,7 @@ Delete a comment (of any level) under a group message
 ```
 DELETE /api/class/:classId/messages/:messageId/reply/:replyId
 ```
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 
 #### Load notifications 
@@ -308,7 +308,7 @@ Update a CAS Answer
 POST /api/cas/:casId/answers 
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Reflection-Data` header with JSON:
 ```typescript
@@ -337,7 +337,7 @@ Delete a CAS reflection
 DELETE /api/cas/:casId/reflections/:reflectionId
 ```
 
-Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `csrfToken` properties
+Required: `Login-Token` header with JSON containing `cfduid`, `managebacSession`, and `authenticityToken` properties
 
 Required: `Reflection-Data` header with JSON:
 ```typescript
