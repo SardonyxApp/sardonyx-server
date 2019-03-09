@@ -41,17 +41,17 @@ exports.createBody = (req, res, next) => {
 exports.createTokens = (req, res, next) => {
   const tokens = JSON.parse(req.headers['login-token'] || '{}');
 
-  if (tokens.cfduid && tokens.managebacSession && tokens.authenticity_token) { 
+  if (tokens.cfduid && tokens.managebacSession && tokens.authenticityToken) { 
     // All authentication properties are included 
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
-      authenticity_token: tokens.authenticity_token
+      authenticityToken: tokens.authenticityToken
     };
 
     next();
   } else if (req.method === 'GET' && tokens.cfduid && tokens.managebacSession) { 
-    // GET requests do not need CSRF Tokens
+    // GET requests do not need Authenticity Tokens
     req.token = {
       cfduid: tokens.cfduid,
       managebacSession: tokens.managebacSession,
@@ -98,7 +98,7 @@ exports.loginToManagebac = (req, res, next) => {
       const payload = JSON.stringify({
         cfduid: __cfduid,
         managebacSession: _managebac_session,
-        authenticity_token: parser.parseCSRFToken(response.body),
+        authenticityToken: parser.parseAuthenticityToken(response.body),
         login: login,
         password: password
       });

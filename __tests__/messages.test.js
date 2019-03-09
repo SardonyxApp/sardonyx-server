@@ -16,7 +16,7 @@ describe('Load message', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -101,7 +101,7 @@ describe('Load message', () => {
           const credentials = JSON.parse(response.headers['login-token'] || '{}');
           expect(credentials).toHaveProperty('cfduid');
           expect(credentials).toHaveProperty('managebacSession');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -190,7 +190,7 @@ describe('Load message', () => {
   //         const credentials = JSON.parse(response.headers['login-token'] || '{}');
   //         expect(credentials).toHaveProperty('cfduid');
   //         expect(credentials).toHaveProperty('managebacSession');
-  //         // no CSRF Token for JavaScript responses 
+  //         // no Authenticity Token for JavaScript responses 
   //         done();
   //       });
   //   });

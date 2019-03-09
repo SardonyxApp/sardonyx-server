@@ -24,11 +24,11 @@ String.prototype.delNewlines = function(str = '') { // replace with '' by defaul
 };
 
 /**
- * @description Parse CSRF token in the document 
+ * @description Parse Authenticity token in the document 
  * @param {String} document 
  * @returns {String}
  */
-exports.parseCSRFToken = document => {
+exports.parseAuthenticityToken = document => {
   const $ = cheerio.load(document);
   return $('meta[name="csrf-token"]').attr('content');
 };
@@ -248,9 +248,9 @@ exports.parseMessages = document => {
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.cell a:not(.btn)').length) { 
+    if (comments.length === 0 && !!$(el).find('.divider').next().find('a:not(.btn)').length) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.cell a:not(.btn)').text().match(/\d+/)[0]);
+      comments = Number($(el).find('.divider').next().find('a:not(.btn)').text().match(/\d+/)[0]);
     }
 
     const files = [];

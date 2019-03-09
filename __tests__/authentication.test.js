@@ -56,7 +56,7 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
           expect(credentials).toHaveProperty('cfduid');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -112,7 +112,7 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
           expect(credentials).toHaveProperty('cfduid');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
@@ -176,7 +176,7 @@ describe('Authentication API', () => {
           expect(credentials).toHaveProperty('password');
           expect(credentials).toHaveProperty('managebacSession');
           expect(credentials).toHaveProperty('cfduid');
-          expect(credentials).toHaveProperty('authenticity_token');
+          expect(credentials).toHaveProperty('authenticityToken');
           done();
         });
     });
