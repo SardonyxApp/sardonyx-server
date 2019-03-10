@@ -50,7 +50,7 @@ app.get('/api/login', auth.createBody, auth.loginToManagebac(), end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac(), auth.createSardonyxToken, mb.loadDefaults);
+app.post('/api/login', upload.none(), auth.loginToManagebac(), auth.initiateStudent, mb.loadDefaults);
 
 // Load dashboard 
 app.get('/api/dashboard', auth.createTokens, mb.createUrl(), send, mb.loadDefaults);
@@ -130,7 +130,7 @@ app.get('/api/cas/:resourceId/learning_outcomes', auth.createTokens, mb.createUr
  */
 
 // Student login through web client
-app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.createSardonyxToken, (req, res) => {
+app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.initiateStudent, (req, res) => {
   res.redirect('/app');
 });
 

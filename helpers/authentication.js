@@ -114,13 +114,14 @@ exports.loginToManagebac = redir => {
 };
 
 /**
- * This middleware is only called if loginToManagebac was 200.
- * @description Creates a unique token and puts that in a DB.
+ * @description Handles initial sardonyx database operations for students
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next
  */
-exports.createSardonyxToken = (req, res, next) => {
+exports.initiateStudent = (req, res, next) => {
+  // Check if student already exists 
+
   // Create token
   const token = 'temporary0123abcd'
 
