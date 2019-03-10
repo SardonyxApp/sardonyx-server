@@ -44,9 +44,9 @@ class LoginForm extends React.Component {
         <input id="session_login" name="login" type="email" autoFocus/>
         <label htmlFor="session_password">Password</label>
         <input id="session_password" name="password" type="password"/>
-        <p id="forgot-password"><a href="https://kokusaiib.managebac.com/reset-password/new" target="_blank">Forgot password?</a></p>
+        <p style={{ visibility: !this.props.teacher ? 'visible' : 'hidden' }} id="forgot-password"><a href="https://kokusaiib.managebac.com/reset-password/new" target="_blank">Forgot password?</a></p>
         <p>Sardonyx is not affiliated, associated, authorized, endorsed by, or in any way officially connected with ManageBac, or any of its subsidiaries or its affiliates.</p>
-        <p>By accessing Sardonyx, you agree to our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>.</p>
+        <p>By accessing Sardonyx, you agree to our <a href="../terms" target="_blank">Terms of Service</a> and <a href="../privacy" target="_blank">Privacy Policy</a>.</p>
         <p><a href="" onClick={e => this.props.onSwitchLogin(e)}>Click here to access the {this.props.teacher ? 'student' : 'teacher'} login.</a></p>
         <input name="commit" type="submit" value="Sign in" />
       </form>
