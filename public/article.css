@@ -1,0 +1,47 @@
+html, body {
+  font-family: Jost;
+  margin: 0;
+}
+
+#title, #content {
+  padding: 20px 40px;
+}
+
+#content > div {
+  padding: 10px 0 10px 0;
+}
+
+h1, h2, h3, p {
+  font-weight: 400;
+}
+
+h1 {
+  color: #d17b46;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #d17b46;
+}
+
+a:hover {
+  filter: brightness(1.25);
+}
+
+#title > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+img.logo {
+  height: 150px;
+  width: 150px;
+  margin-right: 30px;
+  vertical-align: middle;
+}
+
+@media only screen and (max-width: 600px) {
+  img.logo {
+    display: none;
+  }
+}
