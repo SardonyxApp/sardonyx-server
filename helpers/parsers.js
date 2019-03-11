@@ -474,3 +474,19 @@ exports.parseNumberOfPages = document => {
   const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
   return len === -2 ? 1 : len; // If there are no buttons, len = -2. In that case there is 1 page
 };
+
+/**
+ * @description Parse information about the student and their cohort 
+ * @param {String} document 
+ * @returns {Object}
+ */
+exports.parseStudent = document => {
+  const $ = cheerio.load(document);
+  
+  const obj = {
+    name: $('.profile-link > a ').text().delNewlines(),
+    year: Number($('td.col-sm-4').first().text().match(/\d{4}/)) + 3,
+  };
+  obj.tasklist_id = obj.year - 2017; // 3rd cohort is year of 2020
+  return obj;
+}

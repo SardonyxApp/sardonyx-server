@@ -4,7 +4,7 @@ const db = require('../db'); // Required, since db is usually started in server.
 
 require('dotenv').config();
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 db.connect(err => {
   if (err) {
