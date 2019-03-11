@@ -184,6 +184,7 @@ describe('Authentication API', () => {
             expect(credentials).toHaveProperty('managebacSession');
             expect(credentials).toHaveProperty('cfduid');
             expect(credentials).toHaveProperty('authenticityToken');
+            expect(response.headers).toHaveProperty('sardonyx-token');
             done();
           });
       });

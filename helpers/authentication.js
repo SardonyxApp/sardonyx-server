@@ -116,8 +116,8 @@ exports.loginToManagebac = (req, res, next) => {
     }
 
     // Nonexistent or incorrect redirection, unauthorized
-    if (/^\/api/.test(req.path)) res.redirect('/login?invalid=true'); // If accessed by a web browser 
-    else res.status(401).send('The login was rejected by Managebac.');
+    if (/^\/api/.test(req.path)) res.status(401).send('The login was rejected by Managebac.'); // If accessed through the app
+    else res.redirect('/login?invalid=true'); 
   });
 };
 
@@ -163,13 +163,15 @@ exports.initiateStudent = (req, res, next) => {
       expiresIn: '1d',
     });
 
-    if (/^\/api/.test(req.path)) { // If accessed by a web browser 
+    if (/^\/api/.test(req.path)) { // If accessed through the app
+      res.append('Sardonyx-Token', token);
+    } else {
       res.cookie('Sardonyx-Token', token, {
         maxAge: 86400000, // expires in 24 hours 
         secure: process.env.MODE === 'production',
         httpOnly: true
       });
-    } else res.append('Sardonyx-Token', token);
+    }
 
     next();
   }).catch(err => {

@@ -347,5 +347,20 @@ Required: `Reflection-Data` header with JSON:
 }
 ```
 
+### Web-based Authentication API 
+#### Student login 
+```
+POST /login/student 
+```
+
+Required: multipart form in request body with `login` and `password` for `https://kokusaiib.managebac.com`
+
+#### Teacher login 
+```
+POST /login/teacher 
+```
+
+Required: multipart form in request body with Sardonyx `login` and `password` 
+
 ## Contribution
 For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.
