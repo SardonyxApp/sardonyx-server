@@ -92,17 +92,20 @@ exports.loginToManagebac = redir => {
 
     // Successfully returns student page
     if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
-      const __cfduid = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0];
-      const _managebac_session = cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[3];
-      const login = req.body.login;
-      const password = req.body.password; // Encrypt this in the future
+      // Store returned tokens 
+      req.token = {
+        cfduid: cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[0],
+        managebacSession: cookieJar.getCookieString('https://kokusaiib.managebac.com').split(';')[3]
+      };
+
       const payload = JSON.stringify({
-        cfduid: __cfduid,
-        managebacSession: _managebac_session,
+        cfduid: req.token.cfduid,
+        managebacSession: req.token.managebacSession,
         authenticityToken: parser.parseAuthenticityToken(response.body),
-        login: login,
-        password: password
+        login: req.body.login,
+        password: req.body.password
       });
+
       res.append('Login-Token', payload);
       req.document = response.body;
       return next();
@@ -123,9 +126,34 @@ exports.loginToManagebac = redir => {
  */
 exports.initiateStudent = (req, res, next) => {
   // Check database to see if student already exists 
-  students.selectByEmail('johndoe@example.com')
-  .then(results => {
+  students.selectByEmail(req.body.login).then(results => {
+    // If student does not exist, create student 
+    return new Promise((resolve, reject) => {
+      if (!results.length) {
+        // Set cookies 
+        const j = request.jar();  
+        j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
+        j.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
+
+        // Retrieve information about student and their cohort 
+        request.get({
+          url: 'https://kokusaiib.managebac.com/student/ib/members',
+          jar: j
+        }, (err, response) => {
+          if (err) reject(err);
+          
+          // Store student information 
+          const obj = Object.assign(parser.parseStudent(response.body), {
+            email: req.body.login
+          });
+
+          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(rows => resolve(obj)).catch(e => reject(e));
+        });
+      } else resolve(results[0]);
+    });
+  }).then(results => {
     console.log(results);
+
     // Create token
     const token = 'temporary0123abcd'
 
@@ -135,8 +163,7 @@ exports.initiateStudent = (req, res, next) => {
     // Return that token
     res.append('Sardonyx-Token', token);
     next();
-  })
-  .catch(err => {
+  }).catch(err => {
     console.error(err);
     res.status(500).send('There was an error accessing the database.');
   });
