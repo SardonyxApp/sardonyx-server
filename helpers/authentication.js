@@ -75,25 +75,24 @@ exports.createTokens = (req, res, next) => {
  * @description Validate login in req.body using Managebac
  * @param {String} redir URL to redirect to upon failure, or the middleware will return 401
  */
-exports.loginToManagebac = redir => {
-  return (req, res, next) => {
-    const additionalFormData = {
-      'remember_me': 1
-    };
-    const cookieJar = request.jar();
+exports.loginToManagebac = (req, res, next) => {
+  const additionalFormData = {
+    'remember_me': 1
+  };
+  const cookieJar = request.jar();
 
-    // Relay POST request with 'login' and 'password' to ManageBac
-    request.post({
-      url: 'https://kokusaiib.managebac.com/sessions',
-      form: { ...req.body, ...additionalFormData },
-      jar: cookieJar,
-      followAllRedirects: true,
-    }, (err, response) => {
-      if (err) {
-        console.error(err);
-        res.status(502).send('There was an error connecting to Managebac. ' + err);
-        return;
-      }
+  // Relay POST request with 'login' and 'password' to ManageBac
+  request.post({
+    url: 'https://kokusaiib.managebac.com/sessions',
+    form: { ...req.body, ...additionalFormData },
+    jar: cookieJar,
+    followAllRedirects: true,
+  }, (err, response) => {
+    if (err) {
+      console.error(err);
+      res.status(502).send('There was an error connecting to Managebac. ' + err);
+      return;
+    }
 
     // Successfully returns student page
     if (response.request.uri.href === 'https://kokusaiib.managebac.com/student') {
@@ -116,11 +115,10 @@ exports.loginToManagebac = redir => {
       return next();
     }
 
-      // Nonexistent or incorrect redirection, unauthorized
-      if (redir) res.redirect(redir);
-      else res.status(401).send('The login was rejected by Managebac.');
-    });
-  };
+    // Nonexistent or incorrect redirection, unauthorized
+    if (/^\/api/.test(req.path)) res.redirect('/login?invalid=true'); // If accessed by a web browser 
+    else res.status(401).send('The login was rejected by Managebac.');
+  });
 };
 
 /**
@@ -165,7 +163,14 @@ exports.initiateStudent = (req, res, next) => {
       expiresIn: '1d',
     });
 
-    res.append('Sardonyx-Token', token);
+    if (/^\/api/.test(req.path)) { // If accessed by a web browser 
+      res.cookie('Sardonyx-Token', token, {
+        maxAge: 86400000, // expires in 24 hours 
+        secure: process.env.MODE === 'production',
+        httpOnly: true
+      });
+    } else res.append('Sardonyx-Token', token);
+
     next();
   }).catch(err => {
     console.error(err);
@@ -191,10 +196,16 @@ exports.initiateTeacher = (req, res, next) => {
         expiresIn: '1d',
       });
 
-      res.append('Sardonyx-Token', token);
+      res.cookie('Sardonyx-Token', token, {
+        maxAge: 86400000, // expires in 24 hours 
+        secure: process.env.MODE === 'production', 
+        httpOnly: true 
+      });
+
       next();
     } else { 
       // Invalid account or incorrect password 
+
       res.redirect('/login?teacher=true&invalid=true');
     }
   }).catch(err => {
