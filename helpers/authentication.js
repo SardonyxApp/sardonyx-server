@@ -147,9 +147,10 @@ exports.initiateStudent = (req, res, next) => {
             email: req.body.login
           });
 
+          // Register the student 
           students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(rows => resolve(obj)).catch(e => reject(e));
         });
-      } else resolve(results[0]);
+      } else resolve(results[0]); // results[0] will be a RawDataPacket object 
     });
   }).then(results => {
     console.log(results);
