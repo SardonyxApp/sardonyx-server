@@ -144,8 +144,8 @@ app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=
 });
 
 // Teacher login through web client 
-app.post('/login/teacher', upload.none(), (req, res) => {
-  res.status(200).send('Teacher logins are not supported yet.');
+app.post('/login/teacher', upload.none(), auth.initiateTeacher, (req, res) => {
+  res.redirect('/app');
 });
 
 module.exports = app;
