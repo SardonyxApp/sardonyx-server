@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Manage routes for the Managebac parser, tasklist, and web pages.
+ * @author SardonyxApp
+ * @license MIT 
+ */
+
 const express = require('express');
 const app = express();
 
@@ -7,6 +13,7 @@ const upload = multer(); // Used to parse multipart/form-data
 require('dotenv').config(); // Used to parse .env
 
 // Custom helper utilities 
+const db = require('./db');
 const auth = require('./helpers/authentication');
 const mb = require('./helpers/managebac');
 const send = require('./helpers/sender');

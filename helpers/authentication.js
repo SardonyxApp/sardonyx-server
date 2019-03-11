@@ -7,6 +7,8 @@
 const request = require('request');
 const parser = require('./parsers');
 
+const students = require('../models/students');
+
 /**
  * @description Convert Login-Token header to req.body FormData
  * @param {Object} req 
@@ -27,7 +29,7 @@ exports.createBody = (req, res, next) => {
     next();
   } else {
     // The request did not contain a login-token, unauthorize them before sending useless requests
-    res.status(401).end();
+    res.status(401).send('The request did not contain necessary credentials.');
   }
 };
 
@@ -60,7 +62,7 @@ exports.createTokens = (req, res, next) => {
     next();
   } else {
     // The request did not contain token information, redirect them to reissue
-    res.status(401).end();
+    res.status(401).send('The request did not contain necessary credentials.');
   }
 };
 
@@ -84,7 +86,7 @@ exports.loginToManagebac = redir => {
     }, (err, response) => {
       if (err) {
         console.error(err);
-        res.status(502).end();
+        res.status(502).send('There was an error connecting to Managebac. ' + err);
         return;
       }
 
@@ -108,7 +110,7 @@ exports.loginToManagebac = redir => {
 
       // Nonexistent or incorrect redirection, unauthorized
       if (redir) res.redirect(redir);
-      else res.status(401).end();
+      else res.status(401).send('The login was rejected by Managebac.');
     });
   };
 };
@@ -120,15 +122,22 @@ exports.loginToManagebac = redir => {
  * @param {Function} next
  */
 exports.initiateStudent = (req, res, next) => {
-  // Check if student already exists 
+  // Check database to see if student already exists 
+  students.selectByEmail('johndoe@example.com')
+  .then(results => {
+    console.log(results);
+    // Create token
+    const token = 'temporary0123abcd'
 
-  // Create token
-  const token = 'temporary0123abcd'
+    // Put token in DB
+    // createDBEntry(req.body.login, token)
 
-  // Put token in DB
-  // createDBEntry(req.body.login, token)
-
-  // Return that token
-  res.append('Sardonyx-Token', token);
-  next();
+    // Return that token
+    res.append('Sardonyx-Token', token);
+    next();
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error accessing the database.');
+  });
 };
