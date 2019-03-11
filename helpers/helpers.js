@@ -115,7 +115,7 @@ exports.end200 = (req, res) => {
 exports.hashPassword = (password, salt) => {
   const crypto = require('crypto');
 
-  // Generate a random bit sequence to use as salt
+  // Generate a random bit sequence to use as salt if salt is not provided
   if (!salt) salt = crypto.randomBytes(64).toString('hex');
 
   // Create a hash based on salt
