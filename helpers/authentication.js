@@ -6,8 +6,9 @@
 
 const request = require('request');
 const parser = require('./parsers');
-
 const students = require('../models/students');
+const teachers = require('../models/teachers');
+const { hashPassword } = require('./helpers');
 
 /**
  * @description Convert Login-Token header to req.body FormData
@@ -29,7 +30,7 @@ exports.createBody = (req, res, next) => {
     next();
   } else {
     // The request did not contain a login-token, unauthorize them before sending useless requests
-    res.status(401).send('The request did not contain necessary credentials.');
+    res.status(401).send('The request did not contain the necessary credentials.');
   }
 };
 
@@ -62,7 +63,7 @@ exports.createTokens = (req, res, next) => {
     next();
   } else {
     // The request did not contain token information, redirect them to reissue
-    res.status(401).send('The request did not contain necessary credentials.');
+    res.status(401).send('The request did not contain the necessary credentials.');
   }
 };
 
@@ -166,6 +167,27 @@ exports.initiateStudent = (req, res, next) => {
     next();
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error accessing the database.');
+    res.status(500).send('There was an error accessing the database. ' + err);
+  });
+};
+
+/**
+ * @description Authenticates teachers 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.initiateTeacher = (req, res, next) => {
+  teachers.selectByEmail(req.body.login).then(results => {
+    if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
+      // Valid account, correct password
+      next();
+    } else {
+      // Invalid account or incorrect password
+      res.redirect('/login?teacher=true&invalid=true');
+    }
+  }).catch(err => {
+    console.error(err);
+    res.status(500).end('There was an error accessing the database. ' + err);
   });
 };

@@ -105,3 +105,23 @@ exports.toSardonyxUrl = url => {
 exports.end200 = (req, res) => {
   res.status(200).end();
 };
+
+/**
+ * @description Hash a password with sha512 
+ * @param {String} password 
+ * @param {String} salt (optional)
+ * @returns {Object} containing hashed password and salt 
+ */
+exports.hashPassword = (password, salt) => {
+  const crypto = require('crypto');
+
+  // Generate a random bit sequence to use as salt
+  if (!salt) salt = crypto.randomBytes(64).toString('hex');
+
+  // Create a hash based on salt
+  const hmac = crypto.createHmac('sha512', salt);
+  hmac.update(password);
+  const hash = hmac.digest('hex');
+
+  return { password_digest: hash, salt: salt };
+};
