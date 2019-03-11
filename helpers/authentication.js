@@ -5,6 +5,10 @@
  */
 
 const request = require('request');
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
+
 const parser = require('./parsers');
 const students = require('../models/students');
 const teachers = require('../models/teachers');
@@ -149,20 +153,18 @@ exports.initiateStudent = (req, res, next) => {
           });
 
           // Register the student 
-          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(rows => resolve(obj)).catch(e => reject(e));
+          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(() => resolve()).catch(e => reject(e));
         });
-      } else resolve(results[0]); // results[0] will be a RawDataPacket object 
+      } else resolve(); 
     });
-  }).then(results => {
-    console.log(results);
+  }).then(() => {
+    const token = jwt.sign({
+      teacher: false,
+      email: req.body.login
+    }, process.env.PRIVATE_KEY, {
+      expiresIn: '1d',
+    });
 
-    // Create token
-    const token = 'temporary0123abcd'
-
-    // Put token in DB
-    // createDBEntry(req.body.login, token)
-
-    // Return that token
     res.append('Sardonyx-Token', token);
     next();
   }).catch(err => {
@@ -180,10 +182,19 @@ exports.initiateStudent = (req, res, next) => {
 exports.initiateTeacher = (req, res, next) => {
   teachers.selectByEmail(req.body.login).then(results => {
     if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
-      // Valid account, correct password
+      // Valid account and correct password 
+
+      const token = jwt.sign({
+        teacher: true, 
+        email: req.body.login
+      }, process.env.PRIVATE_KEY, {
+        expiresIn: '1d',
+      });
+
+      res.append('Sardonyx-Token', token);
       next();
-    } else {
-      // Invalid account or incorrect password
+    } else { 
+      // Invalid account or incorrect password 
       res.redirect('/login?teacher=true&invalid=true');
     }
   }).catch(err => {
