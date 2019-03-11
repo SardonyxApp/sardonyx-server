@@ -49,14 +49,14 @@ app.use('/api', (req, res, next) => {
  */
 
 // Initial validation
-app.get('/api/validate', auth.createBody, auth.loginToManagebac(), mb.loadDefaults);
+app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
 
 // Reissue tokens
-app.get('/api/login', auth.createBody, auth.loginToManagebac(), end200);
+app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac(), auth.initiateStudent, mb.loadDefaults);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
 
 // Create tokens for all Managebac API requests
 app.use('/api', auth.createTokens);
@@ -139,7 +139,7 @@ app.get('/api/cas/:resourceId/learning_outcomes', mb.createUrl('ib/activity/cas'
  */
 
 // Student login through web client
-app.post('/login/student', upload.none(), auth.loginToManagebac('/login?invalid=true'), auth.initiateStudent, (req, res) => {
+app.post('/login/student', upload.none(), auth.loginToManagebac, auth.initiateStudent, (req, res) => {
   res.redirect('/app');
 });
 
