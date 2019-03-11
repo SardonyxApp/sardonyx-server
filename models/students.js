@@ -23,11 +23,11 @@ exports.selectByEmail = (email) => {
 /**
  * @description Create a student 
  * @param {Array} params 
- * All fields (id, first_name, last_name, email, year, tasklist_id) are required
+ * name, email, year, tasklist_id are required
  * @param {Function} callback 
  */
 exports.create = (params, callback) => {
-  db.get().query("INSERT INTO students (id, first_name, last_name, email, year, tasklist_id) VALUES (?, ?, ?, ?, ?, ?"), params, (err, rows) => {
+  db.get().query("INSERT INTO students (name, email, year, tasklist_id) VALUES (?, ?, ?, ?"), params, (err, rows) => {
     if (err) return callback(err);
     callback(null, rows);
   }

@@ -15,8 +15,7 @@ CREATE TABLE tasklists (
 
 CREATE TABLE students (
   id INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   year INT NOT NULL,
   tasklist_id INT NOT NULL,
@@ -28,8 +27,8 @@ CREATE TABLE students (
 
 CREATE TABLE teachers (
   id INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  prefix_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   PRIMARY KEY (id)
 ) ENGINE=INNODB;
@@ -38,8 +37,8 @@ CREATE TABLE teachers (
 INSERT INTO tasklists (id, name, description)
   VALUES (1, 'Test Cohort', 'Dummy test group');
 
-INSERT INTO students (id, first_name, last_name, email, year, tasklist_id) 
-  VALUES (1, 'John', 'Doe', 'johndoe@example.com', 2020, 1);
+INSERT INTO students (id, name, email, year, tasklist_id) 
+  VALUES (1, 'John Doe', 'johndoe@example.com', 2020, 1);
 
-INSERT INTO teachers (id, first_name, last_name, email) 
-  VALUES (1, 'Jane', 'Doe', 'janedoe@example.com');
+INSERT INTO teachers (id, full_name, prefix_name, email) 
+  VALUES (1, 'Jane Doe', 'Mrs. Doe', 'janedoe@example.com');
