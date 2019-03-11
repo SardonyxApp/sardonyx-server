@@ -13,16 +13,18 @@ const state = {
 
 /**
  * @description Start a database pool 
- * @param {Function} callback 
+ * @param {Function} callback
  */
 exports.connect = callback => {
   state.pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_LOGIN,
-    passowrd: process.env.DB_PASSWORD,
+    password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
   });
-  
+
+  console.log(`Created pool. User: ${process.env.DB_LOGIN}@${process.env.DB_HOST} and Database: ${process.env.DB_DATABASE}`);
+
   callback();
 };
 

@@ -3,7 +3,7 @@ const db = require('./db');
 
 db.connect(err => {
   if (err) {
-    console.error('Unable to connect to MySQL. ' + err);
+    console.error('There was an error connecting to MySQL. ' + err);
     process.exit(1);
   }
   

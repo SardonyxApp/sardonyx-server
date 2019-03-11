@@ -9,12 +9,14 @@ const db = require('../db');
 /**
  * @description Select a student by email 
  * @param {String} email 
- * @param {Function} callback 
+ * @returns {Promise} results 
  */
-exports.selectByEmail = (email, callback) => {
-  db.get().query("SELECT * FROM students WHERE email = ?", email, (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
+exports.selectByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    db.get().query("SELECT * FROM students WHERE email = ?", email, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
   });
 };
 

@@ -91,7 +91,7 @@ module.exports = (req, res, next) => {
     }
 
     // Nonexistent or invalid request 
-    if (option === 1) res.status(401).end();
-    else res.status(400).end(); 
+    if (option === 1) res.status(401).send('Access was rejected by Managebac.');
+    else res.status(400).send('There was an error accessing Managebac.'); 
   });
 }
