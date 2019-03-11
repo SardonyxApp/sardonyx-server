@@ -29,7 +29,7 @@ exports.selectByEmail = email => {
 exports.create = params => {
   return new Promise((resolve, reject) => {
     db.get().query("INSERT INTO students (name, email, year, tasklist_id) VALUES (?, ?, ?, ?)", params, (err, rows) => {
-      if (err) console.error(err);
+      if (err) reject(err);
       resolve(rows);
     });
   });  
