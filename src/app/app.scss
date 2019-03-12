@@ -1,3 +1,81 @@
+// Font 
+@import url('https://indestructibletype.com/fonts/Jost.css');
+
+$primary: #d17b46;
+
 body {
   margin: 0;
+  font-family: Jost;
+}
+
+h1, h2, h3, p, li, a {
+  font-weight: 300; // For now 
+  margin: 0;
+}
+
+// TopBar
+.bar {
+  // Dimensions 
+  height: 28px;
+  width: calc(100% - 20px);  // 16px subtracted for padding 
+
+  // Position 
+  position: absolute; 
+  top: 0;
+  left: 0;
+
+  // Flex 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // Styling 
+  background-color: $primary;
+  color: white;
+  padding: 10px;
+
+  // Children 
+  & > * {
+    margin: 0;
+  }
+
+  #sardonyx {
+    font-size: 24px;
+    line-height: 24px;
+    flex: none;
+  }
+
+  // Title of the tasklist 
+  #title {
+    font-size: 28px;
+    line-height: 28px;
+    flex: auto;
+  }
+
+  h3 {
+    font-size: 16px;
+    line-height: 16px;
+    flex: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  #avatar {
+    display: inline-block;
+    vertical-align: middle;
+    height: 28px;
+    padding-left: 4px;
+  }
+}
+
+// ContentWindow
+.content-window {
+  // Dimensions 
+  height: calc(100% - 48px); // so that TopBar + ContentWindow = 100%
+  width: 100%;
+
+  // Position 
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
