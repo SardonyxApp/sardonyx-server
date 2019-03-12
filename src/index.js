@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import svgs from './logos.js';
+import { Icon } from './logos.js';
 import './index.scss';
 
 class Root extends React.Component {
@@ -8,7 +8,7 @@ class Root extends React.Component {
     return (
       <div>
         <h1>Sardonyx</h1>
-        {svgs.icon}
+        <Icon width={300} height={300} />
         <p>The web app is under development.</p>
         <p>Source code is on <a href="https://github.com/SardonyxApp">Github</a>.</p>
         <a href="login">Student Login</a> | <a href="login?teacher=true">Teacher Login</a>

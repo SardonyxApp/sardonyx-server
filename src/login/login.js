@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import svgs from '../logos.js';
+import { Icon } from '../logos.js';
 import './login.css';
 
 class LoginForm extends React.Component {
@@ -83,7 +83,7 @@ class Login extends React.Component {
     return (
       <div id="login">
         <div id="login-box">
-          {svgs.icon}
+          <Icon />
           <h1>Welcome</h1>
           <p style={{ display: !this.state.teacher ? 'block' : 'none' }}>Please use your Kokusai High School ManageBac information to log in to Sardonyx.</p>
           <p style={{ display: this.state.teacher ? 'block' : 'none' }}>Please login to Sardonyx (for teachers).</p>
