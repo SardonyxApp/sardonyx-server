@@ -116,7 +116,7 @@ exports.loginToManagebac = (req, res, next) => {
     }
 
     // Nonexistent or incorrect redirection, unauthorized
-    if (/^\/api/.test(req.path)) res.status(401).send('The login was rejected by Managebac.'); // If accessed through the app
+    if (req.type === 'api') res.status(401).send('The login was rejected by Managebac.');
     else res.redirect('/login?invalid=true'); 
   });
 };
@@ -163,7 +163,7 @@ exports.initiateStudent = (req, res, next) => {
       expiresIn: '1d',
     });
 
-    if (/^\/api/.test(req.path)) { // If accessed through the app
+    if (req.type === 'api') {
       res.append('Sardonyx-Token', token);
     } else {
       res.cookie('Sardonyx-Token', token, {
@@ -215,3 +215,20 @@ exports.initiateTeacher = (req, res, next) => {
     res.status(500).end('There was an error accessing the database. ' + err);
   });
 };
+
+/**
+ * @description Authenticates Sardonyx Tokens 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.authenticateToken = (req, res, next) => {
+  req.token = Object.assign(req.token || {}, jwt.decode(req.cookies['Sardonyx-Token']));
+  jwt.verify(req.cookies['Sardonyx-Token'], process.env.PRIVATE_KEY, (err, decoded) => {
+    if (err) { // Invalid or expired Sardonyx Token
+      if (req.type === 'browser' && req.token.teacher) res.redirect('/login?teacher=true');
+      else if (req.type === 'browser') res.redirect('/login');
+      else res.status(401).send('Sardonyx-Token is invalid or expired. ' + err);
+    } else next();
+  });
+}
