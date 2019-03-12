@@ -9,6 +9,8 @@ const app = express();
 
 const multer = require('multer');
 const upload = multer(); // Used to parse multipart/form-data
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 require('dotenv').config(); // Used to parse .env
 
@@ -18,24 +20,15 @@ const mb = require('./helpers/managebac');
 const send = require('./helpers/sender');
 const { end200 } = require('./helpers/helpers');
 
-/**
- * Public 
- */
-
-// Serve html files 
-app.use(express.static('public'));
-
-app.use('/favicon.ico', express.static(__dirname + '/public/Icon.png'));
-
-/**
- * API
- */
-
-// Route to return a random response code of either 401 or 200
-app.all('/random', (req, res) => {
-  const random = Math.floor(Math.random() * 2); // Generate either 0 or 1
-  res.sendStatus(random === 0 ? 401 : 200);
+// Determine request type 
+app.use((req, res, next) => {
+  req.type = /^\/api/.test(req.path) ? 'api' : 'browser';
+  next();
 });
+
+/**
+ * Managebac API
+ */
 
 // Set general settings on all of the API routes
 app.use('/api', (req, res, next) => {
@@ -43,10 +36,6 @@ app.use('/api', (req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
   next();
 });
-
-/**
- * Managebac 
- */
 
 // Initial validation
 app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
@@ -135,18 +124,31 @@ app.delete('/api/cas/:resourceId/reflections/:subresourceId', mb.createUrl('ib/a
 app.get('/api/cas/:resourceId/learning_outcomes', mb.createUrl('ib/activity/cas', 'reflections/new'), send, mb.loadLearningOutcomes);
 
 /**
- * Sardonyx Web
+ * Sardonyx Web App
  */
 
+app.use('/login', upload.none());
+
 // Student login through web client
-app.post('/login/student', upload.none(), auth.loginToManagebac, auth.initiateStudent, (req, res) => {
+app.post('/login/student', auth.loginToManagebac, auth.initiateStudent, (req, res) => {
   res.redirect('/app');
 });
 
 // Teacher login through web client 
-app.post('/login/teacher', upload.none(), auth.initiateTeacher, (req, res) => {
+app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
   res.redirect('/app');
 });
+
+app.get('/app', auth.authenticateToken);
+
+/**
+ * Public 
+ */
+
+// Serve html files 
+app.use(express.static('public'));
+
+app.use('/favicon.ico', express.static(__dirname + '/public/Icon.png'));
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
