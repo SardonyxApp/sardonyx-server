@@ -35,6 +35,42 @@ CREATE TABLE teachers (
   PRIMARY KEY (id)
 ) ENGINE=INNODB;
 
+CREATE TABLE student_tasks ( -- Simply tasks created by students 
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  due DATETIME,
+  tasklist_id INT NOT NULL,
+  student_id INT NOT NULL, 
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_task_parent_tasklist(tasklist_id)
+  REFERENCES tasklists(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  FOREIGN KEY fk_task_parent_student(student_id)
+  REFERENCES students(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
+) ENGINE=INNODB;
+
+CREATE TABLE teacher_tasks ( -- Simply tasks created by teachers 
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  due DATETIME,
+  tasklist_id INT NOT NULL,
+  teacher_id INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_task_parent_tasklist(tasklist_id)
+  REFERENCES tasklists(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  FOREIGN KEY fk_task_parent_teacher(teacher_id)
+  REFERENCES teachers(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
+) ENGINE=INNODB;
+
 -- Create dummy items
 -- Remove these items from production 
 INSERT INTO tasklists (id, name, description)
