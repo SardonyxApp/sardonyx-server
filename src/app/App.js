@@ -9,7 +9,8 @@ import ReactDOM from 'react-dom';
 import './app.scss';
 
 import TopBar from './TopBar';
-import ContentWindow from './ContentWindow';
+import TaskList from './TaskList';
+import TaskInfo from './TaskInfo';
 
 class App extends React.Component {
   constructor(props) {
@@ -34,7 +35,10 @@ class App extends React.Component {
           user={this.state.user}
           tasklist={this.state.tasklist} 
         />
-        <ContentWindow />
+        <div id="content-window" className="content-window">
+          <TaskList />
+          <TaskInfo />
+        </div>
       </div>
     );
   }
