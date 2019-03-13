@@ -1,4 +1,4 @@
-// Font 
+// Imports 
 @import url('https://indestructibletype.com/fonts/Jost.css');
 
 $primary: #d17b46;
@@ -18,9 +18,43 @@ body {
   font-family: Jost, sans-serif;
 }
 
-h1, h2, h3, p, li, a {
+h1, h2, h3, h4, p, li, a {
   font-weight: 300; // For now 
   margin: 0;
+}
+
+// Font 
+@mixin font-size($size) {
+  font-size: $size;
+  line-height: $size;
+}
+
+h1 {
+  @include font-size(28px);
+}
+
+h2 {
+  @include font-size(24px);
+}
+
+h3 {
+  @include font-size(20px);
+}
+
+h4 {
+  @include font-size(16px);
+}
+
+// Miscellaneous 
+%vertical-align-middle {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 12px;
 }
 
 // TopBar
@@ -50,35 +84,26 @@ h1, h2, h3, p, li, a {
   }
 
   #sardonyx {
-    font-size: 24px;
-    line-height: 24px;
     flex: none;
     
     & > * {
-      display: inline-block;
-      vertical-align: middle;
+      @extend %vertical-align-middle;
     }
   }
 
   // Title of the tasklist 
   #title {
-    font-size: 28px;
-    line-height: 28px;
     flex: auto;
   }
 
-  h3 {
-    font-size: 16px;
-    line-height: 16px;
+  h4 {
     flex: none;
-    display: inline-block;
-    vertical-align: middle;
+    @extend %vertical-align-middle; 
     margin-right: 4px;
   }
 
   #avatar {
-    display: inline-block;
-    vertical-align: middle;
+    @extend %vertical-align-middle;
     height: 28px;
   }
 }
@@ -97,12 +122,14 @@ h1, h2, h3, p, li, a {
   align-items: stretch;
 
   // Styling 
-  background-color: $light-background;
+  background-color: #f4f4fa;
 }
 
+// TaskList and TaskInfo
 .left-view, .right-view {
-  height: 100%;
+  height: calc(100% - 48px);
   flex: auto;
+  padding: 24px;
 }
 
 .left-view {
@@ -111,4 +138,16 @@ h1, h2, h3, p, li, a {
 
 .right-view {
   width: 60%;
+}
+
+#taskinfo > .card {
+  height: calc(100% - 24px);
+}
+
+.task-title {
+  text-align: center;
+}
+
+.task-description {
+  margin-top: 8px;
 }

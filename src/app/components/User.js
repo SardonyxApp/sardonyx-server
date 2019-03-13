@@ -11,7 +11,7 @@ class User extends React.Component {
   render() {
     return (
       <div id="user">
-        <h3>{this.props.user.name}</h3>
+        <h4>{this.props.user.name}</h4>
         <div id="avatar">
           <IconWhiteBackground width={28} height={28} />
         </div>
