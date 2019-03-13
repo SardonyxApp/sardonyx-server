@@ -5,7 +5,7 @@ $primary: #d17b46;
 
 body {
   margin: 0;
-  font-family: Jost;
+  font-family: Jost, sans-serif;
 }
 
 h1, h2, h3, p, li, a {
@@ -43,6 +43,11 @@ h1, h2, h3, p, li, a {
     font-size: 24px;
     line-height: 24px;
     flex: none;
+    
+    & > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 
   // Title of the tasklist 
@@ -58,13 +63,13 @@ h1, h2, h3, p, li, a {
     flex: none;
     display: inline-block;
     vertical-align: middle;
+    margin-right: 4px;
   }
 
   #avatar {
     display: inline-block;
     vertical-align: middle;
     height: 28px;
-    padding-left: 4px;
   }
 }
 

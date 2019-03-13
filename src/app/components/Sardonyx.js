@@ -5,12 +5,14 @@
  */
 
 import React from 'react';
+import { IconInverted } from '../../logos';
 
 class Sardonyx extends React.Component {
   render() {
     return (
       <div id="sardonyx">
-        <h1 style={{ lineHeight: '24px', fontSize: '24px' }}>Sardonyx</h1>
+        <IconInverted width={32} height={32}/>
+        <h1 style={{ lineHeight: '24px', fontSize: '24px', marginLeft: '4px' }}>Sardonyx</h1>
       </div>
     );
   }
