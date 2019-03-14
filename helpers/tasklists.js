@@ -7,6 +7,7 @@
 const students = require('../models/students');
 const teachers = require('../models/teachers');
 const tasklists = require('../models/tasklists');
+const tasks = require('../models/tasks');
 
 /**
  * @description Load user information 
@@ -21,7 +22,7 @@ exports.loadUser = (req, res, next) => {
     // For teachers 
     delete results[0].password_digest;
     delete results[0].salt;
-    
+
     res.append('Sardonyx-User', JSON.stringify(results[0]));
     next();
   });
@@ -37,6 +38,19 @@ exports.loadTasklist = (req, res, next) => {
   tasklists.select(req.token.year - 2017).then(results => {
     if (!results.length) res.status(500).sned('Invalid tasklist requested.');
     res.append('Sardonyx-Tasklist', JSON.stringify(results[0]));
+    next();
+  });
+};
+
+/**
+ * @description Load tasks 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+exports.loadTasks = (req, res, next) => {
+  tasks.selectByTasklistId(req.token.year - 2017).then(results => {
+    res.append('Sardonyx-Tasks', JSON.stringify(results));
     next();
   });
 };
