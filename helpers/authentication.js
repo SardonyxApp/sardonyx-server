@@ -151,14 +151,15 @@ exports.initiateStudent = (req, res, next) => {
           });
 
           // Register the student 
-          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(() => resolve()).catch(e => reject(e));
+          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(() => resolve(obj)).catch(e => reject(e));
         });
-      } else resolve(); 
+      } else resolve(results[0]); 
     });
-  }).then(() => {
+  }).then((student) => {
     const token = jwt.sign({
       teacher: false,
-      email: req.body.login
+      email: req.body.login,
+      year: student.year
     }, process.env.PRIVATE_KEY, {
       expiresIn: '1d',
     });
@@ -193,7 +194,8 @@ exports.initiateTeacher = (req, res, next) => {
 
       const token = jwt.sign({
         teacher: true, 
-        email: req.body.login
+        email: req.body.login,
+        year: 2020 // hard coded for now, default year 
       }, process.env.PRIVATE_KEY, {
         expiresIn: '1d',
       });
