@@ -17,6 +17,7 @@ require('dotenv').config(); // Used to parse .env
 // Custom helper utilities 
 const auth = require('./helpers/authentication');
 const mb = require('./helpers/managebac');
+const tasklists = require('./helpers/tasklists');
 const send = require('./helpers/sender');
 const { end200 } = require('./helpers/helpers');
 
@@ -139,7 +140,7 @@ app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
   res.redirect('/app');
 });
 
-app.get('/app', auth.authenticateToken);
+app.get('/app', auth.authenticateToken, tasklists.loadUser, tasklists.loadTasklist);
 
 /**
  * Public 
