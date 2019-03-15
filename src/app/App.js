@@ -15,17 +15,37 @@ import TaskInfo from './TaskInfo';
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      user: { // hard coded for now 
+      user: { 
         teacher: false,
-        name: 'John Doe', 
-        email: 'johndoe@example.com'
+        name: '', 
+        email: ''
       },
       tasklist: {
-        name: 'Temporary title',
-        description: 'Test tasklist'
-      }
+        name: '',
+        description: ''
+      },
+      tasks: [],
+      currentTask: -1 // -1 -> no task selected 
     };
+  }
+
+  componentDidMount() {
+    Promise.all([
+      fetch('/app/user').then(response => response.json()),
+      fetch('/app/tasklist').then(response => response.json()),
+      fetch('/app/tasks').then(response => response.json())
+    ]).then(responses => {
+      console.log(responses);
+      this.setState({
+        user: responses[0],
+        tasklist: responses[1],
+        tasks: responses[2]
+      });
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
   render() {
@@ -36,8 +56,13 @@ class App extends React.Component {
           tasklist={this.state.tasklist} 
         />
         <div id="content-window" className="content-window">
-          <TaskList />
-          <TaskInfo />
+          <TaskList 
+            tasks={this.state.tasks}
+            currentTask={this.state.currentTask}
+          />
+          <TaskInfo 
+            task={this.state.currentTask === -1 ? null : this.state.tasks[this.state.currentTask]}
+          />
         </div>
       </div>
     );

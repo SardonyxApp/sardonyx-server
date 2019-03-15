@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 	entry: {
 		'index': ['@babel/polyfill', './src/index.js'],
-		'login': './src/login/login.js',
-		'app': './src/app/App.js'
+		'login': ['@babel/polyfill', './src/login/login.js'],
+		'app': ['@babel/polyfill', './src/app/App.js']
 	},
 	output: {
 		path: path.join(__dirname, 'public'),
