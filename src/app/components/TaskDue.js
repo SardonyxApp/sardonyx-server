@@ -11,7 +11,7 @@ class TaskDue extends React.Component {
   render() {
     return (
       <div className="task-due">
-        <TimeIcon width={24} height={24} />
+        <TimeIcon />
         <p>Due {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', day: 'numeric'}).format(new Date(this.props.due))}</p>
       </div>
     );

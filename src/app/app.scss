@@ -117,11 +117,13 @@ h4 {
     flex: none;
     @extend %vertical-align-middle; 
     margin-right: 4px;
+    cursor: pointer;
   }
 
   #avatar {
     @extend %vertical-align-middle;
     height: 28px;
+    cursor: pointer;
   }
 }
 
@@ -177,23 +179,24 @@ h4 {
 
 .task-labels, .task-description, .task-due {
   margin-top: 16px;
-}
-
-.task-due {
-  cursor: pointer;
   display: flex;
+  align-items: center;
 
-  &:hover {
-    color: black;
+  svg {
+    flex: none;
   }
 
   p {
     flex: 1 1 auto;
     margin-left: 8px;
   }
+}
 
-  svg {
-    flex: none;
+.task-due {
+  cursor: pointer;
+
+  &:hover {
+    color: black;
   }
 }
 

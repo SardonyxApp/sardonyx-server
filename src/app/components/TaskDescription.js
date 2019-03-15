@@ -5,12 +5,14 @@
  */
 
 import React from 'react';
+import { DescriptionIcon } from '../../logos';
 
 class TaskDescription extends React.Component {
   render() {
     return (
       <div className="task-description">
-        {this.props.description}
+        <DescriptionIcon />
+        <p>{this.props.description}</p>
       </div>
     );
   }
