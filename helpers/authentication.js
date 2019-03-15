@@ -195,7 +195,7 @@ exports.initiateTeacher = (req, res, next) => {
       const token = jwt.sign({
         teacher: true, 
         email: req.body.login,
-        year: 2020 // hard coded for now, default year 
+        year: 2018 // hard coded for now, default year 
       }, process.env.PRIVATE_KEY, {
         expiresIn: '1d',
       });

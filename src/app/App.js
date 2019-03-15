@@ -37,7 +37,7 @@ class App extends React.Component {
     Promise.all([
       fetch('/app/user').then(response => response.json()),
       fetch('/app/tasklist').then(response => response.json()),
-      fetch('/app/tasks').then(response => response.json())
+      fetch('/app/tasks?full=true').then(response => response.json())
     ]).then(responses => {
       this.setState({
         user: responses[0],

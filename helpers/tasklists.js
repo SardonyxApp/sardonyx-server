@@ -44,7 +44,14 @@ exports.loadTasklist = (req, res) => {
  * @param {Object} res 
  */
 exports.loadTasks = (req, res) => {
-  tasks.selectByTasklistId(req.token.year - 2017).then(results => {
-    res.json(results);
-  });
+  console.log(req.query.full);
+  if (req.query.full = 'true') {
+    tasks.selectJoinedByTasklistId(req.token.year - 2017).then(results => {
+      res.json(results);
+    });
+  } else {
+    tasks.selectByTasklistId(req.token.year - 2017).then(results => {
+      res.json(results);
+    });
+  }
 };
