@@ -38,13 +38,25 @@ CREATE TABLE teachers (
 CREATE TABLE subjects (
   id INT NOT NULL AUTO_INCREMENT, 
   name VARCHAR(255) UNIQUE NOT NULL,
-  PRIMARY KEY (id)
+  color CHAR(7),
+  tasklist_id INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_subject_tasklist(tasklist_id)
+  REFERENCES tasklists(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE 
 ) ENGINE=INNODB;
 
 CREATE TABLE categories (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) UNIQUE NOT NULL,
-  PRIMARY KEY (id)
+  color CHAR(7),
+  tasklist_id INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_category_tasklist(tasklist_id)
+  REFERENCES tasklists(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE tasks ( 
@@ -92,11 +104,11 @@ INSERT INTO teachers (id, full_name, prefix_name, email, password_digest, salt)
   VALUES (1, 'Jane Doe', 'Mrs. Doe', 'janedoe@example.com', 'e722db6d714b4de78d557b7d6bf667091ded4491a96e8ec15961cdac5ae5a1b9333648153d7c6a65236ce093e6a78df40cd26be5c05000d23c7d21e950574916', 'c76c4296c780c9af8ec0fa1774882dfadbb1024b564ac00a141101e75996c7d626a3c911bdb7d106109f54d4c41711ed242d7e0f5a7de3dbafa42526d6075b4b');
 -- original password: password1234
 
-INSERT INTO subjects (id, name) 
-  VALUES (1, 'Programming');
+INSERT INTO subjects (id, name, color, tasklist_id) 
+  VALUES (1, 'Programming', '#4b249a', 1);
 
-INSERT INTO categories (id, name)
-  VALUES (1, 'Assignment');
+INSERT INTO categories (id, name, color, tasklist_id)
+  VALUES (1, 'Assignment', '#da9104', 1);
 
 INSERT INTO tasks (id, name, description, due, tasklist_id, student_id, subject_id, category_id) 
   VALUES (1, 'Program Sardonyx', 'Implement programs.', '2019-04-01 12:00', 1, 1, 1, 1);
