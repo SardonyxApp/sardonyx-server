@@ -58,6 +58,22 @@ h4 {
   padding: 12px;
 }
 
+.label {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  margin: 0 4px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 // TopBar
 .bar {
   // Dimensions 
@@ -134,14 +150,14 @@ h4 {
 }
 
 .left-view {
-  width: 40%;
+  width: 45%;
   display: flex;
   flex-direction: column;
   align-content: stretch;
 }
 
 .right-view {
-  width: 60%;
+  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -159,7 +175,7 @@ h4 {
   text-align: center;
 }
 
-.task-description, .task-due {
+.task-labels, .task-description, .task-due {
   margin-top: 16px;
 }
 
@@ -173,6 +189,7 @@ h4 {
 
   p {
     flex: 1 1 auto;
+    margin-left: 8px;
   }
 
   svg {
@@ -180,13 +197,31 @@ h4 {
   }
 }
 
-#tasklist .card {
-  border-radius: 8px;
-  margin-top: 12px;
-  cursor: pointer;
+.tasks-container {
+  overflow: auto;
+  flex: 1 1 auto;
 
-  &:hover {
-    background-color: #fbfbfb;
+  & > div {
+    display: flex;
+
+    .side {
+      flex: 0 0 36px;
+      margin-top: 12px;
+    }
+
+    .card {
+      flex: 1 1 auto;
+    }
+  }
+  
+  .card { // additional properties 
+    border-radius: 8px;
+    margin-top: 12px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fbfbfb;
+    }
   }
 }
 
@@ -197,7 +232,12 @@ h4 {
   text-overflow: ellipsis;
 }
 
-.tasks-container {
-  overflow: auto;
-  flex: 1 1 auto;
+.overview-dots {
+  height: 12px;
+  margin-top: 4px;
+  display: flex;
+
+  .dot {
+    margin: 0 2px;
+  }
 }

@@ -6,6 +6,7 @@
 
 import React from 'react';
 import TaskTitle from './components/TaskTitle';
+import TaskLabels from './components/TaskLabels';
 import TaskDescription from './components/TaskDescription';
 import TaskDue from './components/TaskDue';
 
@@ -16,6 +17,9 @@ class TaskInfo extends React.Component {
         <div className="card">
           <TaskTitle 
             title={this.props.task.name}
+          />
+          <TaskLabels 
+            task={this.props.task}
           />
           <TaskDescription
             description={this.props.task.description}
