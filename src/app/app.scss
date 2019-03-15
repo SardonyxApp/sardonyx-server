@@ -138,6 +138,9 @@ h4 {
 
 .right-view {
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #taskinfo > .card {

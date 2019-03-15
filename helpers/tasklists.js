@@ -13,9 +13,8 @@ const tasks = require('../models/tasks');
  * @description Load user information 
  * @param {Object} req
  * @param {Object} res 
- * @param {Function} next
  */
-exports.loadUser = (req, res, next) => {
+exports.loadUser = (req, res) => {
   const target = req.token.teacher ? teachers : students; 
   target.selectByEmail(req.token.email).then(results => {
     if (!results.length) res.status(500).send('Invalid user requested.');
@@ -23,8 +22,7 @@ exports.loadUser = (req, res, next) => {
     delete results[0].password_digest;
     delete results[0].salt;
 
-    res.append('Sardonyx-User', JSON.stringify(results[0]));
-    next();
+    res.json(results[0]);
   });
 };
 
@@ -32,13 +30,11 @@ exports.loadUser = (req, res, next) => {
  * @description Load tasklist 
  * @param {Object} req 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadTasklist = (req, res, next) => {
+exports.loadTasklist = (req, res) => {
   tasklists.select(req.token.year - 2017).then(results => {
     if (!results.length) res.status(500).sned('Invalid tasklist requested.');
-    res.append('Sardonyx-Tasklist', JSON.stringify(results[0]));
-    next();
+    res.json(results[0]);
   });
 };
 
@@ -46,11 +42,9 @@ exports.loadTasklist = (req, res, next) => {
  * @description Load tasks 
  * @param {Object} req 
  * @param {Object} res 
- * @param {Function} next 
  */
-exports.loadTasks = (req, res, next) => {
+exports.loadTasks = (req, res) => {
   tasks.selectByTasklistId(req.token.year - 2017).then(results => {
-    res.append('Sardonyx-Tasks', JSON.stringify(results));
-    next();
+    res.json(results);
   });
 };
