@@ -7,6 +7,7 @@
 import React from 'react';
 import TaskTitle from './components/TaskTitle';
 import TaskDescription from './components/TaskDescription';
+import TaskDue from './components/TaskDue';
 
 class TaskInfo extends React.Component {
   render() {
@@ -18,6 +19,9 @@ class TaskInfo extends React.Component {
           />
           <TaskDescription
             description={this.props.task.description}
+          />
+          <TaskDue 
+            due={this.props.task.due}
           />
         </div>
       </div>
