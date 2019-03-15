@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { LabelIcon } from '../../logos';
 
 class TaskLabels extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class TaskLabels extends React.Component {
     
     return (
       <div class="task-labels">
+        <LabelIcon />
         {labels}
       </div>
     );
