@@ -29,6 +29,8 @@ class App extends React.Component {
       tasks: [],
       currentTask: -1 // -1 -> no task selected 
     };
+
+    this.handleSelectTask = this.handleSelectTask.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +39,6 @@ class App extends React.Component {
       fetch('/app/tasklist').then(response => response.json()),
       fetch('/app/tasks').then(response => response.json())
     ]).then(responses => {
-      console.log(responses);
       this.setState({
         user: responses[0],
         tasklist: responses[1],
@@ -45,6 +46,12 @@ class App extends React.Component {
       });
     }).catch(err => {
       console.error(err);
+    });
+  }
+
+  handleSelectTask(i) {
+    this.setState({
+      currentTask: this.state.currentTask === i ? -1 : i
     });
   }
 
@@ -59,6 +66,7 @@ class App extends React.Component {
           <TaskList 
             tasks={this.state.tasks}
             currentTask={this.state.currentTask}
+            onSelectTask={this.handleSelectTask}
           />
           <TaskInfo 
             task={this.state.currentTask === -1 ? null : this.state.tasks[this.state.currentTask]}

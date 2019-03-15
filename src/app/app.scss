@@ -16,6 +16,7 @@ $light-background: #f8f8fa;
 body {
   margin: 0;
   font-family: Jost, sans-serif;
+  color: $black;
 }
 
 h1, h2, h3, h4, p, li, a {
@@ -134,6 +135,9 @@ h4 {
 
 .left-view {
   width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
 }
 
 .right-view {
@@ -153,4 +157,26 @@ h4 {
 
 .task-description {
   margin-top: 8px;
+}
+
+#tasklist .card {
+  border-radius: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fbfbfb;
+  }
+}
+
+.overview-description {
+  color: $dark-background;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tasks-container {
+  overflow: auto;
+  flex: 1 1 auto;
 }
