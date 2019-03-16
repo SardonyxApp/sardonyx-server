@@ -7,7 +7,7 @@ db.connect(err => {
     process.exit(1);
   }
   
-  const listener = app.listen(process.env.PORT, () => {
+  const listener = app.listen(process.env.PORT, (process.env.HOST || 'localhost'), () => {
     console.log('Your app is listening on port ' + listener.address().port);
   });
 });
