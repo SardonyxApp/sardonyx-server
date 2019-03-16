@@ -200,6 +200,12 @@ h4 {
   height: calc(100% - 8px);
   padding: 4px 8px 4px 0;
 
+  .group {
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-top: 8px;
+  }
+
   .side {
     width: 36px;
     margin-top: 12px;
