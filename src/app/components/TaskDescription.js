@@ -10,9 +10,9 @@ import { DescriptionIcon } from '../../logos';
 class TaskDescription extends React.Component {
   render() {
     return (
-      <div className="task-description">
+      <div id="task-description" className="taskinfo-component">
         <DescriptionIcon />
-        <p>{this.props.description}</p>
+        <p>{this.props.description || 'No description provided.'}</p>
       </div>
     );
   }

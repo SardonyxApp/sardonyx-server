@@ -9,7 +9,7 @@ import React from 'react';
 class TaskTitle extends React.Component {
   render() {
     return (
-      <div className="task-title">
+      <div id="task-title">
         <h2>{this.props.title}</h2>
       </div>
     );

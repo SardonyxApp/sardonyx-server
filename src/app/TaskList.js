@@ -17,9 +17,9 @@ class TaskListCard extends React.Component {
       >
         <h3 className="overview-title">{this.props.task.name}</h3>
         <p className="overview-description">{this.props.task.description}</p>
-        <div className="overview-dots" style={{ display: !!this.props.task.subject_id || !!this.props.task.category_id ? 'flex' : 'none'}}>
-          <div class="dot" style={{ backgroundColor: this.props.task.subject_color, display: !!this.props.task.subject_id ? 'block' : 'none' }}></div>
-          <div class="dot" style={{ backgroundColor:this.props.task.category_color, display: !!this.props.task.category_id ? 'block' : 'none' }}></div>
+        <div className="overview-dots" style={{ display: !!this.props.task.subject_id || !!this.props.task.category_id ? '' : 'none'}}>
+          <div class="dot" style={{ backgroundColor: this.props.task.subject_color, display: !!this.props.task.subject_id ? '' : 'none' }}></div>
+          <div class="dot" style={{ backgroundColor:this.props.task.category_color, display: !!this.props.task.category_id ? '' : 'none' }}></div>
         </div>
       </div>
     );
@@ -101,13 +101,13 @@ class TaskList extends React.Component {
     return (
       <div id="tasklist" className="left-view">
         <div className="tasks-container">
-          <h4 className="group" style={{ display: todayTasks.length ? 'block' : 'none' }}>Today</h4>
+          <h4 className="group" style={{ display: todayTasks.length ? '' : 'none' }}>Today</h4>
           {todayTasks}
-          <h4 className="group" style={{ display: upcomingTasks.length ? 'block' : 'none' }}>Upcoming</h4>
+          <h4 className="group" style={{ display: upcomingTasks.length ? '' : 'none' }}>Upcoming</h4>
           {upcomingTasks}
-          <h4 className="group" style={{ display: noDateTasks.length ? 'block' : 'none'} }>No date set</h4>
+          <h4 className="group" style={{ display: noDateTasks.length ? '' : 'none'} }>No date set</h4>
           {noDateTasks}
-          <h4 className="group" style={{ display: pastTasks.length ? 'block' : 'none' }}>Past</h4>
+          <h4 className="group" style={{ display: pastTasks.length ? '' : 'none' }}>Past due</h4>
           {pastTasks}
         </div>
       </div>

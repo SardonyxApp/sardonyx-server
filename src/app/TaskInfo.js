@@ -9,6 +9,7 @@ import TaskTitle from './components/TaskTitle';
 import TaskLabels from './components/TaskLabels';
 import TaskDescription from './components/TaskDescription';
 import TaskDue from './components/TaskDue';
+import TaskAuthor from './components/TaskAuthor';
 
 class TaskInfo extends React.Component {
   render() {
@@ -27,11 +28,14 @@ class TaskInfo extends React.Component {
           <TaskDue 
             due={this.props.task.due}
           />
+          <TaskAuthor 
+            author={this.props.task.student_name || this.props.task.teacher_name}
+          />
         </div>
       </div>
     ) : (
       <div id="taskinfo" className="right-view">
-        <h3 style={{ lineHeight: '100%', textAlign: 'center' }}>Please select a task to see in detail.</h3>
+        <h3 style={{ textAlign: 'center' }}>Please select a task to see in detail.</h3>
       </div>      
     );
   }

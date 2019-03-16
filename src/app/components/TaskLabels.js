@@ -22,9 +22,9 @@ class TaskLabels extends React.Component {
     }
     
     return (
-      <div class="task-labels">
+      <div id="task-labels" className="taskinfo-component">
         <LabelIcon />
-        {labels}
+        {!!labels.length ? labels : <p>No labels set.</p>}
       </div>
     );
   }

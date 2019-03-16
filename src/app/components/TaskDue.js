@@ -10,7 +10,7 @@ import { TimeIcon } from '../../logos';
 class TaskDue extends React.Component {
   render() {
     return (
-      <div className="task-due">
+      <div id="task-due" className="taskinfo-component">
         <TimeIcon />
         <p>Due {!!this.props.due ? new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', day: 'numeric'}).format(new Date(this.props.due)) : 'date not set'}</p>
       </div>
