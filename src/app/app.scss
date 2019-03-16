@@ -162,17 +162,20 @@ h4 {
 
 #taskinfo {
   font-size: 18px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .card {
-    height: calc(100% - 24px);
+    flex: 0 0 calc(100% - 24px);
   }
 }
 
-.task-title {
+#task-title {
   text-align: center;
 }
 
-.task-labels, .task-description, .task-due {
+.taskinfo-component {
   margin-top: 16px;
   display: flex;
   align-items: center;
@@ -187,7 +190,7 @@ h4 {
   }
 }
 
-.task-due {
+#task-due {
   cursor: pointer;
 
   &:hover {
@@ -203,7 +206,7 @@ h4 {
   .group {
     text-transform: uppercase;
     font-weight: 400;
-    margin-top: 8px;
+    margin-top: 16px;
   }
 
   .side {
