@@ -44,7 +44,7 @@ exports.parseDeadlines = document => {
 
   $('.agenda > .line').each((i, el) => {
     const labels = [];
-    $(el).find('.label').each((i, label) => {
+    $(el).find('.label').each((j, label) => {
       labels.push($(label).text().delNewlines()); 
     });
 
@@ -54,7 +54,7 @@ exports.parseDeadlines = document => {
     const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
     const dueDay = $(el).find('.day').text(); // Match from icon
     const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
-    const dueYear = $(el).parent().prev('h3').text().includes('Upcoming') ? guessFutureYear(dueMonth) : guessPastYear(dueMonth); // listed as upcoming deadline or past deadline
+    const dueYear = $(el).find('.date-badge').hasClass('past-due') ? guessPastYear(dueMonth) : guessFutureYear(dueMonth); // listed as upcoming deadline or past deadline
 
     payload.push({
       title: encodeURI($(el).find('h4.title').text().delNewlines()), 
