@@ -147,22 +147,17 @@ h4 {
 // TaskList and TaskInfo
 .left-view, .right-view {
   height: calc(100% - 48px);
-  flex: auto;
   padding: 24px;
 }
 
 .left-view {
-  width: 45%;
-  display: flex;
-  flex-direction: column;
-  align-content: stretch;
+  width: calc(45% - 48px);
+  flex: 0 0 auto;
 }
 
 .right-view {
-  width: 55%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: calc(55% - 48px);
+  flex: 1 1 auto;
 }
 
 #taskinfo {
@@ -202,22 +197,19 @@ h4 {
 
 .tasks-container {
   overflow: auto;
-  flex: 1 1 auto;
+  height: calc(100% - 8px);
+  padding: 4px 8px 4px 0;
 
-  & > div {
-    display: flex;
-
-    .side {
-      flex: 0 0 36px;
-      margin-top: 12px;
-    }
-
-    .card {
-      flex: 1 1 auto;
-    }
+  .side {
+    width: 36px;
+    margin-top: 12px;
+    display: inline-block;
+    vertical-align: top;
   }
   
-  .card { // additional properties 
+  .card { 
+    width: calc(100% - 60px);
+    display: inline-block;
     border-radius: 8px;
     margin-top: 12px;
     cursor: pointer;
