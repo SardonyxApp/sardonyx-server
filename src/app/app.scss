@@ -203,6 +203,22 @@ h4 {
   height: calc(100% - 8px);
   padding: 4px 8px 4px 0;
 
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 2px;
+  }
+
   .group {
     text-transform: uppercase;
     font-weight: 400;
