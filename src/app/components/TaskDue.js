@@ -12,7 +12,7 @@ class TaskDue extends React.Component {
     return (
       <div className="task-due">
         <TimeIcon />
-        <p>Due {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', day: 'numeric'}).format(new Date(this.props.due))}</p>
+        <p>Due {!!this.props.due ? new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', day: 'numeric'}).format(new Date(this.props.due)) : 'date not set'}</p>
       </div>
     );
   }
