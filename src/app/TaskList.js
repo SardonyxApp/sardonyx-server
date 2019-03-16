@@ -12,8 +12,8 @@ class TaskListCard extends React.Component {
       <div 
         className="card" 
         key={this.props.task.id} 
-        onClick={() => this.props.onSelectTask(this.props.index)}
-        style={{ backgroundColor: this.props.currentTask === this.props.index ? '#f6e6dc' : ''}}
+        onClick={() => this.props.onSelectTask(this.props.task.id)}
+        style={{ backgroundColor: this.props.selected ? '#f6e6dc' : ''}}
       >
         <h3 className="overview-title">{this.props.task.name}</h3>
         <p className="overview-description">{this.props.task.description}</p>
@@ -37,20 +37,19 @@ class TaskList extends React.Component {
     const todayTasks = this.props.tasks.filter(t => new Date().toDateString() === new Date(t.due).toDateString()).map((t, i) => (
       <div>
         <div className="side">
-          <p>{i === 0 ? null : new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(t.due))}</p>
-          <p>{i === 0 ? null : new Date(t.due).getDate()}</p>
+          <p>{i === 0 ? new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(t.due)) : null}</p>
+          <p>{i === 0 ? new Date(t.due).getDate() : null}</p>
         </div>
         <TaskListCard 
           task={t}
-          index={i}
-          currentTask={this.props.currentTask}
+          selected={this.props.currentTask === t.id}
           onSelectTask={this.props.onSelectTask}
         />
       </div>
     ));
-    count += todayTasks.length - 1;
+    count += todayTasks.length;
 
-    const upcomingTasks = this.props.tasks.filter(t => new Date().toDateString() !== new Date(t.due).toDateString() && new Date() < new Date(t.due)).map((t, i) => {
+    const upcomingTasks = this.props.tasks.filter(t => new Date().toDateString() !== new Date(t.due).toDateString() && new Date() < new Date(t.due)).map(t => {
       const view = (
         <div>
           <div className="side">
@@ -59,8 +58,7 @@ class TaskList extends React.Component {
           </div>
           <TaskListCard 
             task={t}
-            index={count + i}
-            currentTask={this.props.currentTask}
+            selected={this.props.currentTask === t.id}
             onSelectTask={this.props.onSelectTask}
           />
         </div>
@@ -68,22 +66,21 @@ class TaskList extends React.Component {
       store = t.due;
       return view;
     });
-    count += upcomingTasks.length - 1;
+    count += upcomingTasks.length;
 
-    const noDateTasks = this.props.tasks.filter(t => t.due === null).map((t, i) => (
+    const noDateTasks = this.props.tasks.filter(t => t.due === null).map(t => (
       <div>
         <div className="side"></div>
         <TaskListCard 
           task={t}
-          index={count + i}
-          currentTask={this.props.currentTask}
+          selected={this.props.currentTask === t.id}
           onSelectTask={this.props.onSelectTask}
         />
       </div>
     ));
-    count += noDateTasks.length - 1;
+    count += noDateTasks.length;
 
-    const pastTasks = this.props.tasks.filter(t => t.due !== null && new Date().toDateString() !== new Date(t.due).toDateString() && new Date() > new Date(t.due)).reverse().map((t, i) => {
+    const pastTasks = this.props.tasks.filter(t => t.due !== null && new Date().toDateString() !== new Date(t.due).toDateString() && new Date() > new Date(t.due)).reverse().map(t => {
       const view = (
         <div>
           <div className="side">
@@ -92,8 +89,7 @@ class TaskList extends React.Component {
           </div>
           <TaskListCard 
             task={t}
-            index={count + i}
-            currentTask={this.props.currentTask}
+            selected={this.props.currentTask === t.id}
             onSelectTask={this.props.onSelectTask}
           />
         </div>

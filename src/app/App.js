@@ -27,7 +27,7 @@ class App extends React.Component {
         description: ''
       },
       tasks: [],
-      currentTask: -1 // -1 -> no task selected 
+      currentTask: -1 // Store the id of current task: -1 -> no task selected 
     };
 
     this.handleSelectTask = this.handleSelectTask.bind(this);
@@ -69,7 +69,7 @@ class App extends React.Component {
             onSelectTask={this.handleSelectTask}
           />
           <TaskInfo 
-            task={this.state.currentTask === -1 ? null : this.state.tasks[this.state.currentTask]}
+            task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
           />
         </div>
       </div>
