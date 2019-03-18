@@ -74,6 +74,25 @@ h4 {
   display: inline-block;
 }
 
+.custom-scroll {
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    // Make sure to set a padding of 8px 
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 2px;
+  }
+}
+
 // TopBar
 .bar {
   // Dimensions 
@@ -184,7 +203,7 @@ h4 {
     flex: none;
   }
 
-  p {
+  & > p {
     flex: 1 1 auto;
     margin-left: 8px;
   }
@@ -198,26 +217,27 @@ h4 {
   }
 }
 
-.tasks-container {
-  overflow: auto;
-  height: calc(100% - 8px);
+#tasks-filter {
+  overflow-x: auto;
+  white-space: nowrap;
+  height: 40px;
+
+  padding-bottom: 8px;
+  
+  & * {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .add-icon, .remove-icon {
+    cursor: pointer;
+  }
+}
+
+#tasks-container {
+  overflow-y: auto;
+  height: calc(100% - 48px);
   padding: 4px 8px 4px 0;
-
-  scrollbar-color: #999 transparent;
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track-piece {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #999;
-    border-radius: 2px;
-  }
 
   .group {
     text-transform: uppercase;

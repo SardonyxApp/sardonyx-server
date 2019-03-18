@@ -12,12 +12,16 @@ class TaskLabels extends React.Component {
     const labels = [];
     if (this.props.task.subject_id) {
       labels.push(
-        <div className="label" style={{ background: this.props.task.subject_color}}>{this.props.task.subject_name}</div>
+        <div className="label" style={{ background: this.props.task.subject_color}}>
+          <p>{this.props.task.subject_name}</p>
+        </div>
       );
     }
     if (this.props.task.category_id) {
       labels.push(
-        <div className="label" style={{ background: this.props.task.category_color}}>{this.props.task.category_name}</div>
+        <div className="label" style={{ background: this.props.task.category_color}}>
+          <p>{this.props.task.category_name}</p>
+        </div>
       );
     }
     
