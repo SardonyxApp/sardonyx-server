@@ -8,6 +8,7 @@ const students = require('../models/students');
 const teachers = require('../models/teachers');
 const tasklists = require('../models/tasklists');
 const tasks = require('../models/tasks');
+const { subjects, categories } = require('../models/labels');
 
 /**
  * @description Load user information 
@@ -23,6 +24,9 @@ exports.loadUser = (req, res) => {
     delete results[0].salt;
 
     res.json(results[0]);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
   });
 };
 
@@ -33,8 +37,11 @@ exports.loadUser = (req, res) => {
  */
 exports.loadTasklist = (req, res) => {
   tasklists.select(req.token.year - 2017).then(results => {
-    if (!results.length) res.status(500).sned('Invalid tasklist requested.');
+    if (!results.length) res.status(400).send('Invalid tasklist requested.');
     res.json(results[0]);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
   });
 };
 
@@ -54,10 +61,44 @@ exports.loadTasks = (req, res) => {
         return task;
       });
       res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
     });
   } else {
     tasks.selectByTasklistId(req.token.year - 2017).then(results => {
       res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
     });
   }
 };
+
+/**
+ * @description Load subject labels 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.loadSubjects = (req, res) => {
+  subjects.selectByTasklistId(req.token.year - 2017).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+}
+
+/**
+ * @description Load category labels 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.loadCategories = (req, res) => {
+  categories.selectByTasklistId(req.token.year - 2017).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+}

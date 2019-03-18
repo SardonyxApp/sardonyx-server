@@ -27,7 +27,9 @@ class App extends React.Component {
         description: ''
       },
       tasks: [],
-      currentTask: -1 // Store the id of current task: -1 -> no task selected 
+      currentTask: -1, // Store the id of current task: -1 -> no task selected 
+      subjects: [],
+      categories: []
     };
 
     this.handleSelectTask = this.handleSelectTask.bind(this);
@@ -37,12 +39,16 @@ class App extends React.Component {
     Promise.all([
       fetch('/app/user').then(response => response.json()),
       fetch('/app/tasklist').then(response => response.json()),
-      fetch('/app/tasks?full=true').then(response => response.json())
+      fetch('/app/tasks?full=true').then(response => response.json()),
+      fetch('/app/subjects').then(response => response.json()),
+      fetch('/app/categories').then(response => response.json())
     ]).then(responses => {
       this.setState({
         user: responses[0],
         tasklist: responses[1],
-        tasks: responses[2]
+        tasks: responses[2],
+        subjects: responses[3],
+        categories: responses[4]
       });
     }).catch(err => {
       console.error(err);
@@ -65,6 +71,8 @@ class App extends React.Component {
         <div id="content-window" className="content-window">
           <TaskList 
             tasks={this.state.tasks}
+            subjects={this.state.subjects}
+            categories={this.state.categories}
             currentTask={this.state.currentTask}
             onSelectTask={this.handleSelectTask}
           />

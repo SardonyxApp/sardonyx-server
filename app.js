@@ -147,6 +147,8 @@ app.use('/app', auth.authenticateToken);
 app.get('/app/user', task.loadUser);
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
+app.get('/app/subjects', task.loadSubjects);
+app.get('/app/categories', task.loadCategories);
 
 /**
  * Public 
