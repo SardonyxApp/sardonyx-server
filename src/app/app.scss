@@ -1,17 +1,9 @@
 // Imports 
 @import url('https://indestructibletype.com/fonts/Jost.css');
 
-$primary: #d17b46;
-$secondary: #6e4d12;
-$black: #332927;
-$gray1: #d8d8e0;
-$gray2: #babbc2;
-$blue: #2977b6;
-$error: #f44138;
-$inactive: #c2c2c2;
-$light-primary: #eda67b;
-$dark-background: #8c8c8b;
-$light-background: #f8f8fa;
+@import './stylesheets/global';
+@import './stylesheets/top_bar';
+@import './stylesheets/content_window';
 
 body {
   margin: 0;
@@ -47,11 +39,6 @@ h4 {
 }
 
 // Miscellaneous 
-%vertical-align-middle {
-  vertical-align: middle;
-  display: inline-block;
-}
-
 .card {
   background-color: white;
   border-radius: 12px;
@@ -90,194 +77,5 @@ h4 {
   &::-webkit-scrollbar-thumb {
     background: #999;
     border-radius: 2px;
-  }
-}
-
-// TopBar
-.bar {
-  // Dimensions 
-  height: 28px;
-  width: calc(100% - 20px);  // 16px subtracted for padding 
-
-  // Position 
-  position: absolute; 
-  top: 0;
-  left: 0;
-
-  // Flex 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  // Styling 
-  background-color: $primary;
-  color: white;
-  padding: 10px;
-
-  // Children 
-  & > * {
-    margin: 0;
-  }
-
-  #sardonyx {
-    flex: none;
-    
-    & > * {
-      @extend %vertical-align-middle;
-    }
-  }
-
-  // Title of the tasklist 
-  #title {
-    flex: auto;
-  }
-
-  h4 {
-    flex: none;
-    @extend %vertical-align-middle; 
-    margin-right: 4px;
-    cursor: pointer;
-  }
-
-  #avatar {
-    @extend %vertical-align-middle;
-    height: 28px;
-    cursor: pointer;
-  }
-}
-
-// ContentWindow
-.content-window {
-  // Dimensions 
-  height: calc(100% - 48px); // so that TopBar + ContentWindow = 100%
-  width: 100%;
-
-  // Position 
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: stretch;
-
-  // Styling 
-  background-color: #f4f4fa;
-}
-
-// TaskList and TaskInfo
-.left-view, .right-view {
-  height: calc(100% - 48px);
-  padding: 24px;
-}
-
-.left-view {
-  width: calc(45% - 48px);
-  flex: 0 0 auto;
-}
-
-.right-view {
-  width: calc(55% - 48px);
-  flex: 1 1 auto;
-}
-
-#taskinfo {
-  font-size: 18px; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .card {
-    flex: 0 0 calc(100% - 24px);
-  }
-}
-
-#task-title {
-  text-align: center;
-}
-
-.taskinfo-component {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-
-  svg {
-    flex: none;
-  }
-
-  & > p {
-    flex: 1 1 auto;
-    margin-left: 8px;
-  }
-}
-
-#task-due {
-  cursor: pointer;
-
-  &:hover {
-    color: black;
-  }
-}
-
-#tasks-filter {
-  overflow-x: auto;
-  white-space: nowrap;
-  height: 40px;
-
-  padding-bottom: 8px;
-  
-  & * {
-    vertical-align: middle;
-    display: inline-block;
-  }
-
-  .add-icon, .remove-icon {
-    cursor: pointer;
-  }
-}
-
-#tasks-container {
-  overflow-y: auto;
-  height: calc(100% - 48px);
-  padding: 4px 8px 4px 0;
-
-  .group {
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-top: 16px;
-  }
-
-  .side {
-    width: 36px;
-    margin-top: 12px;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
-  .card { 
-    width: calc(100% - 60px);
-    display: inline-block;
-    border-radius: 8px;
-    margin-top: 12px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #fbfbfb;
-    }
-  }
-}
-
-.overview-description {
-  color: $dark-background;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.overview-dots {
-  height: 12px;
-  margin-top: 4px;
-  display: flex;
-
-  .dot {
-    margin: 0 2px;
   }
 }
