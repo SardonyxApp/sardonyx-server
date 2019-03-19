@@ -4,6 +4,7 @@
 @import './stylesheets/global';
 @import './stylesheets/top_bar';
 @import './stylesheets/content_window';
+@import './stylesheets/modals';
 
 body {
   margin: 0;
@@ -75,4 +76,8 @@ h4 {
     background: #999;
     border-radius: 2px;
   }
+}
+
+.action {
+  cursor: pointer;
 }
