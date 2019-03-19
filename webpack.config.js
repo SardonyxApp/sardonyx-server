@@ -5,7 +5,7 @@ module.exports = {
 	entry: {
 		'index': ['@babel/polyfill', './src/index.js'],
 		'login': ['@babel/polyfill', './src/login/login.js'],
-		'app': ['@babel/polyfill', './src/app/App.js']
+		'app': ['@babel/polyfill', 'whatwg-fetch', './src/app/App.js']
 	},
 	output: {
 		path: path.join(__dirname, 'public'),

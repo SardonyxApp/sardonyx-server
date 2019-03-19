@@ -9,6 +9,7 @@ body {
   margin: 0;
   font-family: Jost, sans-serif;
   color: $black;
+  overflow: hidden; // Necessary for IE 
 }
 
 h1, h2, h3, h4, p, li, a {
@@ -17,25 +18,21 @@ h1, h2, h3, h4, p, li, a {
 }
 
 // Font 
-@mixin font-size($size) {
-  font-size: $size;
-  line-height: $size;
-}
 
 h1 {
-  @include font-size(28px);
+  font-size: 28px;
 }
 
 h2 {
-  @include font-size(24px);
+  font-size: 24px;
 }
 
 h3 {
-  @include font-size(20px);
+  font-size: 20px;
 }
 
 h4 {
-  @include font-size(16px);
+  font-size: 16px;
 }
 
 // Miscellaneous 

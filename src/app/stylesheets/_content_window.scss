@@ -40,7 +40,8 @@
   justify-content: center;
 
   .card {
-    flex: 0 0 calc(100% - 24px);
+    height: calc(100% - 24px);
+    flex: 0 0 auto;
   }
 }
 
