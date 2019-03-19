@@ -12,7 +12,7 @@ class Sardonyx extends React.Component {
     return (
       <div id="sardonyx">
         <IconInverted width={32} height={32}/>
-        <h1 style={{ lineHeight: '24px', fontSize: '24px', marginLeft: '4px' }}>Sardonyx</h1>
+        <h1 style={{ lineHeight: '36px', fontSize: '24px', marginLeft: '4px' }}>Sardonyx</h1>
       </div>
     );
   }
