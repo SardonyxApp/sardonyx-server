@@ -8,30 +8,17 @@ import React from 'react';
 import { SearchIcon, AddIcon, RemoveIcon } from '../../logos';
 
 class TasksFilter extends React.Component {
-  componentDidMount() {
-    // Add methods to change parent state here because icons are React elements that do not get triggered by onClick
-    document.getElementById('tasks-filter').addEventListener('click', e => {
-      if (e.target.nodeName === 'svg') {
-        this.props.onRemoveFilter(e.target.parentNode.dataset.labelType, Number(e.target.parentNode.dataset.labelId));
-      } else if (e.target.nodeName === 'path') {
-        this.props.onRemoveFilter(e.target.parentNode.parentNode.dataset.labelType, Number(e.target.parentNode.parentNode.dataset.labelId));
-      }
-    });
-  }
-
   render() {
     const subjects = this.props.subjects
       .filter(label => this.props.subjectsFilter.includes(label.id))
       .map(label => (
         <div 
-          className="label" 
-          data-label-type="subjects"
-          data-label-id={label.id}
+          className="label"
           style={{ backgroundColor: label.color, fill: 'white' }} 
           key={label.name} // Don't use id because it duplicates 
         >
           <p>{label.name}</p>
-          <RemoveIcon width={16} height={16}/>
+          <RemoveIcon width={16} height={16} onClick={() => this.props.onRemoveFilter('subjects', label.id)}/>
         </div>
       ));
     const categories = this.props.categories
@@ -39,23 +26,21 @@ class TasksFilter extends React.Component {
       .map(label => (
         <div 
           className="label" 
-          data-label-type="categories"
-          data-label-id={label.id}
           style={{ backgroundColor: label.color, fill: 'white' }} 
           key={label.name} // Don't use id because it duplicates 
         >
           <p>{label.name}</p>
-          <RemoveIcon width={16} height={16}/>
+          <RemoveIcon width={16} height={16} onClick={() => this.props.onRemoveFilter('categories', label.id)}/>
         </div>
       ));
       // The repetition here is not preferable but it will do for now 
 
     return (
       <div id="tasks-filter" className="custom-scroll">
-        <SearchIcon /> 
+        <SearchIcon onClick={() => this.props.onModal('labels')}/> 
         {subjects}
         {categories}
-        <AddIcon />
+        <AddIcon onClick={() => this.props.onModal('labels')}/>
       </div>
     );
   }
