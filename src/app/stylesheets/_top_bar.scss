@@ -1,0 +1,54 @@
+@import './global';
+
+// TopBar
+.bar {
+  // Dimensions 
+  height: 28px;
+  width: calc(100% - 20px);  // 16px subtracted for padding 
+
+  // Position 
+  position: absolute; 
+  top: 0;
+  left: 0;
+
+  // Flex 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // Styling 
+  background-color: $primary;
+  color: white;
+  padding: 10px;
+
+  // Children 
+  & > * {
+    margin: 0;
+  }
+
+  #sardonyx {
+    flex: none;
+    
+    & > * {
+      @extend %vertical-align-middle;
+    }
+  }
+
+  // Title of the tasklist 
+  #title {
+    flex: auto;
+  }
+
+  h4 {
+    flex: none;
+    @extend %vertical-align-middle; 
+    margin-right: 4px;
+    cursor: pointer;
+  }
+
+  #avatar {
+    @extend %vertical-align-middle;
+    height: 28px;
+    cursor: pointer;
+  }
+}
