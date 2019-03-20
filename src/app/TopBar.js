@@ -16,8 +16,8 @@ class TopBar extends React.Component {
     return (
       <div id="top-bar" className="bar">
         <Sardonyx />
-        <Title title={this.props.tasklist.name} />
-        <User user={this.props.user} />
+        <Title title={this.props.tasklist.name} onModal={this.props.onModal} />
+        <User user={this.props.user} onModal={this.props.onModal} />
       </div>
     );
   }

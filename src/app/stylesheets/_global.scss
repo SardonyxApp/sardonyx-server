@@ -14,3 +14,13 @@ $light-background: #f8f8fa;
   vertical-align: middle;
   display: inline-block;
 }
+
+%align-with-icon {
+  p ,svg {
+    @extend %vertical-align-middle;
+  }
+
+  p {
+    margin-left: 4px;
+  }
+}
