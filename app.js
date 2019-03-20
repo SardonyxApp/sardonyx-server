@@ -140,11 +140,13 @@ app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
   res.redirect('/app');
 });
 
-// Load main page 
+// Authenticate main page 
 app.use('/app', auth.authenticateToken);
 
-// API 
 app.get('/app/user', task.loadUser);
+
+app.use('/app', auth.authenticateYear);
+
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
 app.get('/app/subjects', task.loadSubjects);
