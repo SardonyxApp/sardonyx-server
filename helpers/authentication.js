@@ -234,3 +234,20 @@ exports.authenticateToken = (req, res, next) => {
     } else next();
   });
 }
+
+/**
+ * @description Authenticates access to the requested year group properties
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next
+ */
+exports.authenticateYear = (req, res, next) => {
+  if (req.query.year && req.token.teacher) {
+    req.token.year = req.query.year;
+    next();
+  } else if (req.query.year && req.token.year != req.query.year) {
+    res.status(403).send('Requested without permission.');
+  } else {
+    next();
+  }
+}

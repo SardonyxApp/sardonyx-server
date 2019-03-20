@@ -362,5 +362,49 @@ POST /login/teacher
 
 Required: multipart form in request body with Sardonyx `login` and `password` 
 
+### Tasklist API 
+Load user details
+
+```
+GET /app/user
+```
+
+Required: valid signed JWT token cookie with email address property 
+
+Load tasklist 
+```
+GET /app/tasklist
+GET /app/tasklist?year=:year
+GET /app/tasklist?year=all
+```
+
+Required for students: valid signed JWT token cookie with `year` property
+
+Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+
+To select all tasklists, pass `all` as the year URL parameter (teachers only)
+
+Load tasks 
+```
+GET /app/tasks
+GET /app/tasks?year=:year
+```
+
+Required for students: valid signed JWT token cookie with `year` property
+
+Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+
+Load subjects or categories labels 
+```
+GET /app/subjects
+GET /app/subjects?year=:year
+GET /app/categories
+GET /app/categories?year=:year
+```
+
+Required for students: valid signed JWT token cookie with `year` property
+
+Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+
 ## Contribution
 For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.

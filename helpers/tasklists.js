@@ -18,7 +18,7 @@ const { subjects, categories } = require('../models/labels');
 exports.loadUser = (req, res) => {
   const target = req.token.teacher ? teachers : students; 
   target.selectByEmail(req.token.email).then(results => {
-    if (!results.length) res.status(500).send('Invalid user requested.');
+    if (!results.length) res.status(400).send('Invalid user requested.');
     // For teachers 
     delete results[0].password_digest;
     delete results[0].salt;
@@ -36,13 +36,24 @@ exports.loadUser = (req, res) => {
  * @param {Object} res 
  */
 exports.loadTasklist = (req, res) => {
-  tasklists.select(req.token.year - 2017).then(results => {
-    if (!results.length) res.status(400).send('Invalid tasklist requested.');
-    res.json(results[0]);
-  }).catch(err => {
-    console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
-  });
+  // Select all
+  if (req.token.year === 'all') {
+    tasklists.selectAll().then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  } else {
+    // Select by year 
+    tasklists.select(req.token.year - 2017).then(results => {
+      if (!results.length) res.status(400).send('Invalid tasklist requested.');
+      res.json(results[0]);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  }
 };
 
 /**
