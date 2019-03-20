@@ -36,6 +36,11 @@ h4 {
   font-size: 16px;
 }
 
+a { 
+  text-decoration: none;
+  color: $blue;
+}
+
 // Miscellaneous 
 .card {
   background-color: white;
@@ -80,4 +85,11 @@ h4 {
 
 .action {
   cursor: pointer;
+}
+
+.overview-description {
+  color: $dark-background;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

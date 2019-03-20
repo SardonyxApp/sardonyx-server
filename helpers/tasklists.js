@@ -23,6 +23,8 @@ exports.loadUser = (req, res) => {
     delete results[0].password_digest;
     delete results[0].salt;
 
+    results[0].teacher = req.token.teacher;
+    
     res.json(results[0]);
   }).catch(err => {
     console.error(err);

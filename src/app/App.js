@@ -11,8 +11,10 @@ import './app.scss';
 import TopBar from './TopBar';
 import TaskList from './TaskList';
 import TaskInfo from './TaskInfo';
+import Profile from './modals/Profile';
 import LabelsSelector from './modals/LabelsSelector';
-import DarkBackground from './modals/DarkBackground';
+import ModalBackground from './modals/ModalBackground';
+import TasklistSelector from './modals/TasklistSelector';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,6 +28,7 @@ class App extends React.Component {
         email: ''
       },
       tasklist: {
+        id: null,
         name: '',
         description: ''
       },
@@ -38,10 +41,11 @@ class App extends React.Component {
       // store ids of filtered labels
     };
 
+    this.handleModal = this.handleModal.bind(this);
+    this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleAddFilter = this.handleAddFilter.bind(this);
     this.handleRemoveFilter = this.handleRemoveFilter.bind(this);
-    this.handleModal = this.handleModal.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +70,23 @@ class App extends React.Component {
 
   handleModal(modal) {
     this.setState({ modal });
+  }
+
+  handleSelectTasklist(tasklist) {
+    Promise.all([
+      fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`).then(response => response.json()),
+      fetch(`/app/subjects?year=${tasklist.id + 2017}`).then(response => response.json()),
+      fetch(`/app/categories?year=${tasklist.id + 2017}`).then(response => response.json())
+    ]).then(responses => {
+      this.setState({
+        tasklist: tasklist,
+        tasks: responses[0],
+        subjects: responses[1],
+        categories: responses[2]
+      });
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
   handleSelectTask(i) {
@@ -104,6 +125,7 @@ class App extends React.Component {
         <TopBar 
           user={this.state.user}
           tasklist={this.state.tasklist} 
+          onModal={this.handleModal}
         />
         <div id="content-window" className="content-window">
           <TaskList 
@@ -122,6 +144,16 @@ class App extends React.Component {
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
           />
         </div>
+        <Profile 
+          user={this.state.user}
+          modal={this.state.modal}
+        />
+        <TasklistSelector 
+          user={this.state.user}
+          tasklist={this.state.tasklist}
+          modal={this.state.modal}
+          onSelectTasklist={this.handleSelectTasklist}
+        />
         <LabelsSelector
           subjects={this.state.subjects}
           categories={this.state.categories}
@@ -132,7 +164,7 @@ class App extends React.Component {
           onAddFilter={this.handleAddFilter}
           onRemoveFilter={this.handleRemoveFilter}
         />
-        <DarkBackground 
+        <ModalBackground 
           modal={this.state.modal}
           onModal={this.handleModal}
         />

@@ -10,7 +10,7 @@ class Title extends React.Component {
   render() {
     return (
       <div>
-        <h1 id="title">{this.props.title}</h1>
+        <h1 id="title" onClick={() => this.props.onModal('tasklists')}>{this.props.title}</h1>
       </div>
     );
   }
