@@ -27,7 +27,7 @@ class TasklistSelector extends React.Component {
         tasklists: results
       });
     }).catch(err => {
-      console.error(err);
+      console.error('If you are a student, do not worry about this error. ' + err);
     });
   }
 

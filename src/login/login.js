@@ -57,8 +57,12 @@ class LoginForm extends React.Component {
 class Login extends React.Component {
   constructor() {
     super();
+    let errorMessage = null;
+    if (location.search.includes('invalid=true')) errorMessage = 'Login failed. Please try again.';
+    if (location.search.includes('logout=true')) errorMessage = 'You have been logged out.'; // This isn't really an error message but it will be displayed in red 
+    
     this.state = {
-      errorMessage: location.search.includes('invalid=true') ? 'Login failed. Please try again.' : null,
+      errorMessage: errorMessage,
       teacher: location.search.includes('teacher=true')
     };
 
