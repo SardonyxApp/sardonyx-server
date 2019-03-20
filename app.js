@@ -140,6 +140,8 @@ app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
   res.redirect('/app');
 });
 
+app.get('/logout', auth.authenticateToken, auth.logout);
+
 // Authenticate main page 
 app.use('/app', auth.authenticateToken);
 

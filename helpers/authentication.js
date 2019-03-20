@@ -251,3 +251,13 @@ exports.authenticateYear = (req, res, next) => {
     next();
   }
 }
+
+/**
+ * @description Clears cookies to log the user out 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.logout = (req, res) => {
+  res.clearCookie('Sardonyx-Token');
+  req.token.teacher ? res.redirect('/login?teacher=true&logout=true') : res.redirect('/login?logout=true')
+}
