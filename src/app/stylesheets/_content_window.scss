@@ -48,6 +48,10 @@
 
 #task-title {
   text-align: center;
+
+  & > .embed {
+    width: 100%;
+  }
 }
 
 .taskinfo-component {
@@ -59,10 +63,15 @@
     flex: none;
   }
 
-  & > p {
+  & > pre, & > p {
     flex: 1 1 auto;
     margin-left: 8px;
+    width: calc(100% - 32px);
   }
+}
+
+#task-labels {
+  flex-flow: wrap;
 }
 
 #task-due {
