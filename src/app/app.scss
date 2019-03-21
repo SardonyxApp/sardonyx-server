@@ -13,32 +13,41 @@ body {
   overflow: hidden; // Necessary for IE 
 }
 
-h1, h2, h3, h4, p, li, a {
+h1, h2, h3, h4, p, li, a, input, textarea {
   font-weight: 300; // For now 
   margin: 0;
 }
 
 // Font 
 
-h1 {
+h1, .h1 {
   font-size: 28px;
 }
 
-h2 {
+h2, .h2 {
   font-size: 24px;
 }
 
-h3 {
+h3, .h3 {
   font-size: 20px;
 }
 
-h4 {
+h4, .h4, .p {
   font-size: 16px;
 }
 
 a { 
   text-decoration: none;
   color: $blue;
+}
+
+.embed {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  text-align: inherit;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 // Miscellaneous 
@@ -54,7 +63,7 @@ a {
   border-radius: 4px;
   text-align: center;
   color: white;
-  margin: 0 4px;
+  margin: 2px 4px;
 }
 
 .dot {
@@ -87,9 +96,12 @@ a {
   cursor: pointer;
 }
 
-.overview-description {
-  color: $dark-background;
+.overview-title, .overview-description {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.overview-description {
+  color: $dark-background;
 }

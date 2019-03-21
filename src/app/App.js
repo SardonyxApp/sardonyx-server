@@ -46,6 +46,7 @@ class App extends React.Component {
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleAddFilter = this.handleAddFilter.bind(this);
     this.handleRemoveFilter = this.handleRemoveFilter.bind(this);
+    this.handleChangeTask = this.handleChangeTask.bind(this);
   }
 
   componentDidMount() {
@@ -119,6 +120,14 @@ class App extends React.Component {
     }
   }
 
+  handleChangeTask(property, content) {
+    const index = this.state.tasks.findIndex(t => t.id === this.state.currentTask);
+    const tasks = this.state.tasks;
+    tasks[index][property] = content;
+
+    this.setState({ tasks });
+  }
+
   render() {
     return (
       <div>
@@ -142,6 +151,7 @@ class App extends React.Component {
           />
           <TaskInfo 
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+            onChangeTask={this.handleChangeTask}
           />
         </div>
         <Profile 

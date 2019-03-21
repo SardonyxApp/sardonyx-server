@@ -15,15 +15,17 @@ class TaskInfo extends React.Component {
   render() {
     return this.props.task ? (
       <div id="taskinfo" className="right-view">
-        <div className="card">
+        <div className="card custom-scroll">
           <TaskTitle 
             title={this.props.task.name}
+            onChangeTask={this.props.onChangeTask}
           />
           <TaskLabels 
             task={this.props.task}
           />
           <TaskDescription
             description={this.props.task.description}
+            onChangeTask={this.props.onChangeTask}
           />
           <TaskDue 
             due={this.props.task.due}
