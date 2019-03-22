@@ -33,19 +33,19 @@ class LabelsModal extends React.Component {
     };
 
     // Filter tasks by labels ater TaskFilter
-    if (this.props.modal === 'filter') {
+    if (this.props.modal.name === 'filter') {
       const subjects = this.props.subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjectsFilter', l.id)));
       const categories = this.props.categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categoriesFilter', l.id)));
 
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: '24px', top: '120px' }}>
+        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.left, top: this.props.modal.top}}>
           {subjects}
           {categories}
         </div>
       );
     }
 
-    if (this.props.modal === 'labels') {
+    if (this.props.modal.name === 'labels') {
       const subjects = this.props.subjects.map(mapFunction([this.props.task.subject_id], l => {
         return this.props.onChangeTask({
           subject_id: l.id,
@@ -62,7 +62,7 @@ class LabelsModal extends React.Component {
       }));
 
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: '50%' }}>
+        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.left, top: this.props.modal.top }}>
           {subjects}
           {categories}
         </div>

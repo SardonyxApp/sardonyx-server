@@ -37,10 +37,16 @@ class TasksFilter extends React.Component {
 
     return (
       <div id="tasks-filter" className="custom-scroll">
-        <SearchIcon onClick={() => this.props.onModal('filter')}/> 
+        <SearchIcon onClick={e => {
+          const position = e.target.getBoundingClientRect();
+          this.props.onModal('filter', position.left, position.bottom + 4);
+        }}/> 
         {subjects}
         {categories}
-        <AddIcon onClick={() => this.props.onModal('filter')}/>
+        <AddIcon onClick={e => {
+          const position = e.target.getBoundingClientRect();
+          this.props.onModal('filter', position.left, position.bottom + 4);
+        }}/>
       </div>
     );
   }

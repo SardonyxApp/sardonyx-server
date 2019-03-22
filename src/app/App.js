@@ -27,7 +27,11 @@ class App extends React.Component {
 
     // Set initial state with empty values to not cause any rendering errors 
     this.state = {  
-      modal: null, 
+      modal: {
+        name: null,
+        left: null,
+        top: null
+      }, 
       user: { 
         teacher: false,
         name: '', 
@@ -75,8 +79,10 @@ class App extends React.Component {
   }
 
   // Open / close modals 
-  handleModal(modal) {
-    this.setState({ modal });
+  handleModal(name = null, left = null, top = null) {
+    this.setState({
+      modal: { name, left, top }
+    });
   }
 
   // Fetch data to change tasklist 
