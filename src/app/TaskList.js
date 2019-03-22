@@ -18,8 +18,7 @@ class TaskList extends React.Component {
           subjectsFilter={this.props.subjectsFilter}
           categoriesFilter={this.props.categoriesFilter}
           onModal={this.props.onModal}
-          onAddFilter={this.props.onAddFilter}
-          onRemoveFilter={this.props.onRemoveFilter}
+          onFilter={this.props.onFilter}
 
         />
         <TasksContainer

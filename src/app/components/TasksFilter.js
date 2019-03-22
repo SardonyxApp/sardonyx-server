@@ -18,7 +18,7 @@ class TasksFilter extends React.Component {
           key={label.name} // Don't use id because it duplicates 
         >
           <p>{label.name}</p>
-          <RemoveIcon width={16} height={16} onClick={() => this.props.onRemoveFilter('subjects', label.id)}/>
+          <RemoveIcon width={16} height={16} onClick={() => this.props.onFilter('subjectsFilter', label.id)}/>
         </div>
       ));
     const categories = this.props.categories
@@ -30,17 +30,17 @@ class TasksFilter extends React.Component {
           key={label.name} // Don't use id because it duplicates 
         >
           <p>{label.name}</p>
-          <RemoveIcon width={16} height={16} onClick={() => this.props.onRemoveFilter('categories', label.id)}/>
+          <RemoveIcon width={16} height={16} onClick={() => this.props.onFilter('categoriesFilter', label.id)}/>
         </div>
       ));
       // The repetition here is not preferable but it will do for now 
 
     return (
       <div id="tasks-filter" className="custom-scroll">
-        <SearchIcon onClick={() => this.props.onModal('labels')}/> 
+        <SearchIcon onClick={() => this.props.onModal('filter')}/> 
         {subjects}
         {categories}
-        <AddIcon onClick={() => this.props.onModal('labels')}/>
+        <AddIcon onClick={() => this.props.onModal('filter')}/>
       </div>
     );
   }
