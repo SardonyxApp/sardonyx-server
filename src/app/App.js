@@ -19,7 +19,6 @@ import ModalBackground from './modals/ModalBackground';
 import ProfileModal from './modals/ProfileModal';
 import TasklistModal from './modals/TasklistModal';
 import LabelsModal from './modals/LabelsModal';
-import DateModal from './modals/DateModal';
 
 class App extends React.Component {
   constructor(props) {
@@ -150,11 +149,6 @@ class App extends React.Component {
           categoriesFilter={this.state.categoriesFilter}
           modal={this.state.modal}
           onFilter={this.handleFilter}
-          onChangeTask={this.handleChangeTask}
-        />
-        <DateModal 
-          task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
-          modal={this.state.modal}
           onChangeTask={this.handleChangeTask}
         />
         

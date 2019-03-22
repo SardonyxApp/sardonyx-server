@@ -31,7 +31,7 @@ class TaskInfo extends React.Component {
           <TaskDue 
             due={this.props.task.due}
             onModal={this.props.onModal}
-            onChangetask={this.props.onChangeTask}
+            onChangeTask={this.props.onChangeTask}
           />
           <TaskAuthor 
             author={this.props.task.student_name || this.props.task.teacher_name}
