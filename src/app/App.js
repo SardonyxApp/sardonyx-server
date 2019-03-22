@@ -8,13 +8,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './app.scss';
 
+// Main components 
 import TopBar from './TopBar';
 import TaskList from './TaskList';
 import TaskInfo from './TaskInfo';
-import Profile from './modals/Profile';
-import LabelsSelector from './modals/LabelsSelector';
+
 import ModalBackground from './modals/ModalBackground';
-import TasklistSelector from './modals/TasklistSelector';
+
+// Modals 
+import ProfileModal from './modals/ProfileModal';
+import LabelsModal from './modals/LabelsModal';
+import TasklistModal from './modals/TasklistModal';
 
 class App extends React.Component {
   constructor(props) {
@@ -154,23 +158,22 @@ class App extends React.Component {
             onChangeTask={this.handleChangeTask}
           />
         </div>
-        <Profile 
+        <ProfileModal 
           user={this.state.user}
           modal={this.state.modal}
         />
-        <TasklistSelector 
+        <TasklistModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
           modal={this.state.modal}
           onSelectTasklist={this.handleSelectTasklist}
         />
-        <LabelsSelector
+        <LabelsModal
           subjects={this.state.subjects}
           categories={this.state.categories}
           subjectsFilter={this.state.subjectsFilter}
           categoriesFilter={this.state.categoriesFilter}
           modal={this.state.modal}
-          onModal={this.handleModal}
           onAddFilter={this.handleAddFilter}
           onRemoveFilter={this.handleRemoveFilter}
         />

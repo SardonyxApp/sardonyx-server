@@ -7,7 +7,7 @@
 import React from 'react';
 import { CheckIcon } from '../../logos';
 
-class TasklistSelector extends React.Component {
+class TasklistModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,11 +61,11 @@ class TasklistSelector extends React.Component {
       );
 
     return this.props.modal === 'tasklists' ? (
-      <div id="tasklist-selector" className="modal">
+      <div id="tasklist-modal" className="modal">
         {tasklists}
       </div>
     ) : null;
   }
 }
 
-export default TasklistSelector;
+export default TasklistModal;

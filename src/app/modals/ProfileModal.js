@@ -7,10 +7,10 @@
 import React from 'react';
 import { UserIcon } from '../../logos';
 
-class Profile extends React.Component {
+class ProfileModal extends React.Component {
   render() {
     return this.props.modal === 'profile' ? (
-      <div className="modal" id="profile">
+      <div className="modal" id="profile-modal">
         <div>
           <UserIcon width={16} height={16} />
           <p>{this.props.user.email}</p>
@@ -24,4 +24,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default ProfileModal;
