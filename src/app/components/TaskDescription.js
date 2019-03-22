@@ -41,6 +41,7 @@ class TaskDescription extends React.Component {
     if (e.keyCode === 27) {
       this.textareaRef.current.blur();
       // This will trigger handleBlur
+      e.preventDefault();
     }
   }
 
@@ -49,7 +50,7 @@ class TaskDescription extends React.Component {
       <div id="task-description" className="taskinfo-component">
         <DescriptionIcon />
         <p 
-          contentEditable
+          contentEditable={true}
           className="embed"
           style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : '2px solid transparent' }}
           onFocus={this.handleFocus}
@@ -57,7 +58,7 @@ class TaskDescription extends React.Component {
           onKeyDown={this.handleKeyDown}
           ref={this.textareaRef}
         >
-          {this.props.description || 'No description provided.'}
+          {this.props.description}
         </p>
       </div>
     );
