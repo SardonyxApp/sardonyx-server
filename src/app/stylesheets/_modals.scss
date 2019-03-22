@@ -21,22 +21,6 @@
   z-index: 2;
 }
 
-#labels-modal {
-  @extend %small-modal;
-
-  overflow-y: auto;
-
-  .label {
-    margin: 6px 0;
-
-    @extend %align-with-icon;
-
-    svg {
-      fill: white;
-    }
-  }
-}
-
 #profile-modal {
   top: 50px;
   right: 8px;
@@ -70,3 +54,24 @@
     background-color: #fbfbfb;
   }
 }
+
+#labels-modal {
+  @extend %small-modal;
+
+  overflow-y: auto;
+
+  .label {
+    margin: 6px 0;
+
+    @extend %align-with-icon;
+
+    svg {
+      fill: white;
+    }
+  }
+}
+
+#date-modal {
+  @extend %small-modal;
+}
+

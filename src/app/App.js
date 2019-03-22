@@ -17,8 +17,9 @@ import ModalBackground from './modals/ModalBackground';
 
 // Modals 
 import ProfileModal from './modals/ProfileModal';
-import LabelsModal from './modals/LabelsModal';
 import TasklistModal from './modals/TasklistModal';
+import LabelsModal from './modals/LabelsModal';
+import DateModal from './modals/DateModal';
 
 class App extends React.Component {
   constructor(props) {
@@ -125,6 +126,35 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <ProfileModal 
+          user={this.state.user}
+          modal={this.state.modal}
+        />
+        <TasklistModal 
+          user={this.state.user}
+          tasklist={this.state.tasklist}
+          modal={this.state.modal}
+          onSelectTasklist={this.handleSelectTasklist}
+        />
+        <LabelsModal
+          subjects={this.state.subjects}
+          categories={this.state.categories}
+          subjectsFilter={this.state.subjectsFilter}
+          categoriesFilter={this.state.categoriesFilter}
+          modal={this.state.modal}
+          onFilter={this.handleFilter}
+        />
+        <DateModal 
+          task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+          modal={this.state.modal}
+          onChangeTask={this.handleChangeTask}
+        />
+        
+        <ModalBackground 
+          modal={this.state.modal}
+          onModal={this.handleModal}
+        />
+
         <TopBar 
           user={this.state.user}
           tasklist={this.state.tasklist} 
@@ -144,31 +174,10 @@ class App extends React.Component {
           />
           <TaskInfo 
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+            onModal={this.handleModal}
             onChangeTask={this.handleChangeTask}
           />
         </div>
-        <ProfileModal 
-          user={this.state.user}
-          modal={this.state.modal}
-        />
-        <TasklistModal 
-          user={this.state.user}
-          tasklist={this.state.tasklist}
-          modal={this.state.modal}
-          onSelectTasklist={this.handleSelectTasklist}
-        />
-        <LabelsModal
-          subjects={this.state.subjects}
-          categories={this.state.categories}
-          subjectsFilter={this.state.subjectsFilter}
-          categoriesFilter={this.state.categoriesFilter}
-          modal={this.state.modal}
-          onFilter={this.handleFilter}
-        />
-        <ModalBackground 
-          modal={this.state.modal}
-          onModal={this.handleModal}
-        />
       </div>
     );
   }
