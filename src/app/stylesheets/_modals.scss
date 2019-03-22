@@ -8,15 +8,6 @@
   overflow: auto;
 }
 
-@mixin centered-dimensions($width, $height, $padding) {
-  width: $width;
-  height: $height;
-  padding: $padding;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
 %small-modal {
   border-radius: 8px;
   border: 1px solid rgba(66, 71, 84, 0.14);
@@ -30,26 +21,9 @@
   z-index: 2;
 }
 
-#labels-selector {
-  @include centered-dimensions(50%, 50%, 16px);
-  border-radius: 16px;
+#labels-modal {
+  @extend %small-modal;
 
-  & > .remove-icon {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-
-    &:hover {
-      filter: brightness(0.1);
-    }
-  }
-}
-
-#labels-container {
-  position: absolute;
-  top: 48px;
-  width: calc(100% - 24px);
-  height: calc(100% - 60px);
   overflow-y: auto;
 
   .label {
@@ -64,7 +38,7 @@
   }
 }
 
-#profile {
+#profile-modal {
   top: 50px;
   right: 8px;
   
@@ -75,7 +49,7 @@
   }
 }
 
-#tasklist-selector {
+#tasklist-modal {
   width: 50%;
   top: 50px;
   left: 50%;
