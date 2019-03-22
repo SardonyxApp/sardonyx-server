@@ -24,7 +24,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    // Set initial state with empty values to not cause any rendering errors 
+    this.state = {  
       modal: null, 
       user: { 
         teacher: false,
@@ -42,17 +43,16 @@ class App extends React.Component {
       categories: [],
       subjectsFilter: [],
       categoriesFilter: []
-      // store ids of filtered labels
     };
 
     this.handleModal = this.handleModal.bind(this);
     this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
-    this.handleAddFilter = this.handleAddFilter.bind(this);
-    this.handleRemoveFilter = this.handleRemoveFilter.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
     this.handleChangeTask = this.handleChangeTask.bind(this);
   }
 
+  // Safely fetch data after initial render 
   componentDidMount() {
     Promise.all([
       fetch('/app/user').then(response => response.json()),
@@ -69,14 +69,16 @@ class App extends React.Component {
         categories: responses[4]
       });
     }).catch(err => {
-      console.error(err);
+      console.error(err); // For now 
     });
   }
 
+  // Open / close modals 
   handleModal(modal) {
     this.setState({ modal });
   }
 
+  // Fetch data to change tasklist 
   handleSelectTasklist(tasklist) {
     Promise.all([
       fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`).then(response => response.json()),
@@ -90,46 +92,34 @@ class App extends React.Component {
         categories: responses[2]
       });
     }).catch(err => {
-      console.error(err);
+      console.error(err); // For now
     });
   }
 
+  // Update current task 
   handleSelectTask(i) {
-    this.setState({
-      currentTask: this.state.currentTask === i ? -1 : i
+    this.setState(prevState => ({
+      currentTask: prevState.currentTask === i ? -1 : i
+    }));
+  }
+
+  // Update filter list 
+  handleFilter(type, id) {
+    this.setState(prevState => {
+      const obj = {};
+      obj[type] = prevState[type].includes(id) ? prevState[type].filter(l => l !== id) : prevState[type].concat([id]);
+      return obj;
     });
   }
 
-  handleAddFilter(type, id) {
-    if (type === 'subjects') {
-      this.setState({
-        subjectsFilter: this.state.subjectsFilter.concat([id])
-      });
-    } else if (type === 'categories') {
-      this.setState({
-        categoriesFilter: this.state.categoriesFilter.concat([id])
-      });
-    }
-  }
-
-  handleRemoveFilter(type, id) {
-    if (type === 'subjects') {
-      this.setState({
-        subjectsFilter: this.state.subjectsFilter.filter(l => l !== id) 
-      });
-    } else if (type === 'categories') {
-      this.setState({
-        categoriesFilter: this.state.categoriesFilter.filter(l => l !== id)
-      });
-    }
-  }
-
+  // Update task content 
   handleChangeTask(property, content) {
-    const index = this.state.tasks.findIndex(t => t.id === this.state.currentTask);
-    const tasks = this.state.tasks;
-    tasks[index][property] = content;
-
-    this.setState({ tasks });
+    this.setState(prevState => {
+      const tasks = prevState.tasks;
+      const index = tasks.findIndex(t => t.id === prevState.currentTask);
+      tasks[index][property] = content;
+      return { tasks };
+    });
   }
 
   render() {
@@ -150,8 +140,7 @@ class App extends React.Component {
             categoriesFilter={this.state.categoriesFilter}
             onModal={this.handleModal}
             onSelectTask={this.handleSelectTask}
-            onAddFilter={this.handleAddFilter}
-            onRemoveFilter={this.handleRemoveFilter}
+            onFilter={this.handleFilter}
           />
           <TaskInfo 
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
@@ -174,8 +163,7 @@ class App extends React.Component {
           subjectsFilter={this.state.subjectsFilter}
           categoriesFilter={this.state.categoriesFilter}
           modal={this.state.modal}
-          onAddFilter={this.handleAddFilter}
-          onRemoveFilter={this.handleRemoveFilter}
+          onFilter={this.handleFilter}
         />
         <ModalBackground 
           modal={this.state.modal}
