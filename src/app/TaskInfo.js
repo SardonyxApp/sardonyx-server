@@ -22,6 +22,7 @@ class TaskInfo extends React.Component {
           />
           <TaskLabels 
             task={this.props.task}
+            onModal={this.props.onModal}
           />
           <TaskDescription
             description={this.props.task.description}

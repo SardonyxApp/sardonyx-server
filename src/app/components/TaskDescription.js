@@ -28,7 +28,7 @@ class TaskDescription extends React.Component {
   }
 
   handleBlur(e) {
-    this.props.onChangeTask('description', e.target.innerText);
+    this.props.onChangeTask({ description: e.target.innerText });
 
     this.setState({
       selected: false 

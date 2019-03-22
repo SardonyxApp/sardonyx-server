@@ -31,7 +31,7 @@ class TaskTitle extends React.Component {
       selected: false
     });
 
-    this.props.onChangeTask('name', e.target.innerText)
+    this.props.onChangeTask({ name: e.target.innerText })
 
     // make request here 
   }

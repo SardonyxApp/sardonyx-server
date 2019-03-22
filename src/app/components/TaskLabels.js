@@ -26,7 +26,7 @@ class TaskLabels extends React.Component {
     }
     
     return (
-      <div id="task-labels" className="taskinfo-component">
+      <div id="task-labels" className="taskinfo-component" onClick={() => this.props.onModal('labels')}>
         <LabelIcon />
         {!!labels.length ? labels : <p>No labels set.</p>}
       </div>
