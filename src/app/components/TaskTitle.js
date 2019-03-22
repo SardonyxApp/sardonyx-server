@@ -33,6 +33,8 @@ class TaskTitle extends React.Component {
 
     this.props.onChangeTask({ name: e.target.innerText })
 
+    // TODO: check for 255 character limit 
+
     // make request here 
   }
 
@@ -49,6 +51,7 @@ class TaskTitle extends React.Component {
       <div id="task-title">
         <h2
           contentEditable={true}
+          className="embed"
           style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : '2px solid transparent' }}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
