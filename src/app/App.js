@@ -114,11 +114,11 @@ class App extends React.Component {
   }
 
   // Update task content 
-  handleChangeTask(property, content) {
+  handleChangeTask(obj) {
     this.setState(prevState => {
       const tasks = prevState.tasks;
       const index = tasks.findIndex(t => t.id === prevState.currentTask);
-      tasks[index][property] = content;
+      tasks[index] = Object.assign(tasks[index], obj);
       return { tasks };
     });
   }
@@ -137,15 +137,17 @@ class App extends React.Component {
           onSelectTasklist={this.handleSelectTasklist}
         />
         <LabelsModal
+          task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
           subjects={this.state.subjects}
           categories={this.state.categories}
           subjectsFilter={this.state.subjectsFilter}
           categoriesFilter={this.state.categoriesFilter}
           modal={this.state.modal}
           onFilter={this.handleFilter}
+          onChangeTask={this.handleChangeTask}
         />
         <DateModal 
-          task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+          task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
           modal={this.state.modal}
           onChangeTask={this.handleChangeTask}
         />
