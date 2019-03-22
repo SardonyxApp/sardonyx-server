@@ -8,7 +8,7 @@ import React from 'react';
 
 class ModalBackground extends React.Component {
   render() {
-    return this.props.modal !== null ? <div className="modal-background" style={{ background: 'transparent' }} onClick={() => this.props.onModal(null)}></div> : null;
+    return this.props.modal.name !== null ? <div className="modal-background" style={{ background: 'transparent' }} onClick={() => this.props.onModal()}></div> : null;
   }
 }
 

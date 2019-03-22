@@ -60,7 +60,8 @@ class TasklistModal extends React.Component {
         </div>
       );
 
-    return this.props.modal === 'tasklists' ? (
+    // Position is set statiscally in CSS 
+    return this.props.modal.name === 'tasklists' ? (
       <div id="tasklist-modal" className="modal">
         {tasklists}
       </div>

@@ -9,7 +9,8 @@ import { UserIcon } from '../../logos';
 
 class ProfileModal extends React.Component {
   render() {
-    return this.props.modal === 'profile' ? (
+    // Position is set statically in CSS
+    return this.props.modal.name === 'profile' ? (
       <div className="modal" id="profile-modal">
         <div>
           <UserIcon width={16} height={16} />
