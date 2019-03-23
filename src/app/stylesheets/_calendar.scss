@@ -8,6 +8,7 @@
     border: none;
     width: 100%;
     cursor: pointer;
+    border-bottom: 2px solid transparent;
 
     font-family: inherit; 
     font-weight: 300;
@@ -15,6 +16,7 @@
 
     &:focus {
       border-bottom: 2px solid $blue;
+      cursor: auto;
     }
   }
 }
