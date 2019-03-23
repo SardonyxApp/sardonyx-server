@@ -15,14 +15,14 @@ class TaskDue extends React.Component {
     return (
       <div id="task-due" className="taskinfo-component">
         <TimeIcon />
-        {/* <p>Due {this.props.due ? new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).format(new Date(this.props.due)) : 'date not set'}</p> */}
         <DatePicker
           selected={this.props.due}
           onChange={date => this.props.onChangeTask({ due: date.toISOString() })}
           showTimeSelect
           timeFormat="HH:mm"
-          timeIntervals={15}
+          timeIntervals={30}
           dateFormat="MMMM d, yyyy h:mm aa"
+          placeholderText="No due date set."
         />
       </div>
     );

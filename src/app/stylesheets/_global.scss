@@ -10,6 +10,29 @@ $light-primary: #eda67b;
 $dark-background: #8c8c8b;
 $light-background: #f8f8fa;
 
+%custom-scroll {
+  // Firefox
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
+
+  // Webkit (Chrome, Safari)
+  &::-webkit-scrollbar {
+    width: 8px;
+    // Make sure to set a padding of 8px 
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 2px;
+  }
+  
+  // MSIE not supported 
+}
+
 %vertical-align-middle {
   vertical-align: middle;
   display: inline-block;
@@ -23,4 +46,11 @@ $light-background: #f8f8fa;
   p {
     margin-left: 4px;
   }
+}
+
+%small-modal {
+  border-radius: 8px;
+  border: 1px solid rgba(66, 71, 84, 0.14);
+  box-shadow: 0 3px 12px rgba(66, 71, 84, 0.14);
+  padding: 8px;
 }
