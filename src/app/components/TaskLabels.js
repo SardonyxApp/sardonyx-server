@@ -12,26 +12,48 @@ class TaskLabels extends React.Component {
     const labels = [];
     if (this.props.task.subject_id) {
       labels.push(
-        <div className="label" style={{ background: this.props.task.subject_color}}>
+        <div 
+          className="label" 
+          style={{ background: this.props.task.subject_color, cursor: 'pointer' }}
+          onClick={e => {
+            const position = e.target.getBoundingClientRect();
+            return this.props.onModal(this.props.task.category_id ? 'subjects' : 'labels', position.left, position.bottom + 8);
+          }}
+        >
           <p>{this.props.task.subject_name}</p>
         </div>
       );
     }
     if (this.props.task.category_id) {
       labels.push(
-        <div className="label" style={{ background: this.props.task.category_color}}>
+        <div 
+          className="label" 
+          style={{ background: this.props.task.category_color, cursor: 'pointer' }}
+          onClick={e => {
+            const position = e.target.getBoundingClientRect();
+            return this.props.onModal(this.props.task.subject_id ? 'categories' : 'labels', position.left, position.bottom + 8);
+          }}
+        >
           <p>{this.props.task.category_name}</p>
         </div>
       );
     }
     
     return (
-      <div id="task-labels" className="taskinfo-component" onClick={e => {
-        const position = e.target.getBoundingClientRect();
-        return this.props.onModal('labels', position.left, position.bottom + 8);
-      }}>
+      <div id="task-labels" className="taskinfo-component">
         <LabelIcon />
-        {!!labels.length ? labels : <p>No labels set.</p>}
+        {!!labels.length 
+          ? labels 
+          : <p 
+            style={{ cursor: 'pointer' }}
+            onClick={e => {
+              const position = e.target.getBoundingClientRect();
+              return this.props.onModal('labels', position.left, position.bottom + 8);
+            }}
+          >
+            No labels set.
+          </p>
+        }
       </div>
     );
   }
