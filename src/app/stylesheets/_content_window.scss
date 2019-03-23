@@ -75,14 +75,6 @@
   cursor: pointer;
 }
 
-#task-due {
-  cursor: pointer;
-
-  &:hover {
-    color: black;
-  }
-}
-
 #tasks-filter {
   overflow-x: auto;
   white-space: nowrap;
@@ -108,7 +100,6 @@
   .group {
     text-transform: uppercase;
     font-weight: 400;
-    margin-top: 16px;
   }
 
   .side {

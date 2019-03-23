@@ -1,4 +1,5 @@
 @import './global';
+@import './calendar';
 
 // Modals 
 .modal {
@@ -6,13 +7,6 @@
   background: white;
   position: fixed;
   overflow: auto;
-}
-
-%small-modal {
-  border-radius: 8px;
-  border: 1px solid rgba(66, 71, 84, 0.14);
-  box-shadow: 0 3px 12px rgba(66, 71, 84, 0.14);
-  padding: 8px;
 }
 
 .modal-background {

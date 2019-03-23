@@ -70,22 +70,7 @@ a {
 }
 
 .custom-scroll {
-  scrollbar-color: #999 transparent;
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-    // Make sure to set a padding of 8px 
-  }
-
-  &::-webkit-scrollbar-track-piece {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #999;
-    border-radius: 2px;
-  }
+  @extend %custom-scroll;
 }
 
 .action {
