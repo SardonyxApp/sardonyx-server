@@ -106,35 +106,35 @@ class TasksContainer extends React.Component {
       <div id="tasks-container" className="custom-scroll">
         <h4 
           className="group" 
-          style={{ display: todayTasks.length ? '' : 'none', marginTop: '16px' }}
+          style={{ display: todayTasks.length ? '' : 'none' }}
         >
           Today
         </h4>
         {todayTasks}
         <h4 
           className="group" 
-          style={{ display: upcomingTasks.length ? '' : 'none', marginTop: todayTasks.length ? 0 : '16px' }}
+          style={{ display: upcomingTasks.length ? '' : 'none', marginTop: todayTasks.length ? '16px' : 0 }}
         >
           Upcoming
         </h4>
         {upcomingTasks}
         <h4 
           className="group" 
-          style={{ display: noDateTasks.length ? '' : 'none', marginTop: todayTasks.length && upcomingTasks.length ? 0 : '16px' }}
+          style={{ display: noDateTasks.length ? '' : 'none', marginTop: todayTasks.length || upcomingTasks.length ? '16px' : 0 }}
         >
           No date set
         </h4>
         {noDateTasks}
         <h4 
           className="group" 
-          style={{ display: pastTasks.length ? '' : 'none', marginTop: todayTasks.length && upcomingTasks.length && noDateTasks.length ? 0 : '16px' }}
+          style={{ display: pastTasks.length ? '' : 'none', marginTop: todayTasks.length || upcomingTasks.length || noDateTasks.length ? '16px' : 0 }}
         >
           Past due
         </h4>
         {pastTasks}
         <h4 
           className="group" 
-          style={{ display: tasks.length ? 'none' : '', marginTop: '16px' }}
+          style={{ display: tasks.length ? 'none' : '' }}
         >
           No tasks found
         </h4>
