@@ -12,6 +12,10 @@
     font-family: inherit; 
     font-weight: 300;
     font-size: inherit;
+
+    &:focus {
+      border-bottom: 2px solid $blue;
+    }
   }
 }
 
