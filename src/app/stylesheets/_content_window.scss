@@ -85,7 +85,7 @@
 #tasks-filter {
   overflow-x: auto;
   white-space: nowrap;
-  height: 40px;
+  height: 42px;
 
   padding-bottom: 8px;
   
@@ -101,7 +101,7 @@
 
 #tasks-container {
   overflow-y: auto;
-  height: calc(100% - 48px);
+  height: calc(100% - 50px);
   padding: 0 8px 4px 0;
 
   .group {
