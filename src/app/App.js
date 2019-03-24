@@ -16,8 +16,9 @@ import TaskInfo from './TaskInfo';
 import ModalBackground from './modals/ModalBackground';
 
 // Modals 
-import ProfileModal from './modals/ProfileModal';
 import TasklistModal from './modals/TasklistModal';
+import ProfileModal from './modals/ProfileModal';
+import AddModal from './modals/AddModal';
 import LabelsModal from './modals/LabelsModal';
 
 class App extends React.Component {
@@ -28,8 +29,8 @@ class App extends React.Component {
     this.state = {  
       modal: {
         name: null,
-        left: null,
-        top: null
+        x: null,
+        y: null
       }, 
       user: { 
         teacher: false,
@@ -78,9 +79,9 @@ class App extends React.Component {
   }
 
   // Open / close modals 
-  handleModal(name = null, left = null, top = null) {
+  handleModal(name = null, x = null, y = null) {
     this.setState({
-      modal: { name, left, top }
+      modal: { name, x, y } // x and y coordinates can either be used for left or right, depending on modal 
     });
   }
 
@@ -131,16 +132,20 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <ProfileModal 
-          user={this.state.user}
-          modal={this.state.modal}
-        />
         <TasklistModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
           modal={this.state.modal}
           onModal={this.handleModal}
           onSelectTasklist={this.handleSelectTasklist}
+        />
+        <ProfileModal 
+          user={this.state.user}
+          modal={this.state.modal}
+        />
+        <AddModal 
+          modal={this.state.modal}
+          onModal={this.handleModal}
         />
         <LabelsModal
           task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
