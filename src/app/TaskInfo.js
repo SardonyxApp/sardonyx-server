@@ -15,27 +15,29 @@ class TaskInfo extends React.Component {
   render() {
     return this.props.task ? (
       <div id="taskinfo" className="right-view">
-        <div className="card custom-scroll">
+        <div className="card">
           <TaskTitle 
             title={this.props.task.name}
             onChangeTask={this.props.onChangeTask}
           />
-          <TaskLabels 
-            task={this.props.task}
-            onModal={this.props.onModal}
-          />
-          <TaskDescription
-            description={this.props.task.description}
-            onChangeTask={this.props.onChangeTask}
-          />
-          <TaskDue 
-            due={this.props.task.due}
-            onModal={this.props.onModal}
-            onChangeTask={this.props.onChangeTask}
-          />
-          <TaskAuthor 
-            author={this.props.task.student_name || this.props.task.teacher_name}
-          />
+          <div id="task-detail-container" className="custom-scroll">
+            <TaskLabels 
+              task={this.props.task}
+              onModal={this.props.onModal}
+            />
+            <TaskDescription
+              description={this.props.task.description}
+              onChangeTask={this.props.onChangeTask}
+            />
+            <TaskDue 
+              due={this.props.task.due}
+              onModal={this.props.onModal}
+              onChangeTask={this.props.onChangeTask}
+            />
+            <TaskAuthor 
+              author={this.props.task.student_name || this.props.task.teacher_name}
+            />
+          </div>
         </div>
       </div>
     ) : (
