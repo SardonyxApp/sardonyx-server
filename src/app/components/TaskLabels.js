@@ -16,7 +16,8 @@ class TaskLabels extends React.Component {
           className="label" 
           style={{ background: this.props.task.subject_color, cursor: 'pointer' }}
           onClick={e => {
-            const position = e.target.getBoundingClientRect();
+            // If target is <p>, use coordinates of parent .label
+            const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
             return this.props.onModal(this.props.task.category_id ? 'subjects' : 'labels', position.left, position.bottom + 8);
           }}
         >
@@ -30,7 +31,8 @@ class TaskLabels extends React.Component {
           className="label" 
           style={{ background: this.props.task.category_color, cursor: 'pointer' }}
           onClick={e => {
-            const position = e.target.getBoundingClientRect();
+            // If target is <p>, use coordinates of parent .label
+            const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
             return this.props.onModal(this.props.task.subject_id ? 'categories' : 'labels', position.left, position.bottom + 8);
           }}
         >
