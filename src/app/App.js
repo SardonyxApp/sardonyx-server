@@ -148,6 +148,7 @@ class App extends React.Component {
           subjectsFilter={this.state.subjectsFilter}
           categoriesFilter={this.state.categoriesFilter}
           modal={this.state.modal}
+          onModal={this.handleModal}
           onFilter={this.handleFilter}
           onChangeTask={this.handleChangeTask}
         />
