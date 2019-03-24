@@ -24,8 +24,8 @@ class User extends React.Component {
     return (
       <div id="user">
         <AddToListIcon onClick={e => this.handleAdd(e)} />
-        <h4 onClick={() => this.props.onModal('profile')}>{this.props.user.name}</h4>
-        <div id="avatar" onClick={() => this.props.onModal('profile')}>
+        <h4 onClick={() => this.props.onModal('profile', 8, 50)}>{this.props.user.name}</h4>
+        <div id="avatar" onClick={() => this.props.onModal('profile', 8, 50)}>
           <IconWhiteBackground width={28} height={28} />
         </div>
       </div>
