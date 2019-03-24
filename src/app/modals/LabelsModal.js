@@ -72,7 +72,7 @@ class LabelsModal extends React.Component {
 
     if (this.props.modal.name === 'subjects') {
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.left, top: this.props.modal.top }}>
+        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y }}>
           {subjects}
         </div>
       );
@@ -80,7 +80,7 @@ class LabelsModal extends React.Component {
 
     if (this.props.modal.name === 'categories') {
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.left, top: this.props.modal.top }}>
+        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y }}>
           {categories}
         </div>
       );
@@ -88,7 +88,7 @@ class LabelsModal extends React.Component {
 
     if (this.props.modal.name === 'labels' || this.props.modal.name === 'filter') {
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.left, top: this.props.modal.top}}>
+        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y}}>
           {subjects}
           {categories}
         </div>

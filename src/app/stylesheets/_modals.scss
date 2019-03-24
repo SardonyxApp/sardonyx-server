@@ -65,7 +65,12 @@
   }
 }
 
-#date-modal {
+#add-modal {
   @extend %small-modal;
-}
 
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; // Obligatory 
+  }
+}

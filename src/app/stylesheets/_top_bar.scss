@@ -26,31 +26,38 @@
   & > * {
     margin: 0;
   }
+}
 
-  #sardonyx {
-    flex: none;
-    
-    & > * {
-      @extend %vertical-align-middle;
-    }
+#sardonyx {
+  flex: none;
+  
+  & > * {
+    @extend %vertical-align-middle;
+  }
+}
+
+// Title of the tasklist 
+#title {
+  flex: auto;
+  cursor: pointer;
+}
+
+#user {
+  & > * {
+    @extend %vertical-align-middle;
+    cursor: pointer;
   }
 
-  // Title of the tasklist 
-  #title {
-    flex: auto;
-    cursor: pointer;
+  .add-to-list-icon {
+    fill: white;
   }
 
   h4 {
     flex: none;
-    @extend %vertical-align-middle; 
-    margin-right: 4px;
-    cursor: pointer;
+    margin: 0 4px;
   }
 
   #avatar {
-    @extend %vertical-align-middle;
     height: 28px;
-    cursor: pointer;
   }
 }
