@@ -139,6 +139,7 @@ class App extends React.Component {
           user={this.state.user}
           tasklist={this.state.tasklist}
           modal={this.state.modal}
+          onModal={this.handleModal}
           onSelectTasklist={this.handleSelectTasklist}
         />
         <LabelsModal

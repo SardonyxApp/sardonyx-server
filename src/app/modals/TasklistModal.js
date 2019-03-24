@@ -31,6 +31,11 @@ class TasklistModal extends React.Component {
     });
   }
 
+  handleSelect(tasklist) {
+    this.props.onModal();
+    this.props.onSelectTasklist(tasklist);
+  }
+
   render() {
     const tasklists = this.props.user.teacher
       ? this.state.tasklists.map(tasklist => (
@@ -43,7 +48,7 @@ class TasklistModal extends React.Component {
             <p className="overview-description">{tasklist.description}</p>
           </div>
         ) : (
-          <div className="overview-tasklist" style={{ cursor: 'pointer' }} onClick={() => this.props.onSelectTasklist(tasklist)}>
+          <div className="overview-tasklist" style={{ cursor: 'pointer' }} onClick={() => this.handleSelect(tasklist)}>
             <div>
               <h3>{tasklist.name}</h3>
             </div>
