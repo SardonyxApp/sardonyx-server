@@ -8,6 +8,12 @@ import React from 'react';
 import { SearchIcon, AddIcon, RemoveIcon } from '../../logos';
 
 class TasksFilter extends React.Component {
+  // Event listener for icons to open filter modal 
+  handleClick(e) {
+    const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
+    this.props.onModal('filter', position.left, position.bottom + 4);
+  }
+
   render() {
     const subjects = this.props.subjects
       .filter(label => this.props.subjectsFilter.includes(label.id))
@@ -37,16 +43,10 @@ class TasksFilter extends React.Component {
 
     return (
       <div id="tasks-filter" className="custom-scroll">
-        <SearchIcon onClick={e => {
-          const position = e.target.getBoundingClientRect();
-          this.props.onModal('filter', position.left, position.bottom + 4);
-        }}/> 
+        <SearchIcon onClick={e => this.handleClick(e)}/> 
         {subjects}
         {categories}
-        <AddIcon onClick={e => {
-          const position = e.target.getBoundingClientRect();
-          this.props.onModal('filter', position.left, position.bottom + 4);
-        }}/>
+        <AddIcon onClick={e => this.handleClick(e)}/>
       </div>
     );
   }
