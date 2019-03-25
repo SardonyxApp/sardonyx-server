@@ -54,6 +54,7 @@ class App extends React.Component {
     this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
+    this.handleNewTask = this.handleNewTask.bind(this);
     this.handleChangeTask = this.handleChangeTask.bind(this);
   }
 
@@ -119,6 +120,33 @@ class App extends React.Component {
     });
   }
 
+  // Create new task 
+  handleNewTask(obj) {
+    this.setState(prevState => {
+      const tasks = prevState.tasks;
+      tasks.push(Object.assign({
+        // Default task object to be merged by parameter object
+        id: -2, // number not taken by others. -1 is used to deselect
+        name: '',
+        description: null,
+        due: null,
+        tasklist_id: this.state.tasklist.id,
+        student_id: null,
+        student_name: null,
+        teacher_id: null,
+        teacher_name: null,
+        subject_id: null,
+        subject_name: null,
+        subject_color: null,
+        category_id: null,
+        category_name: null,
+        category_color: null
+      }, obj));
+
+      return { tasks };
+    });
+  }
+
   // Update task content 
   handleChangeTask(obj) {
     this.setState(prevState => {
@@ -143,9 +171,11 @@ class App extends React.Component {
           user={this.state.user}
           modal={this.state.modal}
         />
-        <AddModal 
+        <AddModal
+          user={this.state.user} 
           modal={this.state.modal}
           onModal={this.handleModal}
+          onNewTask={this.handleNewTask}
         />
         <LabelsModal
           task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
