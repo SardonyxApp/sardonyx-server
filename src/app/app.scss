@@ -41,6 +41,11 @@ a {
   color: $blue;
 }
 
+input {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
 .embed {
   word-wrap: break-word;
   white-space: pre-wrap;

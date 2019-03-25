@@ -191,11 +191,11 @@ class RemoveIcon extends React.Component {
   }
 }
 
-class EditIcon extends React.Component {
+class CreateIcon extends React.Component {
   render() {
     return (
       <svg 
-        className="edit-icon material-icon action" 
+        className="create-icon material-icon action" 
         viewBox="0 0 24 24" 
         width={this.props.width || 24} 
         height={this.props.height || 24}
@@ -239,6 +239,6 @@ export {
   SearchIcon,
   AddIcon,
   RemoveIcon,
-  EditIcon,
+  CreateIcon,
   AddToListIcon
 };

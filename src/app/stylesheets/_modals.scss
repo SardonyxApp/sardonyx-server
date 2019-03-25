@@ -67,5 +67,28 @@
     list-style: none;
     padding: 0;
     margin: 0; // Obligatory 
+
+    li {
+      cursor: pointer;
+    }
+  }
+}
+
+#add-task-modal {
+  @extend %small-modal;
+  
+  #add-task-input {
+    width: 200px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px;
+
+    &:focus {
+      border-bottom: 2px solid $blue;
+    }
+  }
+
+  & > * {
+    vertical-align: middle;
   }
 }
