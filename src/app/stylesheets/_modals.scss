@@ -76,7 +76,7 @@
 
 #add-task-modal {
   @extend %small-modal;
-  
+
   #add-task-input {
     width: 200px;
     border: none;
@@ -86,6 +86,10 @@
     &:focus {
       border-bottom: 2px solid $blue;
     }
+  }
+
+  .next-icon:hover {
+    transform: translateX(2px);
   }
 
   & > * {

@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { CreateIcon } from '../../logos';
+import { NextIcon } from '../../logos';
 
 class AddModal extends React.Component {
   constructor(props) {
@@ -55,9 +55,14 @@ class AddModal extends React.Component {
             id="add-task-input" 
             type="text" 
             placeholder="Enter the name of the task"
+            autoFocus
+            onKeyDown={e => {
+              if (e.keyCode === 13) this.handleAddTask();
+              if (e.keyCode === 27) this.props.onModal();
+            }}
             ref={this.inputRef}
           />
-          <CreateIcon 
+          <NextIcon 
             width={16}
             height={16}
             style={{ cursor: 'pointer' }}

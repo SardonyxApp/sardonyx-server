@@ -58,7 +58,7 @@ class TaskDescription extends React.Component {
           onKeyDown={this.handleKeyDown}
           ref={this.textareaRef}
         >
-          {this.props.description}
+          {this.props.description || '\n'}
         </p>
       </div>
     );
