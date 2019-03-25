@@ -227,6 +227,24 @@ class AddToListIcon extends React.Component {
   }
 }
 
+class NextIcon extends React.Component {
+  render() {
+    return (
+      <svg 
+        className="next-icon material-icon action" 
+        viewBox="0 0 24 24" 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+        onClick={this.props.onClick}
+      >
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+      </svg>
+    );
+  }
+}
+
 export { 
   Icon, 
   IconWhiteBackground, 
@@ -240,5 +258,6 @@ export {
   AddIcon,
   RemoveIcon,
   CreateIcon,
-  AddToListIcon
+  AddToListIcon,
+  NextIcon
 };
