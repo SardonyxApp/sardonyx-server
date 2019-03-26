@@ -149,10 +149,17 @@ app.get('/app/user', task.loadUser);
 
 app.use('/app', auth.authenticateYear);
 
+// Load data 
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
 app.get('/app/subjects', task.loadSubjects);
 app.get('/app/categories', task.loadCategories);
+
+// Push data 
+app.use('/app', express.json());
+
+app.post('/app/task', task.craftTask, task.createTask);
+app.patch('/app/task', task.craftTask, task.editTask);
 
 /**
  * Public 

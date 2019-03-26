@@ -149,11 +149,33 @@ class App extends React.Component {
 
   // Update task content 
   handleChangeTask(obj) {
-    this.setState(prevState => {
-      const tasks = prevState.tasks;
-      const index = tasks.findIndex(t => t.id === prevState.currentTask);
-      tasks[index] = Object.assign(tasks[index], obj);
-      return { tasks };
+    // Deep copy object
+    const body = JSON.parse(JSON.stringify(obj));
+
+    // Stored in separate DB table, do not need to be updated 
+    delete body.subject_name;
+    delete body.subject_color;
+    delete body.category_name;
+    delete body.category_color;
+
+    // Send the request 
+    fetch(`/app/task?id=${this.state.currentTask}`, {
+      body: JSON.stringify(body),
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      // Update local state using local data, as response object does not return tables 
+      this.setState(prevState => {
+        const tasks = prevState.tasks;
+        const index = tasks.findIndex(t => t.id === prevState.currentTask);
+        tasks[index] = Object.assign(tasks[index], obj);
+        return { tasks };
+      });
+    }).catch(err => {
+      console.error(err);
     });
   }
 
