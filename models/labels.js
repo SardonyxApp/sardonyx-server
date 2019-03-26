@@ -21,7 +21,7 @@ class Labels {
    */
   selectByTasklistId(tasklistId) {
     return new Promise((resolve, reject) => {
-      db.get().query(`SELECT * FROM ?? WHERE tasklist_id = ?`, [this.target, tasklistId], (err, results) => {
+      db.get().query("SELECT * FROM ?? WHERE tasklist_id = ?", [this.target, tasklistId], (err, results) => {
         if (err) reject(err);
         resolve(results);
       });

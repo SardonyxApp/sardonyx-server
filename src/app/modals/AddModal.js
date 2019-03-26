@@ -24,7 +24,7 @@ class AddModal extends React.Component {
       return;
     }
 
-    this.props.onNewTask({ name });
+    this.props.onCreateTask({ name });
     this.props.onModal();
   }
 

@@ -57,8 +57,9 @@ class App extends React.Component {
     this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
-    this.handleNewTask = this.handleNewTask.bind(this);
+    this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleChangeTask = this.handleChangeTask.bind(this);
+    this.handleDeleteTask = this.handleDeleteTask.bind(this);
   }
 
   // Safely fetch data after initial render 
@@ -124,7 +125,7 @@ class App extends React.Component {
   }
 
   // Create new task 
-  handleNewTask(obj) {
+  handleCreateTask(obj) {
     const task = {
       name: obj.name || '',
       description: obj.description || null,
@@ -209,6 +210,21 @@ class App extends React.Component {
     });
   }
 
+  handleDeleteTask(id) {
+    fetch(`/app/task?id=${id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      this.setState(prevState => {
+        return {
+          tasks: prevState.tasks.filter(t => t.id !== id),
+          currentTask: -1
+        };
+      });
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -227,7 +243,7 @@ class App extends React.Component {
           user={this.state.user} 
           modal={this.state.modal}
           onModal={this.handleModal}
-          onNewTask={this.handleNewTask}
+          onCreateTask={this.handleCreateTask}
         />
         <LabelsModal
           task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
@@ -267,6 +283,7 @@ class App extends React.Component {
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
             onModal={this.handleModal}
             onChangeTask={this.handleChangeTask}
+            onDeleteTask={this.handleDeleteTask}
           />
         </div>
       </div>

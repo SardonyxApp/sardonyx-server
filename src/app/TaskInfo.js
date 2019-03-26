@@ -10,6 +10,7 @@ import TaskLabels from './components/TaskLabels';
 import TaskDescription from './components/TaskDescription';
 import TaskDue from './components/TaskDue';
 import TaskAuthor from './components/TaskAuthor';
+import TaskDelete from './components/TaskDelete';
 
 class TaskInfo extends React.Component {
   render() {
@@ -36,6 +37,10 @@ class TaskInfo extends React.Component {
             />
             <TaskAuthor 
               author={this.props.task.student_name || this.props.task.teacher_name}
+            />
+            <TaskDelete 
+              task={this.props.task}
+              onDeleteTask={this.props.onDeleteTask}
             />
           </div>
         </div>

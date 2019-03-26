@@ -13,7 +13,7 @@ const db = require('../db');
  */
 exports.select = id => {
   return new Promise((resolve, reject) => {
-    db.get().query(`SELECT * FROM tasklists WHERE id = ?`, id, (err, results) => {
+    db.get().query("SELECT * FROM tasklists WHERE id = ?", id, (err, results) => {
       if (err) reject(err); 
       resolve(results);
     });
@@ -26,7 +26,7 @@ exports.select = id => {
  */
 exports.selectAll = () => {
   return new Promise((resolve, reject) => {
-    db.get().query(`SELECT * FROM tasklists`, (err, results) => {
+    db.get().query("SELECT * FROM tasklists", (err, results) => {
       if (err) reject(err);
       resolve(results);
     });

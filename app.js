@@ -146,6 +146,7 @@ app.get('/logout', auth.authenticateToken, auth.logout);
 app.use('/app', auth.authenticateToken);
 
 app.get('/app/user', task.loadUser);
+app.delete('/app/task', task.deleteTask);
 
 app.use('/app', auth.authenticateYear);
 
