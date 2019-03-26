@@ -132,6 +132,20 @@ exports.editTask = (req, res) => {
 }
 
 /**
+ * @description Delete a task by its id 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.deleteTask = (req, res) => {
+  tasks.delete(Number(req.query.id)).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+}
+
+/**
  * @description Load subject labels 
  * @param {Object} req 
  * @param {Object} res 
