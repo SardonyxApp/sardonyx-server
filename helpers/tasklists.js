@@ -95,13 +95,9 @@ exports.loadTasks = (req, res) => {
  * @param {FUnction} next
  */
 exports.craftTask = (req, res, next) => {
-  if (req.body.hasOwnProperty('due')) {
+  if (req.body.due) { // Skips when req.body.due === null or undefined 
     // Shift the time by timezone offset since the ISO string is in UTC
-    const due = new Date(req.body.due);
-    req.body.due = new Date(due.valueOf() - due.getTimezoneOffset() * 60000)
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ');
+    req.body.due = new Date(req.body.due);
   }
 
   next();

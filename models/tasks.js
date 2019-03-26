@@ -41,13 +41,7 @@ exports.selectJoinedByTasklistId = tasklistId => {
  */
 exports.create = task => {
   return new Promise((resolve, reject) => {
-    // Preparing statements to avoid SQL injection vulnerability
-    const arr = [];
-    for (i in Object.keys(task)) {
-      arr.push('?')
-    }
-
-    db.get().query(`INSERT INTO tasks (${arr.join(', ')}) VALUES (${arr.join(', ')})`, [...Object.keys(task), ...Object.values(task)], (err, results) => {
+    db.get().query(`INSERT INTO tasks SET ?`, task, (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
