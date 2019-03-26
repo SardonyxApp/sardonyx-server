@@ -19,18 +19,17 @@
 }
 
 // TaskList and TaskInfo
-.left-view, .right-view {
-  height: calc(100% - 48px);
-  padding: 24px;
-}
-
 .left-view {
+  height: calc(100% - 24px);
   width: calc(45% - 48px);
+  padding: 12px 24px;
   flex: 0 0 auto;
 }
 
 .right-view {
+  height: calc(100% - 48px);
   width: calc(55% - 48px);
+  padding: 24px;
   flex: 1 1 auto;
 }
 
@@ -105,8 +104,8 @@
 
 #tasks-container {
   overflow-y: auto;
-  height: calc(100% - 50px);
-  padding: 0 8px 4px 0;
+  height: calc(100% - 66px);
+  padding: 8px 8px 4px 0;
 
   .group {
     text-transform: uppercase;
