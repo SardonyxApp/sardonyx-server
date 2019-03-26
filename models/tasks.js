@@ -33,3 +33,38 @@ exports.selectJoinedByTasklistId = tasklistId => {
     });
   });
 };
+
+/**
+ * @description Create a new task 
+ * @param {Object} task 
+ * @returns {Promise}
+ */
+exports.create = task => {
+  return new Promise((resolve, reject) => {
+    // Preparing statements to avoid SQL injection vulnerability
+    const arr = [];
+    for (i in Object.keys(task)) {
+      arr.push('?')
+    }
+
+    db.get().query(`INSERT INTO tasks (${arr.join(', ')}) VALUES (${arr.join(', ')})`, [...Object.keys(task), ...Object.values(task)], (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+}
+
+/**
+ * @description Edit a task by id
+ * @param {Number} id 
+ * @param {Object} task 
+ * @returns {Promise}
+ */
+exports.update = (id, task) => {  
+  return new Promise((resolve, reject) => {
+    db.get().query("UPDATE tasks SET ? WHERE id = ?", [task, id], (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });
+}

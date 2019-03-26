@@ -89,6 +89,53 @@ exports.loadTasks = (req, res) => {
 };
 
 /**
+ * @description Process task 
+ * @param {Object} req
+ * @param {Object} res 
+ * @param {FUnction} next
+ */
+exports.craftTask = (req, res, next) => {
+  if (req.body.hasOwnProperty('due')) {
+    // Shift the time by timezone offset since the ISO string is in UTC
+    const due = new Date(req.body.due);
+    req.body.due = new Date(due.valueOf() - due.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+  }
+
+  next();
+}
+
+/**
+ * @description Create task 
+ * @param {Object} req
+ * @param {Object} res 
+ */
+exports.createTask = (req, res) => {
+  tasks.create(req.body).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+}
+
+/**
+ * @description Edit a task by its id 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.editTask = (req, res) => {
+  tasks.update(Number(req.query.id), req.body).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+}
+
+/**
  * @description Load subject labels 
  * @param {Object} req 
  * @param {Object} res 
