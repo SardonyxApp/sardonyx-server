@@ -1,6 +1,10 @@
 import React from 'react';
 
 // Custom designed logos 
+
+/**
+ * @description Sardonyx logo icon with transparent background
+ */
 class Icon extends React.Component {
   render() {
     return (
@@ -17,6 +21,9 @@ class Icon extends React.Component {
   }
 }
 
+/**
+ * @description Sardonyx logo icon with white square background 
+ */
 class IconWhiteBackground extends React.Component {
   render() {
     return (
@@ -34,6 +41,9 @@ class IconWhiteBackground extends React.Component {
   }
 }
 
+/**
+ * @description Sardonyx logo icon with colors inverted (fill = white by default)
+ */
 class IconInverted extends React.Component {
   render() {
     return(
@@ -51,6 +61,10 @@ class IconInverted extends React.Component {
 }
 
 // Material icons 
+
+/**
+ * @description Tag icon
+ */
 class LabelIcon extends React.Component {
   render() {
     return (
@@ -68,6 +82,9 @@ class LabelIcon extends React.Component {
   }
 }
 
+/**
+ * @description Text icon with three horizontal lines (two long, one short)
+ */
 class DescriptionIcon extends React.Component {
   render() {
     return (
@@ -85,6 +102,9 @@ class DescriptionIcon extends React.Component {
   }
 }
 
+/**
+ * @description Clock icon
+ */
 class TimeIcon extends React.Component {
   render() {
     return (
@@ -103,6 +123,9 @@ class TimeIcon extends React.Component {
   }
 }
 
+/**
+ * @description Person icon
+ */
 class UserIcon extends React.Component {
   render() {
     return (
@@ -120,6 +143,9 @@ class UserIcon extends React.Component {
   }
 }
 
+/**
+ * @description Check mark icon
+ */
 class CheckIcon extends React.Component {
   render() {
     return (
@@ -137,6 +163,9 @@ class CheckIcon extends React.Component {
   }
 }
 
+/**
+ * @description Magnifying glass icon
+ */
 class SearchIcon extends React.Component {
   render() {
     return (
@@ -155,6 +184,9 @@ class SearchIcon extends React.Component {
   }
 }
 
+/**
+ * @description + icon
+ */
 class AddIcon extends React.Component {
   render() {
     return (
@@ -173,6 +205,9 @@ class AddIcon extends React.Component {
   }
 }
 
+/**
+ * @description x icon
+ */
 class RemoveIcon extends React.Component {
   render() {
     return (
@@ -191,11 +226,14 @@ class RemoveIcon extends React.Component {
   }
 }
 
-class CreateIcon extends React.Component {
+/**
+ * @description Pen icon
+ */
+class EditIcon extends React.Component {
   render() {
     return (
       <svg 
-        className="create-icon material-icon action" 
+        className="edit-icon material-icon action" 
         viewBox="0 0 24 24" 
         width={this.props.width || 24} 
         height={this.props.height || 24}
@@ -209,6 +247,30 @@ class CreateIcon extends React.Component {
   }
 }
 
+/**
+ * @description Trash can icon
+ */
+class DeleteIcon extends React.Component {
+  render() {
+    return (
+      <svg
+        className="delete-icon material-icon action" 
+        viewBox="0 0 24 24" 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+        onClick={this.props.onClick}
+      >
+        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+      </svg>
+    );
+  }
+}
+
+/**
+ * @description Hamburger menu icon (three lines) with a small plus on the bottom right corner
+ */
 class AddToListIcon extends React.Component {
   render() {
     return (
@@ -227,6 +289,9 @@ class AddToListIcon extends React.Component {
   }
 }
 
+/**
+ * @description Forward arrow icon
+ */
 class NextIcon extends React.Component {
   render() {
     return (
@@ -257,7 +322,8 @@ export {
   SearchIcon,
   AddIcon,
   RemoveIcon,
-  CreateIcon,
+  EditIcon,
+  DeleteIcon,
   AddToListIcon,
   NextIcon
 };
