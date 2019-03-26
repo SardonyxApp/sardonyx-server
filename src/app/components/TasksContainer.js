@@ -28,6 +28,7 @@ class TaskListCard extends React.Component {
 
 class TasksContainer extends React.Component {
   render() {
+    // Apply filters 
     const tasks = this.props.subjectsFilter.length || this.props.categoriesFilter.length
       ? this.props.tasks.filter(t => this.props.subjectsFilter.includes(t.subject_id) || this.props.categoriesFilter.includes(t.category_id))
       : this.props.tasks;
@@ -54,11 +55,12 @@ class TasksContainer extends React.Component {
     count += todayTasks.length;
 
     const upcomingTasks = tasks.filter(t => new Date().toDateString() !== new Date(t.due).toDateString() && new Date() < new Date(t.due)).map(t => {
+      const due = new Date(t.due);
       const view = (
         <div>
           <div className="side">
-            <p>{store === t.due ? null : new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(new Date(t.due))}</p>
-            <p>{store === t.due ? null : new Date(t.due).getDate()}</p>
+            <p>{store === due.toDateString() ? null : new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(due)}</p>
+            <p>{store === due.toDateString() ? null : due.getDate()}</p>
           </div>
           <TaskListCard 
             task={t}
@@ -67,7 +69,7 @@ class TasksContainer extends React.Component {
           />
         </div>
       );
-      store = t.due;
+      store = due.toDateString();
       return view;
     });
     count += upcomingTasks.length;
@@ -85,11 +87,12 @@ class TasksContainer extends React.Component {
     count += noDateTasks.length;
 
     const pastTasks = tasks.filter(t => t.due !== null && new Date().toDateString() !== new Date(t.due).toDateString() && new Date() > new Date(t.due)).reverse().map(t => {
+      const due = new Date(t.due);
       const view = (
         <div>
           <div className="side">
-            <p>{store === t.due ? null : new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(t.due))}</p>
-            <p>{store === t.due ? null : new Intl.DateTimeFormat('en-US', { day: 'numeric' }).format(new Date(t.due))}</p>
+            <p>{store === due.toDateString() ? null : new Intl.DateTimeFormat('en-US', { month: 'short' }).format(due)}</p>
+            <p>{store === due.toDateString() ? null : new Intl.DateTimeFormat('en-US', { day: 'numeric' }).format(due)}</p>
           </div>
           <TaskListCard 
             task={t}
@@ -98,7 +101,7 @@ class TasksContainer extends React.Component {
           />
         </div>
       );
-      store = t.due;
+      store = due.toDateString();
       return view;
     });
 
