@@ -146,29 +146,35 @@ exports.deleteTask = (req, res) => {
 }
 
 /**
- * @description Load subject labels 
- * @param {Object} req 
- * @param {Object} res 
+ * @description Load labels 
+ * @param {String} type subjects or categories 
+ * @returns {Function} express middleware 
  */
-exports.loadSubjects = (req, res) => {
-  subjects.selectByTasklistId(req.token.year - 2017).then(results => {
-    res.json(results);
-  }).catch(err => {
-    console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
-  });
-}
+exports.loadLabel = type => {
+  const target = type === 'subjects' ? subjects : categories;
+  return (req, res) => {
+    target.selectByTasklistId(req.token.year - 2017).then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  };  
+};
 
 /**
- * @description Load category labels 
- * @param {Object} req 
- * @param {Object} res 
+ * @description Create a label 
+ * @param {String} type subjects or categories 
+ * @returns {Function} express middleware 
  */
-exports.loadCategories = (req, res) => {
-  categories.selectByTasklistId(req.token.year - 2017).then(results => {
-    res.json(results);
-  }).catch(err => {
-    console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
-  });
-}
+exports.createLabel = type => {
+  return (req, res) => {
+    const target = type === 'subjects' ? subjects : categories;
+    target.create(req.body).then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  };  
+};

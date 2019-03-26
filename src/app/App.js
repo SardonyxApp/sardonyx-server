@@ -60,6 +60,7 @@ class App extends React.Component {
     this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleChangeTask = this.handleChangeTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
+    this.handleCreateLabel = this.handleCreateLabel.bind(this);
   }
 
   // Safely fetch data after initial render 
@@ -83,7 +84,12 @@ class App extends React.Component {
     });
   }
 
-  // Open / close modals 
+  /**
+   * Manage open/closed modals 
+   * @param {String} name 
+   * @param {Number|String} x number or pixels in string
+   * @param {Number|String} y number or pixels in string
+   */
   handleModal(name = null, x = null, y = null) {
     this.setState({
       modal: { name, x, y } // x and y coordinates can either be used for left or right, depending on modal 
@@ -115,7 +121,11 @@ class App extends React.Component {
     }));
   }
 
-  // Update filter list 
+  /**
+   * @description Update TaskFilter 
+   * @param {String} type subjects or categories 
+   * @param {Number} id 
+   */ 
   handleFilter(type, id) {
     this.setState(prevState => {
       const obj = {};
@@ -124,7 +134,10 @@ class App extends React.Component {
     });
   }
 
-  // Create new task 
+  /**
+   * @description Create a new task 
+   * @param {Object} obj task object 
+   */
   handleCreateTask(obj) {
     const task = {
       name: obj.name || '',
@@ -178,7 +191,10 @@ class App extends React.Component {
     });
   }
 
-  // Update task content 
+  /**
+   * @description Update task content 
+   * @param {Object} obj task object with any key value pair that is to be changed  
+   */
   handleChangeTask(obj) {
     // Deep copy object
     const body = JSON.parse(JSON.stringify(obj));
@@ -210,6 +226,10 @@ class App extends React.Component {
     });
   }
 
+  /**
+   * Delete a task 
+   * @param {String|Number} id 
+   */
   handleDeleteTask(id) {
     fetch(`/app/task?id=${id}`, {
       method: 'DELETE'
@@ -222,6 +242,34 @@ class App extends React.Component {
       });
     }).catch(err => {
       console.error(err);
+    });
+  }
+
+  /**
+   * @description Create a label
+   * @param {String} type subjects or categories
+   * @param {Object} obj 
+   * @param {String} obj.name 
+   * @param {String} obj.color 
+   */ 
+  handleCreateLabel(type, obj) {
+    fetch(`/app/${type}`, {
+      method: 'POST',
+      body: JSON.stringify(obj),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState(prevState => {
+        const payload = {};
+        payload[type] = prevState[type].concat(Object.assign({
+          id: response.insertId          
+        }, obj));
+        return payload;
+      });
     });
   }
 
@@ -244,6 +292,7 @@ class App extends React.Component {
           modal={this.state.modal}
           onModal={this.handleModal}
           onCreateTask={this.handleCreateTask}
+          onCreateLabel={this.handleCreateLabel}
         />
         <LabelsModal
           task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}

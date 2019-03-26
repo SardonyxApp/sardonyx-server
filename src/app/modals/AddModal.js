@@ -23,27 +23,28 @@ class AddModal extends React.Component {
     
   }
 
-  validateName() {
+  handleAddTask() {
     const name = this.inputRef.current.value;
     if (!name) {
       this.inputRef.current.style.borderBottom = '2px solid #f44138';
       this.inputRef.current.focus();
-      return false;
+      return;
     }
-    return true;
+
+    this.props.onCreateTask({ name });
+    this.props.onModal();
   }
 
-  handleAddTask() {
-    if (this.validateName()) {
-      this.props.onCreateTask({ name });
-      this.props.onModal();
+  handleAddLabel(type) {
+    const name = this.inputRef.current.value;
+    if (!name) {
+      this.inputRef.current.style.borderBottom = '2px solid #f44138';
+      this.inputRef.current.focus();
+      return;
     }
-  }
 
-  handleAddLabel() {
-    if (this.validateName()) {
-      this.props.onModal();
-    }
+    this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
+    this.props.onModal();
   }
 
   handleColor(color) {
