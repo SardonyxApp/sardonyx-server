@@ -27,6 +27,20 @@ class Labels {
       });
     });
   }
+
+  /**
+   * @decription Create a new task 
+   * @param {Object} task 
+   * @returns {Promise}
+   */
+  create(task) {
+    return new Promise((resolve, reject) => {
+      db.get().query("INSERT INTO ?? SET ?", [this.target, task], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
 }
 
 const subjects = new Labels('subjects');

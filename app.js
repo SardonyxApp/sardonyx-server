@@ -160,14 +160,16 @@ app.use('/app', auth.authenticateYear);
 // Load data 
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
-app.get('/app/subjects', task.loadSubjects);
-app.get('/app/categories', task.loadCategories);
+app.get('/app/subjects', task.loadLabel('subjects'));
+app.get('/app/categories', task.loadLabel('categories'));
 
 // Push data 
 app.use('/app', express.json());
 
 app.post('/app/task', task.craftTask, task.createTask);
 app.patch('/app/task', task.craftTask, task.editTask);
+app.post('/app/subjects', task.createLabel('subjects'));
+app.post('/app/categories', task.createLabel('categories'));
 
 /**
  * Public 
