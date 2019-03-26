@@ -259,5 +259,20 @@ exports.authenticateYear = (req, res, next) => {
  */
 exports.logout = (req, res) => {
   res.clearCookie('Sardonyx-Token');
-  req.token.teacher ? res.redirect('/login?teacher=true&logout=true') : res.redirect('/login?logout=true')
+  req.token.teacher ? res.redirect('/login?teacher=true&logout=true') : res.redirect('/login?logout=true');
+}
+
+/**
+ * @description Changes password for teachers 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.changePassword = (req, res) => {
+  teachers.updatePassword(req.token.email, req.body.new_password).then(results => {
+    res.clearCookie('Sardonyx-Token');
+    req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
 }

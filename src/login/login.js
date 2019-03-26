@@ -60,6 +60,7 @@ class Login extends React.Component {
     let errorMessage = null;
     if (location.search.includes('invalid=true')) errorMessage = 'Login failed. Please try again.';
     if (location.search.includes('logout=true')) errorMessage = 'You have been logged out.'; // This isn't really an error message but it will be displayed in red 
+    if (location.search.includes('password=true')) errorMessage = 'Password changed successfully.'; // Same with this one 
     
     this.state = {
       errorMessage: errorMessage,
@@ -85,8 +86,8 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div id="login">
-        <div id="login-box">
+      <div id="login" className="root">
+        <div id="login-box" className="container">
           <Icon />
           <h1>Welcome</h1>
           <p style={{ display: !this.state.teacher ? 'block' : 'none' }}>Please use your Kokusai High School ManageBac information to log in to Sardonyx.</p>

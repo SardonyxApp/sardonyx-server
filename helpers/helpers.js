@@ -121,7 +121,7 @@ exports.hashPassword = (password, salt) => {
   // Create a hash based on salt
   const hmac = crypto.createHmac('sha512', salt);
   hmac.update(password);
-  const hash = hmac.digest('hex');
+  const password_digest = hmac.digest('hex');
 
-  return { password_digest: hash, salt: salt };
+  return { password_digest, salt };
 };
