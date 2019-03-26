@@ -142,6 +142,13 @@ app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
 
 app.get('/logout', auth.authenticateToken, auth.logout);
 
+// Change password
+app.use('/password', auth.authenticateToken, upload.none(), (req, res, next) => {
+  if (!req.token.teacher) res.status(401).send('Students must change passwords through Managebac.');
+  else next();
+});
+app.post('/password', auth.changePassword);
+
 // Authenticate main page 
 app.use('/app', auth.authenticateToken);
 

@@ -5,6 +5,7 @@ module.exports = {
 	entry: {
 		'index': ['@babel/polyfill', './src/index.js'],
 		'login': ['@babel/polyfill', './src/login/login.js'],
+		'password': ['@babel/polyfill', './src/login/password.js'],
 		'app': ['@babel/polyfill', 'whatwg-fetch', './src/app/App.js']
 	},
 	output: {
@@ -42,6 +43,11 @@ module.exports = {
       chunks: ['login'],
       template: './src/login/login.html',
 			filename: './login/index.html'
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ['password'],
+			template: './src/login/password.html',
+			filename: './password/index.html'
 		}),
 		new HtmlWebpackPlugin({
 			chunks: ['app'],

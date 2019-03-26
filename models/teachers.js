@@ -29,9 +29,10 @@ exports.selectByEmail = email => {
  */
 exports.updatePassword = (email, password) => { // Not tested 
   return new Promise((resolve, reject) => {
-    db.get().query("UPDATE teachers SET password_digest = ? WHERE email = ?", [hashPassword(password), email], (err, rows) => {
+    const obj = hashPassword(password);
+    db.get().query("UPDATE teachers SET ? WHERE email = ?", [obj, email], (err, results) => {
       if (err) reject(err);
-      resolve(rows);
+      resolve(results);
     });
   });
 };

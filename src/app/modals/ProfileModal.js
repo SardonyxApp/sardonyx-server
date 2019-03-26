@@ -18,8 +18,8 @@ class ProfileModal extends React.Component {
         </div>
         <hr />
         <p><a href="https://kokusaiib.managebac.com" target="_blank">Open Managebac</a></p>
-        <p style={{ display: this.props.user.teacher ? '' : 'none' }}>Change Password</p>
-        <p><a href="/logout">Log out</a></p>
+        <p style={{ display: this.props.user.teacher ? '' : 'none' }}><a href="/password">Change Password</a></p>
+        <p><a href="/logout">Log Out</a></p>
       </div>
     ) : null;
   }
