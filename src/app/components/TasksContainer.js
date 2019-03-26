@@ -29,9 +29,12 @@ class TaskListCard extends React.Component {
 class TasksContainer extends React.Component {
   render() {
     // Apply filters 
-    const tasks = this.props.subjectsFilter.length || this.props.categoriesFilter.length
+    let tasks = this.props.subjectsFilter.length || this.props.categoriesFilter.length
       ? this.props.tasks.filter(t => this.props.subjectsFilter.includes(t.subject_id) || this.props.categoriesFilter.includes(t.category_id))
       : this.props.tasks;
+
+    // Re-sort by date
+    tasks = tasks.sort((a, b) => new Date(a.due).valueOf() - new Date(b.due).valueOf());
 
     // Count the number of cards 
     let count = 0;
