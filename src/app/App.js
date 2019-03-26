@@ -26,12 +26,15 @@ class App extends React.Component {
     super(props);
 
     // Set initial state with empty values to not cause any rendering errors 
-    this.state = {  
+    this.state = { 
+      // Display state 
       modal: {
         name: null,
         x: null,
         y: null
       }, 
+
+      // Data state 
       user: { 
         teacher: false,
         name: '', 
@@ -122,28 +125,55 @@ class App extends React.Component {
 
   // Create new task 
   handleNewTask(obj) {
-    this.setState(prevState => {
-      const tasks = prevState.tasks;
-      tasks.push(Object.assign({
-        // Default task object to be merged by parameter object
-        id: -2, // number not taken by others. -1 is used to deselect
-        name: '',
-        description: null,
-        due: null,
-        tasklist_id: this.state.tasklist.id,
-        student_id: null,
-        student_name: null,
-        teacher_id: null,
-        teacher_name: null,
-        subject_id: null,
-        subject_name: null,
-        subject_color: null,
-        category_id: null,
-        category_name: null,
-        category_color: null
-      }, obj));
+    const task = {
+      name: obj.name || '',
+      description: obj.description || null,
+      due: obj.due || null,
+      tasklist_id: this.state.tasklist.id,
+      student_id: this.state.user.teacher ? null : this.state.user.id,
+      teacher_id: this.state.user.teacher ? this.state.user.id : null,
+      subject_id: obj.subject_id || null,
+      category_id: obj.category_id || null
+    };
 
-      return { tasks };
+    fetch('/app/task', {
+      method: 'POST',
+      body: JSON.stringify(task),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState(prevState => {
+        const tasks = prevState.tasks;
+        tasks.push(Object.assign({
+          // Default task object to be merged by parameter object
+          id: response.insertId,
+          name: '',
+          description: null,
+          due: null,
+          tasklist_id: prevState.tasklist.id,
+          student_id: prevState.user.teacher ? null : prevState.user.id,
+          student_name: prevState.user.teacher ? null : prevState.user.name,
+          teacher_id: prevState.user.teacher ? prevState.user.id : null,
+          teacher_name: prevState.user.teacher ? prevState.user.name : null,
+          subject_id: null,
+          subject_name: null,
+          subject_color: null,
+          category_id: null,
+          category_name: null,
+          category_color: null
+        }, task));
+
+        return {
+          currentTask: response.insertId,
+          tasks
+        };
+      });
+    }).catch(err => {
+      console.error(err); // For now 
     });
   }
 
@@ -166,7 +196,7 @@ class App extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }).then(response => {
+    }).then(() => {
       // Update local state using local data, as response object does not return tables 
       this.setState(prevState => {
         const tasks = prevState.tasks;

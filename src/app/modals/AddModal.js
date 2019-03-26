@@ -23,13 +23,8 @@ class AddModal extends React.Component {
       this.inputRef.current.focus();
       return;
     }
-    const properties = this.props.user.teacher ? ['teacher_id', 'teacher_name'] : ['student_id', 'student_name']; // Change properties based on user type 
 
-    const obj = { name };
-    obj[properties[0]] = this.props.user.id;
-    obj[properties[1]] = this.props.user.name;
-
-    this.props.onNewTask(obj);
+    this.props.onNewTask({ name });
     this.props.onModal();
   }
 
