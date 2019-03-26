@@ -82,6 +82,10 @@
   flex-flow: wrap;
 }
 
+#task-due .remove-icon:active {
+  transform: translateY(2px);
+}
+
 #tasks-filter {
   overflow-x: auto;
   white-space: nowrap;
