@@ -44,7 +44,7 @@ class AddModal extends React.Component {
     }
 
     this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
-    this.props.onModal();
+    this.props.onModal('settings');
   }
 
   handleColor(color) {
@@ -53,20 +53,20 @@ class AddModal extends React.Component {
 
   render() {
     // Render the default add options 
-    if (this.props.modal.name === 'add-modal') {
+    if (this.props.modal.name === 'add') {
       return (
         <div id="add-modal" className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
           <ul>
-            <li onClick={() => this.props.onModal('add-task-modal', this.props.modal.x, this.props.modal.y)}>Add task</li>
-            <li onClick={() => this.props.onModal('add-subject-modal', this.props.modal.x, this.props.modal.y)}>Add subject label</li>
-            <li onClick={() => this.props.onModal('add-category-modal', this.props.modal.x, this.props.modal.y)}>Add category label</li>
+            <li onClick={() => this.props.onModal('add-task', this.props.modal.x, this.props.modal.y)}>Add task</li>
+            <li onClick={() => this.props.onModal('add-subject', this.props.modal.x, this.props.modal.y)}>Add subject label</li>
+            <li onClick={() => this.props.onModal('add-category', this.props.modal.x, this.props.modal.y)}>Add category label</li>
           </ul>
         </div>
       );
     }
 
     // Render interface to enter title of new task
-    if (this.props.modal.name === 'add-task-modal') {
+    if (this.props.modal.name === 'add-task') {
       return (
         <div id="add-task-modal" className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
           <div>
@@ -94,7 +94,7 @@ class AddModal extends React.Component {
       );
     }
 
-    if (this.props.modal.name === 'add-subject-modal' || this.props.modal.name === 'add-category-modal') {
+    if (this.props.modal.name === 'add-subject' || this.props.modal.name === 'add-category') {
       const type = this.props.modal.name === 'add-subject-modal' ? 'subject' : 'category';
       return (
         <div id={`add-${type}-modal`} className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>

@@ -57,7 +57,7 @@
       margin-bottom: 8px;
     }
 
-    .label > * {
+    .label > *, .add-icon {
       @extend %vertical-align-middle;
     }
   }
