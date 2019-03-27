@@ -69,28 +69,28 @@ class LabelsModal extends React.Component {
     }
 
     // Render
+    if (['subjects', 'categories', 'labels', 'filter'].includes(this.props.modal.name)) {
+      let render = [];
 
-    if (this.props.modal.name === 'subjects') {
-      return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y }}>
-          {subjects}
-        </div>
-      );
-    }
+      if (this.props.modal.name === 'subjects') {
+        render = subjects;
+      }
 
-    if (this.props.modal.name === 'categories') {
-      return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y }}>
-          {categories}
-        </div>
-      );
-    }
+      if (this.props.modal.name === 'categories') {
+        render = categories;
+      }
 
-    if (this.props.modal.name === 'labels' || this.props.modal.name === 'filter') {
+      else {
+        render = [...subjects, ...categories];
+      }
+
       return (
-        <div id="labels-modal" className="modal custom-scroll" style={{ left: this.props.modal.x, top: this.props.modal.y}}>
-          {subjects}
-          {categories}
+        <div 
+          id="labels-modal" 
+          className="modal custom-scroll" 
+          style={{ left: this.props.modal.x, top: this.props.modal.y, maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40 }}
+        >
+          {render}
         </div>
       );
     }

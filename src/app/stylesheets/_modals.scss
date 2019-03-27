@@ -99,6 +99,7 @@
 
   .label {
     margin: 6px 0;
+    white-space: nowrap;
 
     @extend %align-with-icon;
 
