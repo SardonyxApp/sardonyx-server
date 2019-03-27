@@ -66,13 +66,6 @@ exports.loadTasklist = (req, res) => {
 exports.loadTasks = (req, res) => {
   if (req.query.full = 'true') {
     tasks.selectJoinedByTasklistId(req.token.year - 2017).then(results => {
-      results.forEach(task => {
-        // Some values have to be decoded for now 
-        for (t of Object.keys(task)) {
-          if (typeof task.t === 'string') task.t = decodeURIComponent(task.t);
-        }
-        return task;
-      });
       res.json(results);
     }).catch(err => {
       console.error(err);
