@@ -111,35 +111,35 @@ class TasksContainer extends React.Component {
     return (
       <div id="tasks-container" className="custom-scroll">
         <h4 
-          className="group" 
+          className="subheading" 
           style={{ display: todayTasks.length ? '' : 'none' }}
         >
           Today
         </h4>
         {todayTasks}
         <h4 
-          className="group" 
+          className="subheading" 
           style={{ display: upcomingTasks.length ? '' : 'none', marginTop: todayTasks.length ? '16px' : 0 }}
         >
           Upcoming
         </h4>
         {upcomingTasks}
         <h4 
-          className="group" 
+          className="subheading" 
           style={{ display: noDateTasks.length ? '' : 'none', marginTop: todayTasks.length || upcomingTasks.length ? '16px' : 0 }}
         >
           No date set
         </h4>
         {noDateTasks}
         <h4 
-          className="group" 
+          className="subheading" 
           style={{ display: pastTasks.length ? '' : 'none', marginTop: todayTasks.length || upcomingTasks.length || noDateTasks.length ? '16px' : 0 }}
         >
           Past due
         </h4>
         {pastTasks}
         <h4 
-          className="group" 
+          className="subheading" 
           style={{ display: tasks.length ? 'none' : '' }}
         >
           No tasks found
