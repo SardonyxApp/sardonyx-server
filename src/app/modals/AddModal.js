@@ -44,7 +44,7 @@ class AddModal extends React.Component {
     }
 
     this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
-    this.props.onModal('settings');
+    this.props.onModal();
   }
 
   handleColor(color) {
@@ -95,9 +95,9 @@ class AddModal extends React.Component {
     }
 
     if (this.props.modal.name === 'add-subject' || this.props.modal.name === 'add-category') {
-      const type = this.props.modal.name === 'add-subject-modal' ? 'subject' : 'category';
+      const type = this.props.modal.name === 'add-subject' ? 'subject' : 'category';
       return (
-        <div id={`add-${type}-modal`} className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
+        <div id={`add-${type}-modal`} className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y, zIndex: this.props.zIndex }}>
           <div>
             <input
               id={`add-${type}-input`}

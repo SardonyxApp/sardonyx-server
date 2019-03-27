@@ -29,11 +29,16 @@ class App extends React.Component {
     // Set initial state with empty values to not cause any rendering errors 
     this.state = { 
       // Display state 
-      modal: {
+      modal: { // First level modal 
         name: null,
         x: null,
         y: null
-      }, 
+      },
+      secondModal: { // Second level modal 
+        name: null,
+        x: null,
+        y: null
+      },
 
       // Data state 
       user: { 
@@ -55,6 +60,7 @@ class App extends React.Component {
     };
 
     this.handleModal = this.handleModal.bind(this);
+    this.handleSecondModal = this.handleSecondModal.bind(this);
     this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
@@ -96,6 +102,11 @@ class App extends React.Component {
   handleModal(name = null, x = null, y = null) {
     this.setState({
       modal: { name, x, y } // x and y coordinates can either be used for left or right, depending on modal 
+    });
+  }
+  handleSecondModal(name = null, x = null, y= null) {
+    this.setState({
+      secondModal: { name, x, y }
     });
   }
 
@@ -329,6 +340,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        {/* Primary modals */}
         <SettingsModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
@@ -336,6 +348,7 @@ class App extends React.Component {
           categories={this.state.categories}
           modal={this.state.modal}
           onModal={this.handleModal}
+          onSecondModal={this.handleSecondModal}
           onCreateLabel={this.handleCreateLabel}
           onUpdateLabel={this.handleUpdateLabel}
           onDeleteLabel={this.handleDeleteLabel}
@@ -358,6 +371,7 @@ class App extends React.Component {
           onModal={this.handleModal}
           onCreateTask={this.handleCreateTask}
           onCreateLabel={this.handleCreateLabel}
+          zIndex={3}
         />
         <LabelsModal
           task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
@@ -374,8 +388,25 @@ class App extends React.Component {
         <ModalBackground 
           modal={this.state.modal}
           onModal={this.handleModal}
+          zIndex={2}
         />
 
+        {/* Secondary modals */}
+        <AddModal
+          user={this.state.user} 
+          modal={this.state.secondModal}
+          onModal={this.handleSecondModal}
+          onCreateTask={this.handleCreateTask}
+          onCreateLabel={this.handleCreateLabel}
+          zIndex={5}
+        />
+        <ModalBackground 
+          modal={this.state.secondModal}
+          onModal={this.handleSecondModal}
+          zIndex={4}
+        />
+
+        {/* Page */}
         <TopBar 
           user={this.state.user}
           tasklist={this.state.tasklist} 
