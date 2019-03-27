@@ -108,10 +108,8 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the subject of the task. (e.g. Mathematics, English)</p>
             {subjects}
-            <AddIcon onClick={e => {
-              const position = e.target.getBoundingClientRect();
-              this.props.onModal('add-subject', position.left, position.bottom);
-            }} />
+            <AddIcon onClick={() => this.props.onModal('add-subject', 8, 50)}
+            />
           </div>
           <div className="setting">
             <div className="heading">
@@ -120,10 +118,8 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the type of the work. (e.g. Homework, Exam Preparation)</p>
             {categories}
-            <AddIcon onClick={e => {
-              const position = e.target.getBoundingClientRect();
-              this.props.onModal('add-category', position.left, position.bottom);
-            }} />
+            <AddIcon onClick={() => this.props.onModal('add-category', 8, 50)}
+            />
           </div>
           <div className="heading">
             <UserIcon width={36} height={36} />
