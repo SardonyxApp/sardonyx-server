@@ -28,7 +28,7 @@ class TaskDelete extends React.Component {
           onClick={this.handleDelete}
         />
         <p 
-          style={{ color: '#f44138', cursor: 'pointer' }}
+          style={{ color: '#f44138', cursor: 'pointer', flex: '0 0 auto', width: 'auto' }}
           onClick={this.handleDelete}
         >
           Delete task
