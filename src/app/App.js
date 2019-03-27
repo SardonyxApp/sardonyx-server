@@ -253,6 +253,8 @@ class App extends React.Component {
    * @param {String} obj.color 
    */ 
   handleCreateLabel(type, obj) {
+    obj.tasklist_id = this.state.tasklist.id;
+    
     fetch(`/app/${type}`, {
       method: 'POST',
       body: JSON.stringify(obj),
