@@ -6,7 +6,7 @@
 
   input {
     border: none;
-    width: 100%;
+    width: calc(100% - 8px);
     cursor: pointer;
     border-bottom: 2px solid transparent;
 
