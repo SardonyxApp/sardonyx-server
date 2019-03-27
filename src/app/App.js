@@ -281,6 +281,9 @@ class App extends React.Component {
       <div>
         <SettingsModal 
           user={this.state.user}
+          tasklist={this.state.tasklist}
+          subjects={this.state.subjects}
+          categories={this.state.categories}
           modal={this.state.modal}
           onModal={this.handleModal}
           onCreateLabel={this.handleCreateLabel}

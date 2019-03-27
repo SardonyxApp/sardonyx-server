@@ -45,8 +45,16 @@
 
     @extend %custom-scroll;
     
-    & > .heading {
+    .heading {
       @extend %align-with-icon;
+    }
+
+    .setting {
+      padding-left: 40px;
+    }
+
+    & > div:not(:last-child) {
+      margin-bottom: 8px;
     }
   }
 }
