@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { RemoveIcon, UserIcon, TasklistIcon, InfoIcon, LabelIcon } from '../../logos';
+import { RemoveIcon, UserIcon, TasklistIcon, InfoIcon, LabelIcon, AddIcon } from '../../logos';
 
 class Label extends React.Component {
   constructor(props) {
@@ -32,14 +32,10 @@ class Label extends React.Component {
     this.setState({
       selected: false
     });
-
-    console.log(type, label);
-
+    
     label = Object.assign(label, {
       name: this.textRef.current.innerText
     });
-
-    console.log('object assign fine')
 
     this.props.onUpdateLabel(type, label);
   }
@@ -112,6 +108,10 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the subject of the task. (e.g. Mathematics, English)</p>
             {subjects}
+            <AddIcon onClick={e => {
+              const position = e.target.getBoundingClientRect();
+              this.props.onModal('add-subject', position.left, position.bottom);
+            }} />
           </div>
           <div className="setting">
             <div className="heading">
@@ -120,6 +120,10 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the type of the work. (e.g. Homework, Exam Preparation)</p>
             {categories}
+            <AddIcon onClick={e => {
+              const position = e.target.getBoundingClientRect();
+              this.props.onModal('add-category', position.left, position.bottom);
+            }} />
           </div>
           <div className="heading">
             <UserIcon width={36} height={36} />

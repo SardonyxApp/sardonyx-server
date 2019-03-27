@@ -17,7 +17,7 @@ class User extends React.Component {
   handleAdd(e) {
     // if target is <path>, use coordinates of parent <svg>
     const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect(); 
-    this.props.onModal('add-modal', document.documentElement.clientWidth - position.right, 50);
+    this.props.onModal('add', document.documentElement.clientWidth - position.right, 50);
   }
 
   render() {
