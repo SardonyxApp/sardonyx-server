@@ -46,6 +46,10 @@ input {
   font-weight: inherit;
 }
 
+svg {
+  fill: $black;
+}
+
 .embed {
   word-wrap: break-word;
   white-space: pre-wrap;
