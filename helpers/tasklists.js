@@ -171,3 +171,37 @@ exports.createLabel = type => {
     });
   };  
 };
+
+/**
+ * @description Update a label 
+ * @param {String} type subjects or categories 
+ * @returns {Function} express middleware 
+ */
+exports.updateLabel = type => {
+  return (req, res) => {
+    const target = type === 'subjects' ? subjects : categories;
+    target.update(req.query.id, req.body).then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  };
+};
+
+/**
+ * @description Delete a label 
+ * @param {String} type subjects or categories 
+ * @returns {Function} express middleware 
+ */
+exports.deleteLabel = type => {
+  return (req, res) => {
+    const target = type === 'subjects' ? subjects : categories;
+    target.delete(req.query.id).then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  };
+};

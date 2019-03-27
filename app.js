@@ -154,6 +154,8 @@ app.use('/app', auth.authenticateToken);
 
 app.get('/app/user', task.loadUser);
 app.delete('/app/task', task.deleteTask);
+app.delete('/app/subjects', task.deleteLabel('subjects'));
+app.delete('/app/categories', task.deleteLabel('categories'));
 
 app.use('/app', auth.authenticateYear);
 
@@ -170,6 +172,8 @@ app.post('/app/task', task.craftTask, task.createTask);
 app.patch('/app/task', task.craftTask, task.editTask);
 app.post('/app/subjects', task.createLabel('subjects'));
 app.post('/app/categories', task.createLabel('categories'));
+app.patch('/app/subjects', task.updateLabel('subjects'));
+app.patch('/app/categories', task.updateLabel('categories'));
 
 /**
  * Public 

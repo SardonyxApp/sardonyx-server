@@ -41,6 +41,35 @@ class Labels {
       });
     });
   }
+
+  /**
+   * @description Update a task 
+   * @param {Number} id
+   * @param {Object} task 
+   * @returns {Promise}
+   */
+  update(id, task) {
+    return new Promise((resolve, reject) => {
+      db.get().query("UPDATE ?? SET ? WHERE id = ?", [this.target, task, id], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
+
+  /**
+   * @description Delete a task 
+   * @param {Number} id 
+   * @returns {Promise}
+   */
+  delete(id) {
+    return new Promise((resolve, reject) => {
+      db.get().query("DELETE FROM ?? WHERE id = ?", [this.target, id], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  }
 }
 
 const subjects = new Labels('subjects');
