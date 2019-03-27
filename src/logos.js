@@ -144,6 +144,26 @@ class UserIcon extends React.Component {
 }
 
 /**
+ * @description List alt icon
+ */
+class TasklistIcon extends React.Component {
+  render() {
+    return (
+      <svg 
+        className="tasklist-icon material-icon" 
+        viewBox="0 0 24 24" 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+      >
+        <path d="M19 5v14H5V5h14m1.1-2H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM11 7h6v2h-6V7zm0 4h6v2h-6v-2zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7z"/>
+        <path fill="none" d="M0 0h24v24H0z"/>
+      </svg>
+    );
+  }
+}
+
+/**
  * @description Check mark icon
  */
 class CheckIcon extends React.Component {
@@ -338,7 +358,7 @@ class LockIcon extends React.Component {
   render() {
     return (
       <svg 
-        className="globe-icon material-icon action" 
+        className="lock-icon material-icon action" 
         viewBox="0 0 24 24" 
         width={this.props.width || 24} 
         height={this.props.height || 24}
@@ -359,7 +379,7 @@ class ExitIcon extends React.Component {
   render() {
     return (
       <svg 
-        className="globe-icon material-icon action" 
+        className="exit-icon material-icon action" 
         viewBox="0 0 24 24" 
         width={this.props.width || 24} 
         height={this.props.height || 24}
@@ -373,6 +393,27 @@ class ExitIcon extends React.Component {
   }
 }
 
+/**
+ * @description Gear icon
+ */
+class SettingsIcon extends React.Component {
+  render() {
+    return (
+      <svg 
+        className="settings-icon material-icon action" 
+        viewBox="0 0 20 20"  // do NOT change 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+        onClick={this.props.onClick}
+      >
+        <path fill="none" d="M0 0h20v20H0V0z"/>
+        <path d="M15.95 10.78c.03-.25.05-.51.05-.78s-.02-.53-.06-.78l1.69-1.32c.15-.12.19-.34.1-.51l-1.6-2.77c-.1-.18-.31-.24-.49-.18l-1.99.8c-.42-.32-.86-.58-1.35-.78L12 2.34c-.03-.2-.2-.34-.4-.34H8.4c-.2 0-.36.14-.39.34l-.3 2.12c-.49.2-.94.47-1.35.78l-1.99-.8c-.18-.07-.39 0-.49.18l-1.6 2.77c-.1.18-.06.39.1.51l1.69 1.32c-.04.25-.07.52-.07.78s.02.53.06.78L2.37 12.1c-.15.12-.19.34-.1.51l1.6 2.77c.1.18.31.24.49.18l1.99-.8c.42.32.86.58 1.35.78l.3 2.12c.04.2.2.34.4.34h3.2c.2 0 .37-.14.39-.34l.3-2.12c.49-.2.94-.47 1.35-.78l1.99.8c.18.07.39 0 .49-.18l1.6-2.77c.1-.18.06-.39-.1-.51l-1.67-1.32zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/>
+      </svg>
+    );
+  }
+}
+
 export { 
   Icon, 
   IconWhiteBackground, 
@@ -381,6 +422,7 @@ export {
   DescriptionIcon, 
   TimeIcon, 
   UserIcon, 
+  TasklistIcon,
   CheckIcon,
   SearchIcon,
   AddIcon,
@@ -391,5 +433,6 @@ export {
   NextIcon,
   GlobeIcon,
   LockIcon,
-  ExitIcon
+  ExitIcon,
+  SettingsIcon
 };

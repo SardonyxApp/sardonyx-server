@@ -16,6 +16,7 @@ import TaskInfo from './TaskInfo';
 import ModalBackground from './modals/ModalBackground';
 
 // Modals 
+import SettingsModal from './modals/SettingsModal';
 import TasklistModal from './modals/TasklistModal';
 import ProfileModal from './modals/ProfileModal';
 import AddModal from './modals/AddModal';
@@ -254,7 +255,7 @@ class App extends React.Component {
    */ 
   handleCreateLabel(type, obj) {
     obj.tasklist_id = this.state.tasklist.id;
-    
+
     fetch(`/app/${type}`, {
       method: 'POST',
       body: JSON.stringify(obj),
@@ -278,6 +279,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <SettingsModal 
+          user={this.state.user}
+          modal={this.state.modal}
+          onModal={this.handleModal}
+          onCreateLabel={this.handleCreateLabel}
+        />
         <TasklistModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
@@ -288,6 +295,7 @@ class App extends React.Component {
         <ProfileModal 
           user={this.state.user}
           modal={this.state.modal}
+          onModal={this.handleModal}
         />
         <AddModal
           user={this.state.user} 

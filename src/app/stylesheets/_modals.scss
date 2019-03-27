@@ -16,6 +16,41 @@
   z-index: 2;
 }
 
+#settings-modal {
+  // Position
+  height: 80%;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  // Styling 
+  border-radius: 16px;
+
+  // Children 
+  .remove-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .content-container {
+    position: absolute;
+    overflow-y: auto;
+    width: calc(100% - 24px);
+    height: calc(100% - 60px);
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+
+    @extend %custom-scroll;
+    
+    & > .heading {
+      @extend %align-with-icon;
+    }
+  }
+}
+
 #profile-modal {  
   @extend %small-modal;
 
