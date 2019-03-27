@@ -62,6 +62,8 @@ class App extends React.Component {
     this.handleChangeTask = this.handleChangeTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
     this.handleCreateLabel = this.handleCreateLabel.bind(this);
+    this.handleUpdateLabel = this.handleUpdateLabel.bind(this);
+    this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
   }
 
   // Safely fetch data after initial render 
@@ -276,6 +278,54 @@ class App extends React.Component {
     });
   }
 
+  /**
+   * @description Update a label 
+   * @param {String} type subjects or categories 
+   * @param {Object} obj
+   * @param {Object} obj.id required 
+   * @param {String} obj.name 
+   * @param {String} obj.color 
+   * @param {String} obj.tasklist_id 
+   */
+  handleUpdateLabel(type, obj) {
+    fetch(`/app/${type}?id=${obj.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(obj),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      this.setState(prevState => {
+        const payload = {};
+        const labels = prevState[type];
+        const index = labels.findIndex(l => l.id === obj.id);
+        labels[index] = Object.assign(labels[index], obj);
+        payload[type] = labels;
+        return payload;
+      });
+    });
+  }
+
+  /**
+   * @description Delete a label 
+   * @param {String} type subjects or categories 
+   * @param {Number} id 
+   */
+  handleDeleteLabel(type, id) {
+    fetch(`/app/${type}?id=${id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      this.setState(prevState => {
+        const payload = {};
+        payload[type] = prevState[type].filter(l => l.id !== id)
+        return payload;
+      });
+    }).catch(err => {
+      console.error(err);
+    })
+  }
+
   render() {
     return (
       <div>
@@ -287,6 +337,8 @@ class App extends React.Component {
           modal={this.state.modal}
           onModal={this.handleModal}
           onCreateLabel={this.handleCreateLabel}
+          onUpdateLabel={this.handleUpdateLabel}
+          onDeleteLabel={this.handleDeleteLabel}
         />
         <TasklistModal 
           user={this.state.user}
