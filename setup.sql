@@ -36,8 +36,8 @@ CREATE TABLE teachers (
 
 CREATE TABLE subjects (
   id INT NOT NULL AUTO_INCREMENT, 
-  name VARCHAR(255) UNIQUE NOT NULL,
-  color CHAR(7) SET utf8 COLLATE utf8_unicode_ci,
+  name VARCHAR(255) NOT NULL,
+  color CHAR(7),
   tasklist_id INT,
   PRIMARY KEY (id),
   FOREIGN KEY fk_subject_tasklist(tasklist_id)
@@ -48,8 +48,8 @@ CREATE TABLE subjects (
 
 CREATE TABLE categories (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) UNIQUE NOT NULL,
-  color CHAR(7) SET utf8 COLLATE utf8_unicode_ci,
+  name VARCHAR(255) NOT NULL,
+  color CHAR(7),
   tasklist_id INT,
   PRIMARY KEY (id),
   FOREIGN KEY fk_category_tasklist(tasklist_id)
