@@ -37,12 +37,15 @@ class Label extends React.Component {
       name: this.textRef.current.innerText
     });
 
+    if (label.name.length > 255) return this.handleError(this.textRef.current);
+
     this.props.onUpdateLabel(type, label);
   }
 
   handleKeyDown(e) {
     if (e.keyCode === 13 || e.keyCode === 27) {
       this.textRef.current.blur();
+      e.preventDefault();
     }
   }
 
@@ -50,6 +53,11 @@ class Label extends React.Component {
     if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
       this.props.onDeleteLabel(type, id);
     }
+  }
+
+  handleError(el) {
+    // Do not display red bottom border to avoid confusion in red background labels 
+    alert('Labels cannot be over 255 characters long.');
   }
 
   render() {
@@ -61,13 +69,13 @@ class Label extends React.Component {
       >
         <p 
           contentEditable
-          style={{ cursor: this.state.selected ? 'auto' : 'pointer' }}
+          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px' }}
           onFocus={this.handleFocus}
           onBlur={() => this.handleBlur(this.props.type, this.props.label)}
           onKeyDown={e => this.handleKeyDown(e)}
           ref={this.textRef}
         >
-          {this.props.label.name || '\n'}
+          {this.props.label.name || ''}
         </p>
         <RemoveIcon 
           height={20}
