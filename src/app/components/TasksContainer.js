@@ -6,25 +6,21 @@
 
 import React from 'react';
 
-class TaskListCard extends React.Component {
-  render() {
-    return (
-      <div 
-        className="card" 
-        key={this.props.task.id} 
-        onClick={() => this.props.onSelectTask(this.props.task.id)}
-        style={{ backgroundColor: this.props.selected ? '#f6e6dc' : ''}}
-      >
-        <h3 className="overview-title">{this.props.task.name}</h3>
-        <p className="overview-description">{this.props.task.description}</p>
-        <div className="overview-dots" style={{ display: this.props.task.subject_id || this.props.task.category_id ? '' : 'none'}}>
-          <div class="dot" style={{ backgroundColor: this.props.task.subject_color, display: this.props.task.subject_id ? '' : 'none' }}></div>
-          <div class="dot" style={{ backgroundColor:this.props.task.category_color, display: this.props.task.category_id ? '' : 'none' }}></div>
-        </div>
-      </div>
-    );
-  }
-}
+const TaskListCard = props => (
+  <div 
+    className="card" 
+    key={props.task.id} 
+    onClick={() => props.onSelectTask(props.task.id)}
+    style={{ backgroundColor: props.selected ? '#f6e6dc' : ''}}
+  >
+    <h3 className="overview-title">{props.task.name}</h3>
+    <p className="overview-description">{props.task.description}</p>
+    <div className="overview-dots" style={{ display: props.task.subject_id || props.task.category_id ? '' : 'none'}}>
+      <div class="dot" style={{ backgroundColor: props.task.subject_color, display: props.task.subject_id ? '' : 'none' }}></div>
+      <div class="dot" style={{ backgroundColor: props.task.category_color, display: props.task.category_id ? '' : 'none' }}></div>
+    </div>
+  </div>
+);
 
 class TasksContainer extends React.Component {
   render() {

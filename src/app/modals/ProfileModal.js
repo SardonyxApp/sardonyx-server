@@ -18,19 +18,19 @@ class ProfileModal extends React.Component {
         </div>
         <hr />
         <div>
-          <GlobeIcon width={20} height={20} onClick={() => window.open('https://kokusaiib.managebac.com', '_blank')}/>
+          <GlobeIcon width={20} height={20} onClick={() => window.open('https://kokusaiib.managebac.com', '_blank')} />
           <p><a href="https://kokusaiib.managebac.com" target="_blank">Open Managebac</a></p>
         </div>
         <div style={{ display: this.props.user.teacher ? '' : 'none' }}>
-          <LockIcon width={20} height={20} onClick={() => window.location.replace('/password')}/>
+          <LockIcon width={20} height={20} onClick={() => window.location.replace('/password')} />
           <p><a href="/password">Change Password</a></p>
         </div>
         <div>
-          <ExitIcon width={20} height={20} onClick={() => window.location.replace('/logout')}/>
+          <ExitIcon width={20} height={20} onClick={() => window.location.replace('/logout')} />
           <p><a href="/logout">Log Out</a></p>
         </div>
         <div>
-          <SettingsIcon width={20} height={20} onClick={() => this.props.onModal('settings')}/>
+          <SettingsIcon width={20} height={20} onClick={() => this.props.onModal('settings')} />
           <p onClick={() => this.props.onModal('settings')}><a style={{ cursor: 'pointer' }}>Settings</a></p>
         </div>
       </div>

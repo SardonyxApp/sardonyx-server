@@ -13,14 +13,14 @@ import TopBar from './TopBar';
 import TaskList from './TaskList';
 import TaskInfo from './TaskInfo';
 
-import ModalBackground from './modals/ModalBackground';
-
 // Modals 
 import SettingsModal from './modals/SettingsModal';
 import TasklistModal from './modals/TasklistModal';
 import ProfileModal from './modals/ProfileModal';
 import AddModal from './modals/AddModal';
 import LabelsModal from './modals/LabelsModal';
+
+import ModalBackground from './modals/ModalBackground';
 
 class App extends React.Component {
   constructor(props) {
@@ -65,7 +65,7 @@ class App extends React.Component {
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.handleCreateTask = this.handleCreateTask.bind(this);
-    this.handleChangeTask = this.handleChangeTask.bind(this);
+    this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
     this.handleCreateLabel = this.handleCreateLabel.bind(this);
     this.handleUpdateLabel = this.handleUpdateLabel.bind(this);
@@ -89,7 +89,8 @@ class App extends React.Component {
         categories: responses[4]
       });
     }).catch(err => {
-      console.error(err); // For now 
+      alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
+      console.error(err); 
     });
   }
 
@@ -124,7 +125,8 @@ class App extends React.Component {
         categories: responses[2]
       });
     }).catch(err => {
-      console.error(err); // For now
+      alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
+      console.error(err);
     });
   }
 
@@ -177,20 +179,11 @@ class App extends React.Component {
       this.setState(prevState => {
         const tasks = prevState.tasks;
         tasks.push(Object.assign({
-          // Default task object to be merged by parameter object
           id: response.insertId,
-          name: '',
-          description: null,
-          due: null,
-          tasklist_id: prevState.tasklist.id,
-          student_id: prevState.user.teacher ? null : prevState.user.id,
           student_name: prevState.user.teacher ? null : prevState.user.name,
-          teacher_id: prevState.user.teacher ? prevState.user.id : null,
           teacher_name: prevState.user.teacher ? prevState.user.name : null,
-          subject_id: null,
-          subject_name: null,
+          subject_name: null, // TODO: initially set these according to task.subject_id 
           subject_color: null,
-          category_id: null,
           category_name: null,
           category_color: null
         }, task));
@@ -201,7 +194,8 @@ class App extends React.Component {
         };
       });
     }).catch(err => {
-      console.error(err); // For now 
+      alert('There was an error while creating a new task. If this error persists, please contact SardonyxApp.');
+      console.error(err);
     });
   }
 
@@ -209,7 +203,7 @@ class App extends React.Component {
    * @description Update task content 
    * @param {Object} obj task object with any key value pair that is to be changed  
    */
-  handleChangeTask(obj) {
+  handleUpdateTask(obj) {
     // Deep copy object
     const body = JSON.parse(JSON.stringify(obj));
 
@@ -236,6 +230,7 @@ class App extends React.Component {
         return { tasks };
       });
     }).catch(err => {
+      alert('There was an error while editing a task. If this error persists, please contact SardonyxApp.');
       console.error(err);
     });
   }
@@ -255,6 +250,7 @@ class App extends React.Component {
         };
       });
     }).catch(err => {
+      alert('There was an error while deleting a task. If this error persists, please contact SardonyxApp.');
       console.error(err);
     });
   }
@@ -262,9 +258,7 @@ class App extends React.Component {
   /**
    * @description Create a label
    * @param {String} type subjects or categories
-   * @param {Object} obj 
-   * @param {String} obj.name 
-   * @param {String} obj.color 
+   * @param {Object} obj label object
    */ 
   handleCreateLabel(type, obj) {
     obj.tasklist_id = this.state.tasklist.id;
@@ -286,6 +280,9 @@ class App extends React.Component {
         }, obj));
         return payload;
       });
+    }).catch(err => {
+      alert('There was an error while creating a label. If this error persists, please contact SardonyxApp.');
+      console.error(err);
     });
   }
 
@@ -315,6 +312,9 @@ class App extends React.Component {
         payload[type] = labels;
         return payload;
       });
+    }).catch(err => {
+      alert('There was an error while editing a label. If this error persists, please contact SardonyxApp.');
+      console.error(err);
     });
   }
 
@@ -333,6 +333,7 @@ class App extends React.Component {
         return payload;
       });
     }).catch(err => {
+      alert('There was an error while deleting a label. If this error persists, please contact SardonyxApp.');
       console.error(err);
     })
   }
@@ -382,7 +383,7 @@ class App extends React.Component {
           modal={this.state.modal}
           onModal={this.handleModal}
           onFilter={this.handleFilter}
-          onChangeTask={this.handleChangeTask}
+          onUpdateTask={this.handleUpdateTask}
         />
         
         <ModalBackground 
@@ -427,7 +428,7 @@ class App extends React.Component {
           <TaskInfo 
             task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
             onModal={this.handleModal}
-            onChangeTask={this.handleChangeTask}
+            onUpdateTask={this.handleUpdateTask}
             onDeleteTask={this.handleDeleteTask}
           />
         </div>

@@ -87,7 +87,7 @@ class SettingsModal extends React.Component {
 
     return this.props.modal.name === 'settings' ? (
       <div id="settings-modal" className="modal">
-        <RemoveIcon onClick={() => this.props.onModal()}/>
+        <RemoveIcon onClick={() => this.props.onModal()} />
         <div id="settings-container" className="content-container">
           <div className="heading">
             <TasklistIcon width={36} height={36} />
@@ -111,7 +111,7 @@ class SettingsModal extends React.Component {
             <AddIcon onClick={e => {
               const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
               this.props.onSecondModal('add-subject', document.documentElement.clientWidth - position.right, position.bottom + 8);
-            }}/>
+            }} />
           </div>
           <div className="setting">
             <div className="heading">
@@ -123,7 +123,7 @@ class SettingsModal extends React.Component {
             <AddIcon onClick={e => {
               const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
               this.props.onSecondModal('add-category', document.documentElement.clientWidth - position.right, position.bottom + 8);
-            }}/>
+            }} />
           </div>
           <div className="heading">
             <UserIcon width={36} height={36} />
