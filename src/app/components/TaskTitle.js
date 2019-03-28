@@ -10,7 +10,8 @@ class TaskTitle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: false
+      selected: false,
+      error: false
     };
 
     this.inputRef = React.createRef();
@@ -26,14 +27,19 @@ class TaskTitle extends React.Component {
     });
   }
 
-  handleBlur(e) {
+  handleBlur() {
     this.setState({
-      selected: false
+      selected: false,
+      error: false // by default 
     });
 
-    this.props.onUpdateTask({ name: e.target.innerText })
-
-    // TODO: check for 255 character limit 
+    if (this.inputRef.current.innerText.length > 255) {
+      this.setState({
+        error: true
+      });
+    } else {      
+      this.props.onUpdateTask({ name: this.inputRef.current.innerText });
+    }
   }
 
   handleKeyDown(e) {
@@ -50,12 +56,13 @@ class TaskTitle extends React.Component {
         <h2
           contentEditable={true}
           className="embed"
-          style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : '2px solid transparent' }}
+          style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : this.state.error ? '2px solid #f44138' : '2px solid transparent' }}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyDown}
           ref={this.inputRef}
         >{this.props.title}</h2>
+        <p className="error-message" style={{ display: this.state.error ? '' : 'none', textAlign: 'right' }}>Title cannot be more than 255 characters long.</p>
       </div>
     );
   }
