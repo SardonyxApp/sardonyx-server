@@ -49,7 +49,7 @@ class TaskDescription extends React.Component {
       });
     }
 
-    this.props.onUpdateTask({ description: this.textareaRef.current.innerText });
+    this.props.onUpdateTask({ id: this.props.id, description: this.textareaRef.current.innerText });
   }
 
   handleKeyDown(e) {

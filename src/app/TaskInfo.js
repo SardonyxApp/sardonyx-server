@@ -18,6 +18,7 @@ class TaskInfo extends React.Component {
       <div id="taskinfo" className="right-view">
         <div className="card">
           <TaskTitle 
+            id={this.props.task.id}
             title={this.props.task.name}
             onUpdateTask={this.props.onUpdateTask}
           />
@@ -27,10 +28,12 @@ class TaskInfo extends React.Component {
               onModal={this.props.onModal}
             />
             <TaskDescription
+              id={this.props.task.id}
               description={this.props.task.description}
               onUpdateTask={this.props.onUpdateTask}
             />
             <TaskDue 
+              id={this.props.task.id}
               due={this.props.task.due}
               onModal={this.props.onModal}
               onUpdateTask={this.props.onUpdateTask}

@@ -202,6 +202,7 @@ class App extends React.Component {
   /**
    * @description Update task content 
    * @param {Object} obj task object with any key value pair that is to be changed  
+   * @param {Number} id required in order to change state correctly 
    */
   handleUpdateTask(obj) {
     // Deep copy object
@@ -214,7 +215,7 @@ class App extends React.Component {
     delete body.category_color;
 
     // Send the request 
-    fetch(`/app/task?id=${this.state.currentTask}`, {
+    fetch(`/app/task?id=${obj.id}`, {
       body: JSON.stringify(body),
       method: 'PATCH',
       headers: {
@@ -225,7 +226,7 @@ class App extends React.Component {
       // Update local state using local data, as response object does not return tables 
       this.setState(prevState => {
         const tasks = prevState.tasks;
-        const index = tasks.findIndex(t => t.id === prevState.currentTask);
+        const index = tasks.findIndex(t => t.id === obj.id);
         tasks[index] = Object.assign(tasks[index], obj);
         return { tasks };
       });

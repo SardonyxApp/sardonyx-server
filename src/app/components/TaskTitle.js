@@ -47,7 +47,7 @@ class TaskTitle extends React.Component {
       });
     } 
     
-    this.props.onUpdateTask({ name: this.inputRef.current.innerText });
+    this.props.onUpdateTask({ id: this.props.id, name: this.inputRef.current.innerText });
   }
 
   handleKeyDown(e) {
