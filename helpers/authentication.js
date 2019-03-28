@@ -10,8 +10,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const parser = require('./parsers');
-const students = require('../models/students');
-const teachers = require('../models/teachers');
+const { students, teachers } = require('../models/users');
 const { hashPassword } = require('./helpers');
 
 /**
@@ -151,13 +150,16 @@ exports.initiateStudent = (req, res, next) => {
           });
 
           // Register the student 
-          students.create([obj.name, obj.email, obj.year, obj.tasklist_id]).then(() => resolve(obj)).catch(e => reject(e));
+          students.create([obj.name, obj.email, obj.year, obj.tasklist_id])
+          .then(r => resolve({ ...obj, id: r.insertId }))
+          .catch(e => reject(e));
         });
       } else resolve(results[0]); 
     });
-  }).then((student) => {
+  }).then(student => {
     const token = jwt.sign({
       teacher: false,
+      id: student.id,
       email: req.body.login,
       year: student.year
     }, process.env.PRIVATE_KEY, {
@@ -189,11 +191,13 @@ exports.initiateStudent = (req, res, next) => {
  */
 exports.initiateTeacher = (req, res, next) => {
   teachers.selectByEmail(req.body.login).then(results => {
+    console.log(results[0], req.body.password);
     if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
       // Valid account and correct password 
 
       const token = jwt.sign({
         teacher: true, 
+        id: results[0].id,
         email: req.body.login,
         year: 2018 // hard coded for now, default year 
       }, process.env.PRIVATE_KEY, {

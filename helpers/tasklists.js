@@ -4,8 +4,7 @@
  * @license MIT 
  */
 
-const students = require('../models/students');
-const teachers = require('../models/teachers');
+const { students, teachers } = require('../models/users');
 const tasklists = require('../models/tasklists');
 const tasks = require('../models/tasks');
 const { subjects, categories } = require('../models/labels');
@@ -17,19 +16,48 @@ const { subjects, categories } = require('../models/labels');
  */
 exports.loadUser = (req, res) => {
   const target = req.token.teacher ? teachers : students; 
-  target.selectByEmail(req.token.email).then(results => {
-    if (!results.length) res.status(400).send('Invalid user requested.');
-    // For teachers 
-    delete results[0].password_digest;
-    delete results[0].salt;
-
-    results[0].teacher = req.token.teacher;
+  Promise.all([
+    target.selectByEmail(req.token.email),
+    target.selectLabels(req.token.id, req.token.year - 2017)
+  ]).then(results => {
+    const user = results[0][0];
+    if (!results[0].length) res.status(400).send('Invalid user requested.');
     
-    res.json(results[0]);
+    // For teachers
+    delete user.password_digest;
+    delete user.salt;
+
+    user.teacher = req.token.teacher;
+    user.subjects = [];
+    user.categories = [];
+
+    results[1].forEach(obj => {
+      if (obj.subject_id) user.subjects.push(obj.subject_id);
+      if (obj.category_id) user.categories.push(obj.category_id);
+    });
+    
+    res.json(user);
   }).catch(err => {
     console.error(err);
     res.status(500).send('There was an error while accessing the database. ' + err);
   });
+};
+
+/**
+ * @description Add or delete user's default labels 
+ * @param {String} action add or delete 
+ */
+exports.changeUserLabel = action => {
+  return (req, res) => {
+    const target = req.token.teacher ? teachers : students;
+    const operation = action === 'add' ? target.addLabel : target.deleteLabel;
+    operation(req.token.id, req.query.id, req.param.type).then(results => {
+      res.json(results);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send('There was an error while accessing the database. ' + err);
+    });
+  };
 };
 
 /**
