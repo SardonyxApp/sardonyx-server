@@ -69,7 +69,8 @@ class Label extends React.Component {
       >
         <p 
           contentEditable
-          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px' }}
+          spellCheck={false}
+          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px', minHeight: '24px', maxHeight: '24px' }}
           onFocus={this.handleFocus}
           onBlur={() => this.handleBlur(this.props.type, this.props.label)}
           onKeyDown={e => this.handleKeyDown(e)}
