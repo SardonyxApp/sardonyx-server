@@ -18,6 +18,7 @@ $light-background: #f8f8fa;
   // Webkit (Chrome, Safari)
   &::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
     // Make sure to set a padding of 8px 
   }
 

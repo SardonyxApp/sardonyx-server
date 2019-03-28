@@ -75,11 +75,11 @@ class App extends React.Component {
   // Safely fetch data after initial render 
   componentDidMount() {
     Promise.all([
-      fetch('/app/user').then(response => response.json()),
-      fetch('/app/tasklist').then(response => response.json()),
-      fetch('/app/tasks?full=true').then(response => response.json()),
-      fetch('/app/subjects').then(response => response.json()),
-      fetch('/app/categories').then(response => response.json())
+      fetch('/app/user', { credentials: 'include' }).then(response => response.json()),
+      fetch('/app/tasklist', { credentials: 'include' }).then(response => response.json()),
+      fetch('/app/tasks?full=true', { credentials: 'include' }).then(response => response.json()),
+      fetch('/app/subjects', { credentials: 'include' }).then(response => response.json()),
+      fetch('/app/categories', { credentials: 'include' }).then(response => response.json())
     ]).then(responses => {
       this.setState({
         user: responses[0],
@@ -114,9 +114,9 @@ class App extends React.Component {
   // Fetch data to change tasklist 
   handleSelectTasklist(tasklist) {
     Promise.all([
-      fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`).then(response => response.json()),
-      fetch(`/app/subjects?year=${tasklist.id + 2017}`).then(response => response.json()),
-      fetch(`/app/categories?year=${tasklist.id + 2017}`).then(response => response.json())
+      fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/subjects?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/categories?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json())
     ]).then(responses => {
       this.setState({
         tasklist: tasklist,
@@ -169,6 +169,7 @@ class App extends React.Component {
     fetch('/app/task', {
       method: 'POST',
       body: JSON.stringify(task),
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -218,6 +219,7 @@ class App extends React.Component {
     fetch(`/app/task?id=${obj.id}`, {
       body: JSON.stringify(body),
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -242,7 +244,8 @@ class App extends React.Component {
    */
   handleDeleteTask(id) {
     fetch(`/app/task?id=${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include',
     }).then(() => {
       this.setState(prevState => {
         return {
@@ -267,6 +270,7 @@ class App extends React.Component {
     fetch(`/app/${type}`, {
       method: 'POST',
       body: JSON.stringify(obj),
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -300,6 +304,7 @@ class App extends React.Component {
     fetch(`/app/${type}?id=${obj.id}`, {
       method: 'PATCH',
       body: JSON.stringify(obj),
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -326,7 +331,8 @@ class App extends React.Component {
    */
   handleDeleteLabel(type, id) {
     fetch(`/app/${type}?id=${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include'
     }).then(() => {
       this.setState(prevState => {
         const payload = {};

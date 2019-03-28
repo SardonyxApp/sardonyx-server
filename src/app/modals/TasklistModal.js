@@ -32,7 +32,9 @@ class TasklistModal extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/app/tasklist?year=all').then(response => response.json()).then(results => {
+    fetch('/app/tasklist?year=all', { credentials: 'include' })
+    .then(response => response.json())
+    .then(results => {
       this.setState({
         tasklists: results
       });

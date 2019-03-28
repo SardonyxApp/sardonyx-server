@@ -37,7 +37,7 @@ class Label extends React.Component {
       name: this.textRef.current.innerText
     });
 
-    if (label.name.length > 255) return this.handleError(this.textRef.current);
+    if (label.name.length > 255) return this.handleError();
 
     this.props.onUpdateLabel(type, label);
   }
@@ -55,7 +55,7 @@ class Label extends React.Component {
     }
   }
 
-  handleError(el) {
+  handleError() {
     // Do not display red bottom border to avoid confusion in red background labels 
     alert('Labels cannot be over 255 characters long.');
   }
@@ -69,8 +69,9 @@ class Label extends React.Component {
       >
         <p 
           contentEditable
+          className="embed"
           spellCheck={false}
-          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px', minHeight: '24px', maxHeight: '24px' }}
+          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px', minHeight: '24px' }}
           onFocus={this.handleFocus}
           onBlur={() => this.handleBlur(this.props.type, this.props.label)}
           onKeyDown={e => this.handleKeyDown(e)}
