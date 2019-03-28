@@ -44,7 +44,9 @@ class App extends React.Component {
       user: { 
         teacher: false,
         name: '', 
-        email: ''
+        email: '',
+        subjects: [],
+        categories: []
       },
       tasklist: {
         id: null,
@@ -86,7 +88,9 @@ class App extends React.Component {
         tasklist: responses[1],
         tasks: responses[2],
         subjects: responses[3],
-        categories: responses[4]
+        categories: responses[4],
+        subjectsFilter: responses[0].subjects,
+        categoriesFilter: responses[0].categories,
       });
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
@@ -114,15 +118,18 @@ class App extends React.Component {
   // Fetch data to change tasklist 
   handleSelectTasklist(tasklist) {
     Promise.all([
+      // Fetch user because the default filters change 
+      fetch(`/app/user?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
       fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
       fetch(`/app/subjects?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
       fetch(`/app/categories?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json())
     ]).then(responses => {
       this.setState({
+        user: responses[0],
         tasklist: tasklist,
-        tasks: responses[0],
-        subjects: responses[1],
-        categories: responses[2]
+        tasks: responses[1],
+        subjects: responses[2],
+        categories: responses[3]
       });
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');

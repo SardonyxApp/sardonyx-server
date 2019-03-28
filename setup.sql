@@ -91,6 +91,31 @@ CREATE TABLE tasks (
   ON DELETE SET NULL
 ) ENGINE=INNODB;
 
+CREATE TABLE user_labels (
+  id INT NOT NULL AUTO_INCREMENT,
+  student_id INT,
+  teacher_id INT,
+  subject_id INT,
+  category_id INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_student_label(student_id)
+  REFERENCES students(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  FOREIGN KEY fk_teacher_label(teacher_id)
+  REFERENCES teachers(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  FOREIGN KEY fk_user_subject(subject_id)
+  REFERENCES subjects(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE,
+  FOREIGN KEY fk_user_category(category_id)
+  REFERENCES categories(id)
+  ON UPDATE CASCADE 
+  ON DELETE CASCADE
+) ENGINE=INNODB;
+
 -- Create dummy items
 -- Remove these items from production 
 INSERT INTO tasklists (id, name, description)
@@ -111,3 +136,9 @@ INSERT INTO categories (id, name, color, tasklist_id)
 
 INSERT INTO tasks (id, name, description, due, tasklist_id, student_id, subject_id, category_id) 
   VALUES (1, 'Program Sardonyx', 'Implement programs.', '2019-04-01 12:00', 1, 1, 1, 1);
+
+INSERT INTO user_labels (student_id, subject_id)
+  VALUES (1, 1);
+
+INSERT INTO user_labels (teacher_id, category_id)
+  VALUES (1, 1);

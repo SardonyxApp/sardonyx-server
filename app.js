@@ -149,17 +149,19 @@ app.use('/password', auth.authenticateToken, upload.none(), (req, res, next) => 
 });
 app.post('/password', auth.changePassword);
 
-// Authenticate main page 
+// Authenticate 
 app.use('/app', auth.authenticateToken);
 
-app.get('/app/user', task.loadUser);
 app.delete('/app/task', task.deleteTask);
 app.delete('/app/subjects', task.deleteLabel('subjects'));
 app.delete('/app/categories', task.deleteLabel('categories'));
+app.post('/app/user/:type', task.changeUserLabel('add'));
+app.delete('/app/user/:type', task.changeUserLabel('delete'));
 
+// Load data with year constraint 
 app.use('/app', auth.authenticateYear);
 
-// Load data 
+app.get('/app/user', task.loadUser); // Year can be specified for user too because of preferred labels
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
 app.get('/app/subjects', task.loadLabel('subjects'));
