@@ -72,6 +72,7 @@ class App extends React.Component {
     this.handleCreateLabel = this.handleCreateLabel.bind(this);
     this.handleUpdateLabel = this.handleUpdateLabel.bind(this);
     this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
+    this.handleUpdateUserLabel = this.handleUpdateUserLabel.bind(this);
   }
 
   // Safely fetch data after initial render 
@@ -129,7 +130,10 @@ class App extends React.Component {
         tasklist: tasklist,
         tasks: responses[1],
         subjects: responses[2],
-        categories: responses[3]
+        categories: responses[3],
+        currentTask: -1,
+        subjectsFilter: responses[0].subjects,
+        categoriesFilter: responses[0].categories
       });
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
@@ -352,6 +356,28 @@ class App extends React.Component {
     })
   }
 
+  /**
+   * @description Add or delete a user's default label
+   * @param {String} type 
+   * @param {Number} id 
+   */
+  handleUpdateUserLabel(type, id) {
+    const method = this.state.user[type].includes(id) ? 'DELETE' : 'POST';
+    fetch(`/app/user/${type}?id=${id}`, {
+      method,
+      credentials: 'include'
+    }).then(() => {
+      this.setState(prevState => {
+        const user = prevState.user;
+        user[type] = method === 'POST' ? user[type].concat([id]) : user[type].filter(l => l !== id);
+        return { user };
+      });
+    }).catch(err => {
+      alert('There was an error while updating default labels. If this error persists, please contact SardonyxApp.');
+      console.error(err);
+    }) 
+  }
+
   render() {
     return (
       <div>
@@ -367,6 +393,7 @@ class App extends React.Component {
           onCreateLabel={this.handleCreateLabel}
           onUpdateLabel={this.handleUpdateLabel}
           onDeleteLabel={this.handleDeleteLabel}
+          onUpdateUserLabel={this.handleUpdateUserLabel}
         />
         <TasklistModal 
           user={this.state.user}
@@ -398,6 +425,7 @@ class App extends React.Component {
           onModal={this.handleModal}
           onFilter={this.handleFilter}
           onUpdateTask={this.handleUpdateTask}
+          zIndex={3}
         />
         
         <ModalBackground 
@@ -413,6 +441,16 @@ class App extends React.Component {
           onModal={this.handleSecondModal}
           onCreateTask={this.handleCreateTask}
           onCreateLabel={this.handleCreateLabel}
+          zIndex={5}
+        />
+        <LabelsModal
+          subjects={this.state.subjects}
+          categories={this.state.categories}
+          subjectsFilter={this.state.user.subjects}
+          categoriesFilter={this.state.user.categories}
+          modal={this.state.secondModal}
+          onModal={this.handleSecondModal}
+          onFilter={this.handleUpdateUserLabel}
           zIndex={5}
         />
         <ModalBackground 
