@@ -17,6 +17,7 @@ class TaskDescription extends React.Component {
 
     this.textareaRef = React.createRef();
 
+    this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -28,6 +29,13 @@ class TaskDescription extends React.Component {
       this.setState({
         error: false
       });
+    }
+  }
+
+  handleMouseDown(e) {
+    if (e.target.nodeName === 'A' && !this.state.selected) {
+      this.textareaRef.current.blur();
+      window.open(e.target.getAttribute('href'), '_blank');
     }
   }
 
@@ -61,6 +69,7 @@ class TaskDescription extends React.Component {
   }
 
   render() {
+    const desc = this.props.description.replace(/https?:\/\/[^\s/$.?#].[^\s]*/g, '<a href="$&" style="cursor:pointer">$&</a>'); 
     return (
       <React.Fragment>
         <div id="task-description" className="taskinfo-component">
@@ -69,12 +78,13 @@ class TaskDescription extends React.Component {
             contentEditable={true}
             className="embed"
             style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : this.state.error ? '2px solid #f44138' : '2px solid transparent' }}
+            onMouseDown={this.handleMouseDown}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             onKeyDown={this.handleKeyDown}
             ref={this.textareaRef}
+            dangerouslySetInnerHTML={{__html: desc}}
           >
-            {this.props.description || '\n'}
           </p>
         </div>
         <p className="error-message" style={{ display: this.state.error ? '' : 'none', textAlign: 'right' }}>Description cannot be more than 65535 chracters long.</p>
