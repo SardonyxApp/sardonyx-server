@@ -34,7 +34,7 @@ class AddModal extends React.Component {
 
   handleAddTask() {
     const name = this.inputRef.current.value;
-    if (!name || name.length > 255) return this.handleError(this.inputRef.current, name);
+    if (!name || name.length > 255) return this.handleError(this.inputRef.current);
 
     this.props.onCreateTask({ name });
     this.props.onModal();
@@ -42,7 +42,7 @@ class AddModal extends React.Component {
 
   handleAddLabel(type) {
     const name = this.inputRef.current.value;
-    if (!name || name.length > 255) return this.handleError(this.inputRef.current, name);
+    if (!name || name.length > 255) return this.handleError(this.inputRef.current);
 
     this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
     this.props.onModal();
@@ -52,12 +52,12 @@ class AddModal extends React.Component {
     this.setState({ color });
   }
 
-  handleError(el, name) {
+  handleError(el) {
     el.style.borderBottom = '2px solid #f44138';
     el.focus();
 
     this.setState({ 
-      errorMessage: name ? 'Name has to be shorter than 255 characters.' : 'Name cannot be empty.'
+      errorMessage: el.value ? 'Name has to be shorter than 255 characters.' : 'Name cannot be empty.'
     });
   }
 
