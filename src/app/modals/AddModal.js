@@ -14,18 +14,27 @@ class AddModal extends React.Component {
 
     this.state = {
       // Generate random hex color 
-      color: "#000000".replace(/0/g, () => Math.floor(Math.random() * 16).toString(16)) 
+      color: "#000000".replace(/0/g, () => Math.floor(Math.random() * 16).toString(16)),
+      errorMessage: null
     };
 
     this.inputRef = React.createRef();
     
     this.handleAddTask = this.handleAddTask.bind(this);
-    
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.modal !== this.props.modal) {
+      this.setState({
+        color: "#000000".replace(/0/g, () => Math.floor(Math.random() * 16).toString(16)),
+        errorMessage: null
+      });
+    }
   }
 
   handleAddTask() {
     const name = this.inputRef.current.value;
-    if (!name) return this.handleError(this.inputRef.current);
+    if (!name || name.length > 255) return this.handleError(this.inputRef.current, name);
 
     this.props.onCreateTask({ name });
     this.props.onModal();
@@ -33,7 +42,7 @@ class AddModal extends React.Component {
 
   handleAddLabel(type) {
     const name = this.inputRef.current.value;
-    if (!name) return this.handleError(this.inputRef.current);
+    if (!name || name.length > 255) return this.handleError(this.inputRef.current, name);
 
     this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
     this.props.onModal();
@@ -43,9 +52,13 @@ class AddModal extends React.Component {
     this.setState({ color });
   }
 
-  handleError(el) {
+  handleError(el, name) {
     el.style.borderBottom = '2px solid #f44138';
     el.focus();
+
+    this.setState({ 
+      errorMessage: name ? 'Name has to be shorter than 255 characters.' : 'Name cannot be empty.'
+    });
   }
 
   render() {
@@ -87,6 +100,8 @@ class AddModal extends React.Component {
               onClick={this.handleAddTask}
             />
           </div>
+
+          <p className="error-message" style={{ textAlign: 'right' }}>{this.state.errorMessage}</p>
         </div>
       );
     }
@@ -116,6 +131,8 @@ class AddModal extends React.Component {
               onClick={() => this.handleAddLabel(type)}
             />
           </div>
+
+          <p className="error-message" style={{ textAlign: 'right' }}>{this.state.errorMessage}</p>
 
           <TwitterPicker 
             color={this.state.color}

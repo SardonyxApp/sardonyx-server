@@ -21,6 +21,14 @@ class TaskTitle extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.title !== this.props.title)  {
+      this.setState({
+        error: false
+      });
+    }
+  }
+
   handleFocus() {
     this.setState({
       selected: true
@@ -34,12 +42,12 @@ class TaskTitle extends React.Component {
     });
 
     if (this.inputRef.current.innerText.length > 255) {
-      this.setState({
+      return this.setState({
         error: true
       });
-    } else {      
-      this.props.onUpdateTask({ name: this.inputRef.current.innerText });
-    }
+    } 
+    
+    this.props.onUpdateTask({ name: this.inputRef.current.innerText });
   }
 
   handleKeyDown(e) {

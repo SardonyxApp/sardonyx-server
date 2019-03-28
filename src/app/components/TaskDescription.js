@@ -22,6 +22,15 @@ class TaskDescription extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    // If current task is changed, error should be reset. If task is hidden, error gets automatically reset as it is unmounted.
+    if (prevProps.description !== this.props.description)  {
+      this.setState({
+        error: false
+      });
+    }
+  }
+
   handleFocus() {
     this.setState({
       selected: true
@@ -35,12 +44,12 @@ class TaskDescription extends React.Component {
     });
 
     if (this.textareaRef.current.innerText.length > 65535)  {
-      this.setState({
+      return this.setState({
         error: true
       });
-    } else {
-      this.props.onUpdateTask({ description: this.textareaRef.current.innerText });
     }
+
+    this.props.onUpdateTask({ description: this.textareaRef.current.innerText });
   }
 
   handleKeyDown(e) {
