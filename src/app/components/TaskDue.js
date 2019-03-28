@@ -15,7 +15,7 @@ const TaskDue = props => (
     <TimeIcon />
     <DatePicker
       selected={props.due}
-      onChange={date => props.onUpdateTask({ due: date.toISOString() })}
+      onChange={date => props.onUpdateTask({ id: props.id, due: date.toISOString() })}
       showTimeSelect
       timeFormat="HH:mm"
       timeIntervals={30}
@@ -26,7 +26,7 @@ const TaskDue = props => (
       width={16}
       height={16}
       style={{ display: props.due ? '' : 'none' }}
-      onClick={() => props.onUpdateTask({ due: null })}
+      onClick={() => props.onUpdateTask({ id: props.id, due: null })}
     />
   </div>
 );

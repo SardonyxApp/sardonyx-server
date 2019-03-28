@@ -44,10 +44,12 @@ class LabelsModal extends React.Component {
       subjects = this.props.subjects.map(mapFunction([this.props.task.subject_id], l => {
         this.props.onModal();
         this.props.task.subject_id !== l.id ? this.props.onUpdateTask({
+            id: this.props.task.id,
             subject_id: l.id,
             subject_name: l.name,
             subject_color: l.color
           }) : this.props.onUpdateTask({
+            id: this.props.task.id,  
             subject_id: null,
             subject_name: null,
             subject_color: null
@@ -57,10 +59,12 @@ class LabelsModal extends React.Component {
       categories = this.props.categories.map(mapFunction([this.props.task.category_id], l => {
         this.props.onModal();
         this.props.task.category_id !== l.id ? this.props.onUpdateTask({
+            id: this.props.task.id,
             category_id: l.id,
             category_name: l.name,
             category_color: l.color
           }) : this.props.onUpdateTask({
+            id: this.props.task.id,  
             category_id: null,
             category_name: null,
             category_color: null
