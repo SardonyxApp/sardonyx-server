@@ -36,6 +36,7 @@ class TaskDescription extends React.Component {
     if (e.target.nodeName === 'A' && !this.state.selected) {
       this.textareaRef.current.blur();
       window.open(e.target.getAttribute('href'), '_blank');
+      e.preventDefault();
     }
   }
 

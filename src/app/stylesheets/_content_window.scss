@@ -81,10 +81,8 @@
   flex-flow: wrap;
 }
 
-#task-description p:focus {
-  a {
-    cursor: auto !important;
-  }
+#task-description p:focus a {
+  cursor: auto !important;
 }
 
 #task-due .remove-icon:active {
@@ -94,9 +92,7 @@
 #tasks-filter {
   overflow-x: auto;
   white-space: nowrap;
-  height: 42px;
-
-  padding-bottom: 8px;
+  height: 50px;
   
   & * {
     vertical-align: middle;
