@@ -7,6 +7,16 @@
 import React from 'react';
 import { CheckIcon } from '../../logos';
 
+const TasklistOverview = props => (
+  <div className="overview-tasklist" style={props.style} onClick={props.onClick}>
+    <div>
+      <h3>{props.name}</h3>
+      {props.checked ? <CheckIcon /> : null}
+    </div>
+    <p className="overview-description">{props.description}</p>
+  </div>
+);
+
 class TasklistModal extends React.Component {
   constructor(props) {
     super(props);
@@ -40,29 +50,27 @@ class TasklistModal extends React.Component {
     const tasklists = this.props.user.teacher
       ? this.state.tasklists.map(tasklist => (
         tasklist.id === this.props.tasklist.id ? (
-          <div className="overview-tasklist" style={{ backgroundColor: '#f6e6dc' }}>
-            <div>
-              <h3>{tasklist.name}</h3>
-              <CheckIcon />
-            </div>
-            <p className="overview-description">{tasklist.description}</p>
-          </div>
+          <TasklistOverview 
+            name={tasklist.name} 
+            description={tasklist.description} 
+            checked={true} 
+            style={{ backgroundColor: '#f6e6dc' }} 
+          />
         ) : (
-          <div className="overview-tasklist" style={{ cursor: 'pointer' }} onClick={() => this.handleSelect(tasklist)}>
-            <div>
-              <h3>{tasklist.name}</h3>
-            </div>
-            <p className="overview-description">{tasklist.description}</p>
-          </div>
+          <TasklistOverview 
+            name={tasklist.name}
+            description={tasklist.description}
+            checked={false}
+            style={{ cursor: 'pointer' }}
+            onClick={() => this.handleSelect(tasklist)}
+          />
         )  
       )) : (
-        <div className="overview-tasklist">
-          <div>
-            <h3>{this.props.tasklist.name}</h3>
-            <CheckIcon />
-          </div>
-          <p className="overview-description">{this.props.tasklist.description}</p>
-        </div>
+        <TasklistOverview 
+          name={this.props.tasklist.name} 
+          description={this.props.tasklist.description} 
+          checked={true} 
+        />
       );
 
     // Position is set statiscally in CSS 

@@ -19,7 +19,7 @@ class TaskInfo extends React.Component {
         <div className="card">
           <TaskTitle 
             title={this.props.task.name}
-            onChangeTask={this.props.onChangeTask}
+            onUpdateTask={this.props.onUpdateTask}
           />
           <div id="task-detail-container" className="custom-scroll">
             <TaskLabels 
@@ -28,12 +28,12 @@ class TaskInfo extends React.Component {
             />
             <TaskDescription
               description={this.props.task.description}
-              onChangeTask={this.props.onChangeTask}
+              onUpdateTask={this.props.onUpdateTask}
             />
             <TaskDue 
               due={this.props.task.due}
               onModal={this.props.onModal}
-              onChangeTask={this.props.onChangeTask}
+              onUpdateTask={this.props.onUpdateTask}
             />
             <TaskAuthor 
               author={this.props.task.student_name || this.props.task.teacher_name}

@@ -25,11 +25,7 @@ class AddModal extends React.Component {
 
   handleAddTask() {
     const name = this.inputRef.current.value;
-    if (!name) {
-      this.inputRef.current.style.borderBottom = '2px solid #f44138';
-      this.inputRef.current.focus();
-      return;
-    }
+    if (!name) return this.handleError(this.inputRef.current);
 
     this.props.onCreateTask({ name });
     this.props.onModal();
@@ -37,11 +33,7 @@ class AddModal extends React.Component {
 
   handleAddLabel(type) {
     const name = this.inputRef.current.value;
-    if (!name) {
-      this.inputRef.current.style.borderBottom = '2px solid #f44138';
-      this.inputRef.current.focus();
-      return;
-    }
+    if (!name) return this.handleError(this.inputRef.current);
 
     this.props.onCreateLabel(type === 'subject' ? 'subjects' : 'categories', { name, color: this.state.color })
     this.props.onModal();
@@ -49,6 +41,11 @@ class AddModal extends React.Component {
 
   handleColor(color) {
     this.setState({ color });
+  }
+
+  handleError(el) {
+    el.style.borderBottom = '2px solid #f44138';
+    el.focus();
   }
 
   render() {

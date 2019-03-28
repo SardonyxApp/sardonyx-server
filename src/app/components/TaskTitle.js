@@ -31,11 +31,9 @@ class TaskTitle extends React.Component {
       selected: false
     });
 
-    this.props.onChangeTask({ name: e.target.innerText })
+    this.props.onUpdateTask({ name: e.target.innerText })
 
     // TODO: check for 255 character limit 
-
-    // make request here 
   }
 
   handleKeyDown(e) {
