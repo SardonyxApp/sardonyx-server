@@ -5,9 +5,19 @@
  */
 
 import React from 'react';
-import { RemoveIcon, UserIcon, TasklistIcon, InfoIcon, LabelIcon, AddIcon } from '../../logos';
+import { 
+  RemoveIcon, 
+  UserIcon, 
+  TasklistIcon, 
+  InfoIcon, 
+  LabelIcon, 
+  AddIcon, 
+  SchoolIcon, 
+  BookIcon 
+} from '../../logos';
+import Label from '../components/Label';
 
-class Label extends React.Component {
+class EditableLabel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -91,18 +101,34 @@ class Label extends React.Component {
 }
 
 class SettingsModal extends React.Component {
+  handleAdd(e, fn) {
+    const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
+    fn(position);
+  }
+
   render() {
-    const subjects = this.props.subjects.map(label => <Label label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="subjects" />);
-    const categories = this.props.categories.map(label => <Label label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="categories" />);
+    const subjects = this.props.subjects.map(label => <EditableLabel label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="subjects" />);
+
+    const categories = this.props.categories.map(label => <EditableLabel label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="categories" />);
+
+    const defaultSubjects = this.props.subjects
+      .filter(l => this.props.user.subjects.includes(l.id))
+      .map(label => <Label label={label} onUpdate={id => this.props.onUpdateUserLabel('subjects', id)} />);
+
+    const defaultCategories = this.props.categories
+      .filter(l => this.props.user.categories.includes(l.id))
+      .map(label => <Label label={label} onUpdate={id => this.props.onUpdateUserLabel('categories', id)} />)
 
     return this.props.modal.name === 'settings' ? (
       <div id="settings-modal" className="modal">
         <RemoveIcon onClick={() => this.props.onModal()} />
         <div id="settings-container" className="content-container">
+
           <div className="heading">
             <TasklistIcon width={36} height={36} />
             <h2>Tasklist Settings</h2>
           </div>
+
           <div className="setting">
             <div className="heading">
               <InfoIcon />
@@ -111,6 +137,7 @@ class SettingsModal extends React.Component {
             <p><b>Name</b>: {this.props.tasklist.name || 'No name provided.'}</p>
             <p><b>Description</b>: {this.props.tasklist.description || 'No description provided.'}</p>
           </div>
+
           <div className="setting">
             <div className="heading">
               <LabelIcon />
@@ -118,11 +145,9 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the subject of the task. (e.g. Mathematics, English)</p>
             {subjects}
-            <AddIcon onClick={e => {
-              const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-              this.props.onSecondModal('add-subject', document.documentElement.clientWidth - position.right, position.bottom + 8);
-            }} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', document.documentElement.clientWidth - position.right, position.bottom + 8))} />
           </div>
+
           <div className="setting">
             <div className="heading">
               <LabelIcon />
@@ -130,14 +155,32 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the type of the work. (e.g. Homework, Exam Preparation)</p>
             {categories}
-            <AddIcon onClick={e => {
-              const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-              this.props.onSecondModal('add-category', document.documentElement.clientWidth - position.right, position.bottom + 8);
-            }} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-category', document.documentElement.clientWidth - position.right, position.bottom + 8))} />
           </div>
+
           <div className="heading">
             <UserIcon width={36} height={36} />
             <h2>Account Preferences</h2>
+          </div>
+
+          <div className="setting">
+            <div className="heading">
+              <SchoolIcon />
+              <h3 className="subheading">My subjects</h3>
+            </div>
+            <p>If you want to filter subjects by default, set them here.</p>
+            {defaultSubjects}
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', position.left, position.bottom + 8))} />
+          </div>
+
+          <div className="setting">
+            <div className="heading">
+              <BookIcon />
+              <h3 className="subheading">My task categories</h3>
+            </div>
+            <p>If you want to filter categories by default, set them here.</p>
+            {defaultCategories}
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-categories', position.left, position.bottom + 8))} />
           </div>
         </div>
       </div>

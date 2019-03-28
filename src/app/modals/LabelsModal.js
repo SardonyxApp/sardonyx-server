@@ -72,13 +72,18 @@ class LabelsModal extends React.Component {
       }));
     }
 
+    if (this.props.modal.name === 'default-subjects' || this.props.modal.name === 'default-categories') {
+      subjects = this.props.subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjects', l.id)));
+      categories = this.props.categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categories', l.id)));
+    }
+
     // Render
-    if (['subjects', 'categories', 'labels', 'filter'].includes(this.props.modal.name)) {
+    if (['subjects', 'categories', 'labels', 'filter', 'default-subjects', 'default-categories'].includes(this.props.modal.name)) {
       let render = [];
 
-      if (this.props.modal.name === 'subjects') {
+      if (this.props.modal.name === 'subjects' || this.props.modal.name === 'default-subjects') {
         render = subjects;
-      } else if (this.props.modal.name === 'categories') {
+      } else if (this.props.modal.name === 'categories' || this.props.modal.name === 'default-categories') {
         render = categories;
       } else {
         render = [...subjects, ...categories];
@@ -88,7 +93,7 @@ class LabelsModal extends React.Component {
         <div 
           id="labels-modal" 
           className="modal custom-scroll" 
-          style={{ left: this.props.modal.x, top: this.props.modal.y, maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40 }}
+          style={{ left: this.props.modal.x, top: this.props.modal.y, maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40, zIndex: this.props.zIndex }}
         >
           {render}
         </div>

@@ -184,6 +184,46 @@ class InfoIcon extends React.Component {
 }
 
 /**
+ * @description School icon 
+ */
+class SchoolIcon extends React.Component {
+  render() {
+    return (
+      <svg 
+        className="info-icon material-icon" 
+        viewBox="0 0 24 24" 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+      >
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+      </svg>
+    );
+  }
+}
+
+/**
+ * @description Book icon
+ */
+class BookIcon extends React.Component {
+  render() {
+    return (
+      <svg 
+        className="info-icon material-icon" 
+        viewBox="0 0 24 24" 
+        width={this.props.width || 24} 
+        height={this.props.height || 24}
+        style={this.props.style}
+      >
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+      </svg>
+    );
+  }
+}
+
+/**
  * @description Check mark icon
  */
 class CheckIcon extends React.Component {
@@ -444,6 +484,8 @@ export {
   UserIcon, 
   TasklistIcon,
   InfoIcon,
+  SchoolIcon,
+  BookIcon,
   CheckIcon,
   SearchIcon,
   AddIcon,

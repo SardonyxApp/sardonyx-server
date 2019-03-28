@@ -51,7 +51,7 @@ exports.changeUserLabel = action => {
   return (req, res) => {
     const target = req.token.teacher ? teachers : students;
     const operation = action === 'add' ? target.addLabel : target.deleteLabel;
-    operation(req.token.id, req.query.id, req.param.type).then(results => {
+    operation.call(target, req.token.id, req.query.id, req.params.type).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);

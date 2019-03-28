@@ -28,7 +28,7 @@ class User {
         resolve(results);
       });
     });
-  };
+  }
 
   /**
    * @description Retrieve default labels for user
@@ -43,7 +43,7 @@ class User {
         resolve(results);
       });
     });
-  };
+  }
 
   /**
    * @description Add a default label for user 
@@ -74,7 +74,7 @@ class User {
   deleteLabel(id, label_id, type) {
     return new Promise((resolve, reject) => {
       const labelName = type === 'subjects' ? 'subject_id' : 'category_id';
-      db.get().query("DELETE FROM user_labels WHERE ?? = ?, ?? = ?", [this.idName, id, labelName, label_id], (err, results) => {
+      db.get().query("DELETE FROM user_labels WHERE ?? = ? AND ?? = ?", [this.idName, id, labelName, label_id], (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
