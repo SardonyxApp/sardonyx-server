@@ -191,7 +191,6 @@ exports.initiateStudent = (req, res, next) => {
  */
 exports.initiateTeacher = (req, res, next) => {
   teachers.selectByEmail(req.body.login).then(results => {
-    console.log(results[0], req.body.password);
     if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
       // Valid account and correct password 
 
@@ -199,7 +198,7 @@ exports.initiateTeacher = (req, res, next) => {
         teacher: true, 
         id: results[0].id,
         email: req.body.login,
-        tasklist: 1 // default default tasklist 
+        tasklist: results[0].tasklist_id
       }, process.env.PRIVATE_KEY, {
         expiresIn: '1d',
       });

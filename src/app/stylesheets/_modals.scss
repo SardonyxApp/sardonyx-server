@@ -61,6 +61,10 @@
       @extend %vertical-align-middle;
     }
   }
+
+  .dropdown {
+    margin-left: 4px;
+  }
 }
 
 #profile-modal {  
