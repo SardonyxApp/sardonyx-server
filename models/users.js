@@ -34,7 +34,7 @@ class User {
    * @description Retrieve default labels for user
    * @param {Number} id 
    * @param {Number} tasklist_id 
-   * @returns {Promise}
+   * @returns {Promise} results
    */
   selectLabels(id, tasklist_id) {
     return new Promise((resolve, reject) => {
@@ -50,6 +50,7 @@ class User {
    * @param {Number} id user 
    * @param {Number} label_id 
    * @param {Number} type subjects or categories 
+   * @returns {Promise} results
    */
   addLabel(id, label_id, type) {
     return new Promise((resolve, reject) => {
@@ -70,6 +71,7 @@ class User {
    * @param {Number} id user 
    * @param {Number} label_id 
    * @param {Number} type subjects or categories 
+   * @returns {Promise} results
    */
   deleteLabel(id, label_id, type) {
     return new Promise((resolve, reject) => {
@@ -85,12 +87,26 @@ class User {
 const students = new User('students');
 const teachers = new User('teachers');
 
+/**
+ * @description Create a student 
+ * @param {Array} params 
+ * name, email, year, tasklist_id are required
+ * @returns {Promise} results
+ */
+students.create = params => {
+  return new Promise((resolve, reject) => {
+    db.get().query("INSERT INTO students (name, email, year, tasklist_id) VALUES (?, ?, ?, ?)", params, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    });
+  });  
+};
 
 /**
  * @description Update a teacher's password 
  * @param {String} email 
  * @param {String} password 
- * @returns {Promise}
+ * @returns {Promise} results
  */
 teachers.updatePassword = (email, password) => { 
   return new Promise((resolve, reject) => {
@@ -103,18 +119,18 @@ teachers.updatePassword = (email, password) => {
 };
 
 /**
- * @description Create a student 
- * @param {Array} params 
- * name, email, year, tasklist_id are required
- * @returns {Promise} rows 
+ * @description Update a teacher's default tasklist 
+ * @param {Number} id 
+ * @param {Number} tasklist_id
+ * @returns {Promise} results
  */
-students.create = params => {
+teachers.updateTasklist = (id, tasklistId) => {
   return new Promise((resolve, reject) => {
-    db.get().query("INSERT INTO students (name, email, year, tasklist_id) VALUES (?, ?, ?, ?)", params, (err, results) => {
+    db.get().query("UPDATE teachers SET tasklist_id = ? WHERE id = ?", [tasklistId, id], (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
-  });  
+  });
 };
 
 module.exports = { students, teachers };

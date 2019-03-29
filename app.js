@@ -150,24 +150,25 @@ app.use('/password', auth.authenticateToken, upload.none(), (req, res, next) => 
 app.post('/password', auth.changePassword);
 
 // Authenticate 
-app.use('/app', auth.authenticateToken);
+app.use('/app', auth.authenticateToken, auth.authenticateTasklist);
 
-app.delete('/app/task', task.deleteTask);
-app.delete('/app/subjects', task.deleteLabel('subjects'));
-app.delete('/app/categories', task.deleteLabel('categories'));
-app.post('/app/user/:type', task.changeUserLabel('add'));
-app.delete('/app/user/:type', task.changeUserLabel('delete'));
-
-// Load data with year constraint 
-app.use('/app', auth.authenticateYear);
-
-app.get('/app/user', task.loadUser); // Year can be specified for user too because of preferred labels
+app.get('/app/user', task.loadUser); // Tasklist can be specified for user too because of preferred labels
 app.get('/app/tasklist', task.loadTasklist);
 app.get('/app/tasks', task.loadTasks);
 app.get('/app/subjects', task.loadLabel('subjects'));
 app.get('/app/categories', task.loadLabel('categories'));
 
-// Push data 
+app.delete('/app/task', task.deleteTask);
+app.delete('/app/subjects', task.deleteLabel('subjects'));
+app.delete('/app/categories', task.deleteLabel('categories'));
+
+app.post('/app/user/subjects', task.changeUserLabel('subjects', 'add'));
+app.delete('/app/user/subjects', task.changeUserLabel('subjects', 'delete'));
+app.post('/app/user/subjects', task.changeUserLabel('categories', 'add'));
+app.delete('/app/user/subjects', task.changeUserLabel('categories', 'delete'));
+app.patch('/app/user/tasklist', task.changeTeacherTasklist);
+
+// Data with JSON body 
 app.use('/app', express.json());
 
 app.post('/app/task', task.craftTask, task.createTask);

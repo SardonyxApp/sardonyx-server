@@ -161,7 +161,7 @@ exports.initiateStudent = (req, res, next) => {
       teacher: false,
       id: student.id,
       email: req.body.login,
-      year: student.year
+      tasklist: student.tasklist_id
     }, process.env.PRIVATE_KEY, {
       expiresIn: '1d',
     });
@@ -199,7 +199,7 @@ exports.initiateTeacher = (req, res, next) => {
         teacher: true, 
         id: results[0].id,
         email: req.body.login,
-        year: 2018 // hard coded for now, default year 
+        tasklist: 1 // default default tasklist 
       }, process.env.PRIVATE_KEY, {
         expiresIn: '1d',
       });
@@ -240,16 +240,16 @@ exports.authenticateToken = (req, res, next) => {
 }
 
 /**
- * @description Authenticates access to the requested year group properties
+ * @description Authenticates access to the requested tasklist 
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next
  */
-exports.authenticateYear = (req, res, next) => {
-  if (req.query.year && req.token.teacher) {
-    req.token.year = req.query.year;
+exports.authenticateTasklist = (req, res, next) => {
+  if (req.query.tasklist && req.token.teacher) {
+    req.token.tasklist = req.query.tasklist;
     next();
-  } else if (req.query.year && req.token.year != req.query.year) {
+  } else if (req.query.tasklist && req.token.tasklist != req.query.tasklist) {
     res.status(403).send('Requested without permission.');
   } else {
     next();

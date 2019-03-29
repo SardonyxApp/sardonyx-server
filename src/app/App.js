@@ -120,10 +120,10 @@ class App extends React.Component {
   handleSelectTasklist(tasklist) {
     Promise.all([
       // Fetch user because the default filters change 
-      fetch(`/app/user?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
-      fetch(`/app/tasks?full=true&year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
-      fetch(`/app/subjects?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json()),
-      fetch(`/app/categories?year=${tasklist.id + 2017}`, { credentials: 'include' }).then(response => response.json())
+      fetch(`/app/user?tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/tasks?full=true&tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/subjects?tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/categories?tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json())
     ]).then(responses => {
       this.setState({
         user: responses[0],
