@@ -362,49 +362,138 @@ POST /login/teacher
 
 Required: multipart form in request body with Sardonyx `login` and `password` 
 
+#### Logout 
+```
+GET /logout
+```
+
+Required: valid signed JWT cookie
+
+#### Change Password (teachers)
+```
+POST /password
+```
+
+Required: valid signed JWT cookie with email and JSON request body in request body with `new_password`
+
 ### Tasklist API 
-Load user details
+#### Load user details
 
 ```
 GET /app/user
+GET /app/user?tasklist=:tasklist
 ```
 
-Required: valid signed JWT token cookie with email address property 
+Required: valid signed JWT cookie with `email` property and `tasklist` property or a `tasklist` URL parameter
 
-Load tasklist 
+Tasklists can be specified for retrieving default labels (teachers only)
+
+#### Change default labels 
+Add default labels 
+```
+POST /app/user/subjects?id=:id
+POST /app/user/categories?id=:id
+```
+
+Remove default labels 
+```
+DELETE /app/user/subjects?id=:id
+DELETE /app/user/categories?id=:id
+```
+
+Required: valid signed JWT cookie with `id` property and `id` URL parameter (for label's id)
+
+#### Change default tasklist 
+```
+PATCH /app/user/tasklist?id=:id
+```
+
+Required: valid signed JWT cookie with `id` property and `id` URL parameter (for tasklist's id)
+
+#### Load tasklist 
 ```
 GET /app/tasklist
-GET /app/tasklist?year=:year
-GET /app/tasklist?year=all
+GET /app/tasklist?tasklist=:tasklist
+GET /app/tasklist?tasklist=all
 ```
 
-Required for students: valid signed JWT token cookie with `year` property
+Required for students: valid signed JWT cookie with `tasklist` property
 
-Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+Required for teachers: valid signed JWT cookie with `tasklist` property or a `tasklist` URL parameter 
 
-To select all tasklists, pass `all` as the year URL parameter (teachers only)
+To select all tasklists, pass `all` as the tasklist URL parameter (teachers only)
 
-Load tasks 
+#### Load tasks 
 ```
 GET /app/tasks
-GET /app/tasks?year=:year
+GET /app/tasks?tasklist=:tasklist
+GET /app/tasks?full=true
 ```
 
-Required for students: valid signed JWT token cookie with `year` property
+Required for students: valid signed JWT cookie with `tasklist` property
 
-Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+Required for teachers: valid signed JWT token with `tasklist` property or a `tasklist` URL parameter 
 
-Load subjects or categories labels 
+To select labels associated with tasks, pass true for `full`.
+
+#### Change tasks 
+Create tasks 
+```
+POST /app/task
+```
+
+Required: valid signed JWT cookie and JSON request body with task information
+
+Edit tasks 
+```
+PATCH /app/task?id=:id
+```
+
+Required: valid signed JWT cookie, `id` URL parameter, and JSON request body with task information. 
+
+Delete tasks 
+```
+DELETE /app/task?id=:id
+```
+
+Required: valid signed JWT cookie and `id` URL parameter. 
+
+#### Load subjects or categories labels 
 ```
 GET /app/subjects
-GET /app/subjects?year=:year
+GET /app/subjects?tasklist=:tasklist
 GET /app/categories
-GET /app/categories?year=:year
+GET /app/categories?tasklist=:tasklist
 ```
 
-Required for students: valid signed JWT token cookie with `year` property
+Required for students: valid signed JWT cookie with `tasklist` property
 
-Required for teachers: valid signed JWT token with `year` property or a `year` URL parameter 
+Required for teachers: valid signed JWT with `tasklist` property or a `tasklist` URL parameter 
+
+#### Change subjects or categories labels 
+Add labels 
+```
+POST /app/subjects
+POST /app/categories
+```
+
+Required: valid signed JWT cookie and JSON request body with label information.
+ 
+Edit labels 
+```
+PATCH /app/subjects?id=:id
+PATCH /app/categories?id=:id 
+```
+
+Required: valid signed JWT cookie, `id` URL paramter, JSON request body with label information 
+
+Delete labels 
+```
+DELETE /app/subjects?id=:id
+DELETE /app/categories?id=:id
+```
+
+Required: valid signed JWT cookie and `id` URL parameter
 
 ## Contribution
 For contribution, see `CONTRIBUTING.md` in SardonyxApp/sardonyx repository.
