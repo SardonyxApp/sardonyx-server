@@ -145,7 +145,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the subject of the task. (e.g. Mathematics, English)</p>
             {subjects}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', document.documentElement.clientWidth - position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', position.right, position.bottom + 8))} />
           </div>
 
           <div className="setting">
@@ -155,7 +155,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the type of the work. (e.g. Homework, Exam Preparation)</p>
             {categories}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-category', document.documentElement.clientWidth - position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-category', position.right, position.bottom + 8))} />
           </div>
 
           <div className="heading">
@@ -192,7 +192,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>If you want to filter subjects by default, set them here.</p>
             {defaultSubjects}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', position.left, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', position.right, position.bottom + 8))} />
           </div>
 
           <div className="setting">
@@ -202,7 +202,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>If you want to filter categories by default, set them here.</p>
             {defaultCategories}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-categories', position.left, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-categories', position.right, position.bottom + 8))} />
           </div>
         </div>
       </div>
