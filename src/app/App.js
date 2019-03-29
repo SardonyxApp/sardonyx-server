@@ -15,6 +15,7 @@ import TaskInfo from './TaskInfo';
 
 // Modals 
 import SettingsModal from './modals/SettingsModal';
+import InfoModal from './modals/InfoModal';
 import TasklistModal from './modals/TasklistModal';
 import ProfileModal from './modals/ProfileModal';
 import AddModal from './modals/AddModal';
@@ -436,6 +437,11 @@ class App extends React.Component {
           onDeleteLabel={this.handleDeleteLabel}
           onUpdateUserLabel={this.handleUpdateUserLabel}
           onChangeUserTasklist={this.handleChangeUserTasklist}
+        />
+        <InfoModal 
+          user={this.state.user}
+          modal={this.state.modal}
+          onModal={this.handleModal}
         />
         <TasklistModal 
           user={this.state.user}

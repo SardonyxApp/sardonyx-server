@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { IconWhiteBackground, AddToListIcon, SettingsIcon } from '../../logos'; // use this as avatar for now
+import { UserIcon, AddToListIcon, SettingsIcon, InfoIcon } from '../../logos'; // use this as avatar for now
 
 class User extends React.Component {
   constructor(props) {
@@ -23,11 +23,12 @@ class User extends React.Component {
   render() {
     return (
       <div id="user">
+        <InfoIcon onClick={() => this.props.onModal('info')} />
         <SettingsIcon onClick={() => this.props.onModal('settings')} />
         <AddToListIcon onClick={e => this.handleAdd(e)} />
         <h4 onClick={() => this.props.onModal('profile', 8, 50)}>{this.props.user.name}</h4>
         <div id="avatar" onClick={() => this.props.onModal('profile', 8, 50)}>
-          <IconWhiteBackground width={28} height={28} />
+          <UserIcon width={28} height={28} />
         </div>
       </div>
     );

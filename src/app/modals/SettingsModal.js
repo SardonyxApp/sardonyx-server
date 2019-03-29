@@ -129,16 +129,16 @@ class SettingsModal extends React.Component {
             <h2>Tasklist Settings</h2>
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
-              <InfoIcon />
+              <InfoIcon style={{ cursor: 'auto' }} />
               <h3 className="subheading">Information</h3>
             </div>
             <p><b>Name</b>: {this.props.tasklist.name || 'No name provided.'}</p>
             <p><b>Description</b>: {this.props.tasklist.description || 'No description provided.'}</p>
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
               <LabelIcon />
               <h3 className="subheading">Subject Labels</h3>
@@ -148,7 +148,7 @@ class SettingsModal extends React.Component {
             <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', position.right, position.bottom + 8))} />
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
               <LabelIcon />
               <h3 className="subheading">Category Labels</h3>
@@ -163,9 +163,9 @@ class SettingsModal extends React.Component {
             <h2>Account Preferences</h2>
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
-              <InfoIcon />
+              <InfoIcon style={{ cursor: 'auto' }} />
               <h3 className="subheading">Information</h3>
             </div>
             <p><b>Name</b>: {this.props.user.name || 'No name provided.'}</p>
@@ -185,7 +185,7 @@ class SettingsModal extends React.Component {
             ) : (<p><b>Year group</b>: {this.props.tasklist.name}</p>)}
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
               <SchoolIcon />
               <h3 className="subheading">My subjects</h3>
@@ -195,7 +195,7 @@ class SettingsModal extends React.Component {
             <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', position.right, position.bottom + 8))} />
           </div>
 
-          <div className="setting">
+          <div className="section">
             <div className="heading">
               <BookIcon />
               <h3 className="subheading">My task categories</h3>
