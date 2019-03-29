@@ -16,7 +16,7 @@
   position: fixed;
 }
 
-#settings-modal {
+#settings-modal, #info-modal {
   // Position
   height: 80%;
   width: 50%;
@@ -49,8 +49,12 @@
       @extend %align-with-icon;
     }
 
-    .setting {
-      padding-left: 40px;
+    .section {
+      padding: 0 40px;
+    }
+
+    .subsection {
+      margin-bottom: 8px;
     }
 
     & > div:not(:last-child) {

@@ -64,6 +64,7 @@ class TaskTitle extends React.Component {
         <h2
           contentEditable={true}
           className="embed"
+          spellCheck={false}
           style={{ cursor: this.state.selected ? '' : 'pointer', borderBottom: this.state.selected ? '2px solid #2977b6' : this.state.error ? '2px solid #f44138' : '2px solid transparent' }}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
