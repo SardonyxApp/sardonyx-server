@@ -8,6 +8,7 @@ const { students, teachers } = require('../models/users');
 const tasklists = require('../models/tasklists');
 const tasks = require('../models/tasks');
 const { subjects, categories } = require('../models/labels');
+const jwt = require('jsonwebtoken');
 
 /**
  * @description Load user information 
@@ -35,6 +36,8 @@ exports.loadUser = (req, res) => {
       if (obj.subject_id) user.subjects.push(obj.subject_id);
       if (obj.category_id) user.categories.push(obj.category_id);
     });
+
+    user.tasklist_id = req.token.tasklist; // Tasklist id not synced across cookies, db entry only used for new cookies 
     
     res.json(user);
   }).catch(err => {
@@ -67,7 +70,22 @@ exports.changeUserLabel = (type, action) => {
  * @param {Object} res 
  */
 exports.changeTeacherTasklist = (req, res) => {
-  teacher.updateTasklist(req.token.id, req.token.tasklist).then(results => {
+  teachers.updateTasklist(req.token.id, req.query.id).then(results => {
+    const token = jwt.sign({
+      teacher: req.token.teacher,
+      id: req.token.id,
+      email: req.token.email,
+      tasklist: req.query.id
+    }, process.env.PRIVATE_KEY, {
+      expiresIn: '1d',
+    });
+
+    res.cookie('Sardonyx-Token', token, {
+      maxAge: 86400000, // expires in 24 hours 
+      secure: process.env.MODE === 'production', 
+      httpOnly: true 
+    });
+
     res.json(results);
   }).catch(err => {
     console.error(err);

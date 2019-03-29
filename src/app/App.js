@@ -80,6 +80,7 @@ class App extends React.Component {
     this.handleUpdateLabel = this.handleUpdateLabel.bind(this);
     this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
     this.handleUpdateUserLabel = this.handleUpdateUserLabel.bind(this);
+    this.handleChangeUserTasklist = this.handleChangeUserTasklist.bind(this);
   }
 
   // Safely fetch data after initial render 
@@ -396,6 +397,27 @@ class App extends React.Component {
     }) 
   }
 
+  /**
+   * @description Update a teacher's default tasklist 
+   * @param {Number} tasklistId 
+   */
+  handleChangeUserTasklist(tasklistId) {
+    fetch(`/app/user/tasklist?id=${tasklistId}`, { 
+      method: 'PATCH',
+      credentials: 'include' 
+    })
+    .then(() => {
+      this.setState(prevState => {
+        const user = prevState.user;
+        user.tasklist_id = tasklistId;
+        return { user };
+      });
+    }).catch(err => {
+      alert('There was an error while updating your default tasklist. If this error persists, please contact SardonyxApp.');
+      console.error(err);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -413,6 +435,7 @@ class App extends React.Component {
           onUpdateLabel={this.handleUpdateLabel}
           onDeleteLabel={this.handleDeleteLabel}
           onUpdateUserLabel={this.handleUpdateUserLabel}
+          onChangeUserTasklist={this.handleChangeUserTasklist}
         />
         <TasklistModal 
           user={this.state.user}

@@ -41,7 +41,7 @@ a {
   color: $blue;
 }
 
-input {
+input, select, select > option {
   font-family: inherit;
   font-weight: inherit;
   outline: 0;
@@ -55,6 +55,15 @@ svg {
   word-wrap: break-word;
   white-space: pre-wrap;
   outline: 0;
+}
+
+.dropdown {
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  padding: 4px;
+  text-align: center;
+  background: #eee;
 }
 
 // Miscellaneous 
