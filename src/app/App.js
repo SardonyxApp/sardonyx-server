@@ -22,6 +22,11 @@ import LabelsModal from './modals/LabelsModal';
 
 import ModalBackground from './modals/ModalBackground';
 
+Array.prototype.findById = function(id) {
+  const index = this.findIndex(i => i.id === id);
+  return this[index] || null;
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -45,14 +50,16 @@ class App extends React.Component {
         teacher: false,
         name: '', 
         email: '',
+        tasklist: '',
         subjects: [],
         categories: []
       },
-      tasklist: {
+      tasklist: { // Store information about current tasklist 
         id: null,
         name: '',
         description: ''
       },
+      tasklists: [], // Store information about other tasklists (teachers only)
       tasks: [],
       currentTask: -1, // Store the id of current task: -1 -> no task selected 
       subjects: [],
@@ -77,9 +84,10 @@ class App extends React.Component {
 
   // Safely fetch data after initial render 
   componentDidMount() {
+    // Fetch common data 
     Promise.all([
       fetch('/app/user', { credentials: 'include' }).then(response => response.json()),
-      fetch('/app/tasklist', { credentials: 'include' }).then(response => response.json()),
+      fetch(`/app/tasklist`, { credentials: 'include' }).then(response => response.json()),
       fetch('/app/tasks?full=true', { credentials: 'include' }).then(response => response.json()),
       fetch('/app/subjects', { credentials: 'include' }).then(response => response.json()),
       fetch('/app/categories', { credentials: 'include' }).then(response => response.json())
@@ -96,6 +104,16 @@ class App extends React.Component {
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
       console.error(err); 
+    });
+
+    fetch('/app/tasklist?tasklist=all', { credentials: 'include' })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        tasklists: response
+      });
+    }).catch(err => {
+      console.error('There was an error while retrieving all available tasklists. If you are a student, do not worry about this error. ' + err);
     });
   }
 
@@ -385,6 +403,7 @@ class App extends React.Component {
         <SettingsModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
+          tasklists={this.state.tasklists}
           subjects={this.state.subjects}
           categories={this.state.categories}
           modal={this.state.modal}
@@ -398,6 +417,7 @@ class App extends React.Component {
         <TasklistModal 
           user={this.state.user}
           tasklist={this.state.tasklist}
+          tasklists={this.state.tasklists}
           modal={this.state.modal}
           onModal={this.handleModal}
           onSelectTasklist={this.handleSelectTasklist}
@@ -416,7 +436,7 @@ class App extends React.Component {
           zIndex={3}
         />
         <LabelsModal
-          task={this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+          task={this.state.tasks.findById(this.state.currentTask)}
           subjects={this.state.subjects}
           categories={this.state.categories}
           subjectsFilter={this.state.subjectsFilter}
@@ -478,7 +498,7 @@ class App extends React.Component {
             onFilter={this.handleFilter}
           />
           <TaskInfo 
-            task={this.state.currentTask === -1 ? null : this.state.tasks.filter(t => t.id === this.state.currentTask)[0]}
+            task={this.state.tasks.findById(this.state.currentTask)}
             onModal={this.handleModal}
             onUpdateTask={this.handleUpdateTask}
             onDeleteTask={this.handleDeleteTask}
