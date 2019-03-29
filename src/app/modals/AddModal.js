@@ -62,10 +62,24 @@ class AddModal extends React.Component {
   }
 
   render() {
+    const position = () => {
+      if (this.props.modal.y > document.documentElement.clientHeight / 2) {
+        return {
+          right: document.documentElement.clientWidth - this.props.modal.x,
+          bottom: document.documentElement.clientHeight - this.props.modal.x
+        };
+      }
+
+      return {
+        right: document.documentElement.clientWidth - this.props.modal.x,
+        top: this.props.modal.y
+      };
+    };
+
     // Render the default add options 
     if (this.props.modal.name === 'add') {
       return (
-        <div id="add-modal" className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
+        <div id="add-modal" className="modal" style={{ ...position() }}>
           <ul>
             <li onClick={() => this.props.onModal('add-task', this.props.modal.x, this.props.modal.y)}>Add task</li>
             <li onClick={() => this.props.onModal('add-subject', this.props.modal.x, this.props.modal.y)}>Add subject label</li>
@@ -78,7 +92,7 @@ class AddModal extends React.Component {
     // Render interface to enter title of new task
     if (this.props.modal.name === 'add-task') {
       return (
-        <div id="add-task-modal" className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
+        <div id="add-task-modal" className="modal" style={{ ...position() }}>
           <div>
             <input 
               id="add-task-input" 
@@ -109,7 +123,7 @@ class AddModal extends React.Component {
     if (this.props.modal.name === 'add-subject' || this.props.modal.name === 'add-category') {
       const type = this.props.modal.name === 'add-subject' ? 'subject' : 'category';
       return (
-        <div id={`add-${type}-modal`} className="modal" style={{ right: this.props.modal.x, top: this.props.modal.y, zIndex: this.props.zIndex }}>
+        <div id={`add-${type}-modal`} className="modal" style={{ ...position(), zIndex: this.props.zIndex }}>
           <div>
             <input
               id={`add-${type}-input`}

@@ -89,11 +89,28 @@ class LabelsModal extends React.Component {
         render = [...subjects, ...categories];
       }
 
+      const position = () => {
+        if (this.props.modal.y > document.documentElement.clientHeight / 2) {
+          return {
+            left: this.props.modal.x,
+            bottom: document.documentElement.clientHeight - this.props.modal.y,
+            maxHeight: this.props.modal.y - 40
+          };
+        }
+        
+        return {
+          left: this.props.modal.x,
+          top: this.props.modal.y,
+          maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40
+        };
+      };
+      
+
       return (
         <div 
           id="labels-modal" 
           className="modal custom-scroll" 
-          style={{ left: this.props.modal.x, top: this.props.modal.y, maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40, zIndex: this.props.zIndex }}
+          style={{ ...position(), zIndex: this.props.zIndex }}
         >
           {render}
         </div>
