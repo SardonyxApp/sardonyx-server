@@ -18,31 +18,6 @@ const TasklistOverview = props => (
 );
 
 class TasklistModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tasklists: [
-        {
-          id: null,
-          name: '',
-          description: ''
-        }
-      ]
-    }
-  }
-
-  componentDidMount() {
-    fetch('/app/tasklist?tasklist=all', { credentials: 'include' })
-    .then(response => response.json())
-    .then(results => {
-      this.setState({
-        tasklists: results
-      });
-    }).catch(err => {
-      console.error('If you are a student, do not worry about this error. ' + err);
-    });
-  }
-
   handleSelect(tasklist) {
     this.props.onModal();
     this.props.onSelectTasklist(tasklist);
@@ -50,7 +25,7 @@ class TasklistModal extends React.Component {
 
   render() {
     const tasklists = this.props.user.teacher
-      ? this.state.tasklists.map(tasklist => (
+      ? this.props.tasklists.map(tasklist => (
         tasklist.id === this.props.tasklist.id ? (
           <TasklistOverview 
             name={tasklist.name} 
