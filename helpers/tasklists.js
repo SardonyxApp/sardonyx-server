@@ -18,7 +18,7 @@ exports.loadUser = (req, res) => {
   const target = req.token.teacher ? teachers : students; 
   Promise.all([
     target.selectByEmail(req.token.email),
-    target.selectLabels(req.token.id, req.token.year - 2017)
+    target.selectLabels(req.token.id, req.token.tasklist)
   ]).then(results => {
     const user = results[0][0];
     if (!results[0].length) res.status(400).send('Invalid user requested.');
@@ -45,13 +45,14 @@ exports.loadUser = (req, res) => {
 
 /**
  * @description Add or delete user's default labels 
+ * @param {String} type subjects or categories 
  * @param {String} action add or delete 
  */
-exports.changeUserLabel = action => {
+exports.changeUserLabel = (type, action) => {
   return (req, res) => {
     const target = req.token.teacher ? teachers : students;
     const operation = action === 'add' ? target.addLabel : target.deleteLabel;
-    operation.call(target, req.token.id, req.query.id, req.params.type).then(results => {
+    operation.call(target, req.token.id, req.query.id, type).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
@@ -61,13 +62,27 @@ exports.changeUserLabel = action => {
 };
 
 /**
+ * @description Update a teacher's default tasklist 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.changeTeacherTasklist = (req, res) => {
+  teacher.updateTasklist(req.token.id, req.token.tasklist).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).send('There was an error while accessing the database. ' + err);
+  });
+};
+
+/**
  * @description Load tasklist 
  * @param {Object} req 
  * @param {Object} res 
  */
 exports.loadTasklist = (req, res) => {
   // Select all
-  if (req.token.year === 'all') {
+  if (req.token.tasklist === 'all') {
     tasklists.selectAll().then(results => {
       res.json(results);
     }).catch(err => {
@@ -75,8 +90,8 @@ exports.loadTasklist = (req, res) => {
       res.status(500).send('There was an error while accessing the database. ' + err);
     });
   } else {
-    // Select by year 
-    tasklists.select(req.token.year - 2017).then(results => {
+    // Select by tasklist_id  
+    tasklists.select(req.token.tasklist).then(results => {
       if (!results.length) res.status(400).send('Invalid tasklist requested.');
       res.json(results[0]);
     }).catch(err => {
@@ -93,14 +108,14 @@ exports.loadTasklist = (req, res) => {
  */
 exports.loadTasks = (req, res) => {
   if (req.query.full = 'true') {
-    tasks.selectJoinedByTasklistId(req.token.year - 2017).then(results => {
+    tasks.selectJoinedByTasklistId(req.token.tasklist).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
       res.status(500).send('There was an error while accessing the database. ' + err);
     });
   } else {
-    tasks.selectByTasklistId(req.token.year - 2017).then(results => {
+    tasks.selectByTasklistId(req.token.tasklist).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
@@ -174,7 +189,7 @@ exports.deleteTask = (req, res) => {
 exports.loadLabel = type => {
   const target = type === 'subjects' ? subjects : categories;
   return (req, res) => {
-    target.selectByTasklistId(req.token.year - 2017).then(results => {
+    target.selectByTasklistId(req.token.tasklist).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
