@@ -165,6 +165,17 @@ class SettingsModal extends React.Component {
 
           <div className="setting">
             <div className="heading">
+              <InfoIcon />
+              <h3 className="subheading">Information</h3>
+            </div>
+            <p><b>Name</b>: {this.props.user.name || 'No name provided.'}</p>
+            <p><b>Email</b>: {this.props.user.email || 'No email provided.'}</p>
+            <p><b>User type</b>: {this.props.user.teacher ? 'Teacher' : 'Student'}</p>
+            {this.props.user.teacher ? null : <p><b>Year group</b>: {this.props.tasklist.name}</p>}
+          </div>
+
+          <div className="setting">
+            <div className="heading">
               <SchoolIcon />
               <h3 className="subheading">My subjects</h3>
             </div>
