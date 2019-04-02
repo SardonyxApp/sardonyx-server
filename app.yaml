@@ -1,1 +1,4 @@
 runtime: nodejs8
+
+beta-settings:
+  cloud_sql_instances: sardonyx-app:asia-northeast1:sardonyx-server
