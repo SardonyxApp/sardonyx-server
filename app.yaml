@@ -1,4 +1,7 @@
 runtime: nodejs8
 
-beta_settings:
-  cloud_sql_instances: sardonyx-app:asia-northeast1:sardonyx-server
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
