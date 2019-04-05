@@ -4,9 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://indestructibletype.com/fonts/Jost.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
   <title>Sardonyx</title>
 </head>
 <body>
-  <div id="root"></div>
-<script type="text/javascript" src="scripts/index.js"></script></body>
+  <div id="title">
+    <svg viewBox="0 0 1024 1024" width="100" height="100" class="logo">
+      <path fill="#fff" d="M717.23,199.29,417.79,498.74a23.08,23.08,0,0,1-32.53,0h0a23.08,23.08,0,0,1,0-32.53L675.79,175.68A372.59,372.59,0,0,0,512,138c-206.55,0-374,167.45-374,374a376.27,376.27,0,0,0,6.06,67.41L296.78,426.7a23,23,0,0,1,32.52,0h0a23,23,0,0,1,0,32.52L157.38,631.14a373.61,373.61,0,0,0,70.68,124.28L541.21,442.26a23.08,23.08,0,0,1,32.53,0h0a23.08,23.08,0,0,1,0,32.53L260.09,788.44A372.66,372.66,0,0,0,512,886c206.55,0,374-167.45,374-374C886,381.24,818.89,266.15,717.23,199.29ZM367,389a23.06,23.06,0,0,1,0-32.53l45.25-45.25a23.06,23.06,0,0,1,32.53,0h0a23.06,23.06,0,0,1,0,32.53L399.52,389A23.06,23.06,0,0,1,367,389Z"/>
+    </svg>
+    <div>
+      <h1>Sardonyx</h1>
+      <button id="download-link" class="action" style="margin-right: 4px">Download</button>
+      <button id="app-link" class="action">Go to the app <span class="arrow">→</span></button>
+    </div>
+  </div>
+  <div id="nav">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/download">Download</a></li>
+      <li><a href="/changelog">Changelog</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>
+  </div>
+  <script>
+    document.getElementById('app-link').addEventListener('click', function(e) {
+      window.location.href = '/app';
+    });
+    
+    document.getElementById('download-link').addEventListener('click', function(e) {
+      window.location.href = '/download';
+    });
+  </script>
+</body>
 </html>

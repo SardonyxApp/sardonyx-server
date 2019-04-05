@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: {
-		'index': ['@babel/polyfill', './src/index.js'],
 		'login': ['@babel/polyfill', './src/login/login.js'],
 		'password': ['@babel/polyfill', './src/login/password.js'],
 		'app': ['@babel/polyfill', 'whatwg-fetch', './src/app/App.js']
@@ -34,11 +33,6 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
-			chunks: ['index'],
-			template: './src/index.html',
-			filename: 'index.html'
-		}),
 		new HtmlWebpackPlugin({
       chunks: ['login'],
       template: './src/login/login.html',
