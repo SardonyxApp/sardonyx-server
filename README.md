@@ -1,22 +1,17 @@
 # sardonyx-server
 サードニクス
 
-Server for Sardonyx・サードニクスのサーバー
+Server for Sardonyx
 
-## About・概要
-Sardonyx is an online solution to transform how students and teachers use technology at the International Baccalaureate Diploma Program in Tokyo Metropolitan Kokusai High School. Sardonyx offers a cross-platfrom experience for all its users, through its mobile and web platforms. This repository contains code for Sardonyx's mobile application.
+## About
+Sardonyx is an online solution to transform how high school students and teachers use technology to manage workloads. Sardonyx offers a cross-platfrom experience for all its users, through its mobile and web platforms. This repository contains code for Sardonyx's web application, targeted for computers and tablets.
 
-The mobile application offers a responsive mobile experience of Kokusai's online environment. It also provides a real time messaging service between students and teachers. This is a solution to enhance student-teacher communication while complying to the Tokyo Metropolitan Board of Education's policies. 
+The web application offers a group tasklist accessible by both teachers and students. Students and teachers benefit from the transparency of the workload, organized by due dates, subjects, and task categories. Each task on the list can be given a detailed description.
 
-サードニクスは東京都立国際高校国際バカロレアコースの生徒と教員のテクノロジーの使い方を改新するためのオンラインソリューションです。
-スマートフォンとウェブアプリケーションを通じてサードニクスはクロスプラットフォームなサービスを提供する予定です。このリポジトリでは、サードニクスのスマートフォンアプリケーションのコードを載せております。
+## How to Use
+Navigate to [sardonyx.app](https://sardonyx.app), then enter your credentials. Students can use their Managebac credentials to login, while teachers are assigned a login and a password. 
 
-本アプリケーションはスマートフォンでの国際高校のICT環境を改善するほか、生徒・教員間のリアルタイムメッセージングサービスを提供目標としています。これは東京都教育委員会のポリシーに従いながら、生徒と先生の間のコミュニケーションを改善するソリューションなのです。
-
-## How to Use・使用方法
-Sardonyx is currently under development and is not available for use.
-
-サードニクスは現在開発途中で、まだ非公開です。
+Read the info page in the app to learn more about using the application.
 
 ## API
 Sardonyx's Managebac API can be accessed at the following endpoints.
