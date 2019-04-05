@@ -32,7 +32,10 @@ CREATE TABLE teachers (
   tasklist_id INT NOT NULL, -- default tasklist 
   password_digest CHAR(128) NOT NULL,
   salt CHAR(128) NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY fk_tasklist(tasklist_id)
+  REFERENCES tasklists(id)
+  ON UPDATE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE subjects (
