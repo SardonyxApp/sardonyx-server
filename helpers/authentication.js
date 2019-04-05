@@ -129,9 +129,11 @@ exports.loginToManagebac = (req, res, next) => {
 exports.initiateStudent = (req, res, next) => {
   // Check database to see if student already exists 
   students.selectByEmail(req.body.login).then(results => {
-    // If student does not exist, create student 
     return new Promise((resolve, reject) => {
+      // If student does not exist, create student 
       if (!results.length) {
+        req.firstTime = true;
+
         // Set cookies 
         const j = request.jar();  
         j.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
@@ -190,6 +192,11 @@ exports.initiateStudent = (req, res, next) => {
  * @param {Function} next 
  */
 exports.initiateTeacher = (req, res, next) => {
+  // First time users do not have cookies 
+  if (!req.cookies['Sardonyx-Token']) {
+    req.firstTime = true;
+  }
+
   teachers.selectByEmail(req.body.login).then(results => {
     if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
       // Valid account and correct password 
