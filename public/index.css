@@ -1,0 +1,94 @@
+/* general */
+body {
+  font-family: Jost, sans-serif;
+  margin: 0;
+  font-weight: 300;
+  background: #f8f8fa;
+}
+
+h1, h2, h3, p, li {
+  font-weight: 300;
+  margin: 0;
+}
+
+h1 {
+  color: #d17b46;
+}
+
+p {
+  font-size: 20px;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #d17b46;
+}
+
+a:hover {
+  filter: brightness(1.25);
+}
+
+button, button:active, button:focus {
+  outline: 0;
+  cursor: pointer;
+}
+
+.action {
+  border: 2px solid white;
+  background: transparent;
+  border-radius: 4px;
+  color: white;
+  padding: 8px;
+}
+
+.arrow {
+  display: none;
+}
+
+.action:hover {
+  border: 2px solid #ddd;
+  color: #ddd;
+}
+
+.action:hover span.arrow {
+  display: inline;
+}
+
+#title, #content {
+  padding: 20px 40px;
+}
+
+#title, #nav {
+  background: #d17b46;
+}
+
+#title > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#title h1 {
+  font-size: 40px;
+  color: white;
+}
+
+svg.logo {
+  height: 150px;
+  width: 150px;
+  margin-right: 30px;
+  vertical-align: middle;
+}
+
+#nav > ul {
+  padding: 12px 24px;
+  margin: 0;
+}
+
+#nav li {
+  padding: 8px;
+  display: inline-block;
+}
+
+#nav a, #nav a:visited {
+  color: white;
+}
