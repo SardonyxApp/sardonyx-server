@@ -18,10 +18,10 @@ const state = {
 exports.connect = callback => {
   state.pool = process.env.MODE === 'production' 
     ? mysql.createPool({
-	    socketPath: `mysql://${process.env.DB_LOGIN}:${process.env.DB_PASSWORD}@/${process.env.DB_DATABASE}?unix_socket=/cloudsql/${process.env.DB_INSTANCE}`,
-       user: process.env.DB_LOGIN,
-       password: process.env.DB_PASSWORD,
-       database: process.env.DB_DATABASE
+	    socketPath: `/cloudsql/${process.env.DB_INSTANCE}`,
+      user: process.env.DB_LOGIN,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE
     })
     : mysql.createPool({
       host: process.env.DB_HOST,
