@@ -31,13 +31,6 @@ app.use((req, res, next) => {
  * Managebac API
  */
 
-// Set general settings on all of the API routes
-app.use('/api', (req, res, next) => {
-  // Allow from all for now, for testing purposes
-  res.set('Access-Control-Allow-Origin', '*');
-  next();
-});
-
 // Initial validation
 app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
 
