@@ -132,12 +132,12 @@ app.use('/login', upload.none());
 
 // Student login through web client
 app.post('/login/student', auth.loginToManagebac, auth.initiateStudent, (req, res) => {
-  res.redirect('/app');
+  req.firstTime ? res.redirect('/app?info=true') : res.redirect('/app');
 });
 
 // Teacher login through web client 
 app.post('/login/teacher', auth.initiateTeacher, (req, res) => {
-  res.redirect('/app');
+  req.firstTime ? res.redirect('/app?info=true') : res.redirect('/app');
 });
 
 app.get('/logout', auth.authenticateToken, auth.logout);

@@ -36,7 +36,7 @@ class App extends React.Component {
     this.state = { 
       // Display state 
       modal: { // First level modal 
-        name: null,
+        name: location.search.includes('info=true') ? 'info' : null,
         x: null,
         y: null
       },
