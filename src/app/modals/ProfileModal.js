@@ -22,11 +22,11 @@ class ProfileModal extends React.Component {
           <p><a href="https://kokusaiib.managebac.com" target="_blank">Open Managebac</a></p>
         </div>
         <div style={{ display: this.props.user.teacher ? '' : 'none' }}>
-          <LockIcon width={20} height={20} onClick={() => window.location.replace('/password')} />
+          <LockIcon width={20} height={20} onClick={() => window.location.href = '/password'} />
           <p><a href="/password">Change Password</a></p>
         </div>
         <div>
-          <ExitIcon width={20} height={20} onClick={() => window.location.replace('/logout')} />
+          <ExitIcon width={20} height={20} onClick={() => window.location.href = '/logout'} />
           <p><a href="/logout">Log Out</a></p>
         </div>
         <div>
