@@ -78,7 +78,8 @@ exports.loadDefaults = (req, res) => {
     deadlines: parser.parseDeadlines(req.document),
     classes: parser.parseClasses(req.document),
     groups: parser.parseGroups(req.document),
-    notificationCount: parser.parseNotificationCount(req.document)
+    notificationCount: parser.parseNotificationCount(req.document),
+    user: parser.parseUser(req.document)
   }));
 
   res.status(200).end();

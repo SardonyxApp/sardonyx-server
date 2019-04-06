@@ -80,6 +80,18 @@ describe('Load default', () => {
           done();
         });
     });
+
+    test('GET /api/validate should return a valid user json', done => {
+      request(app)
+        .get('/api/validate')
+        .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
+        .then(response => {
+          const user = JSON.parse(response.headers['managebac-data']).user;
+          expect(typeof user.name).toBe('string');
+          expect(typeof user.avatar).toBe('string');
+          done();
+        });
+    });
   });
 
   db.connect(err => {
@@ -172,6 +184,20 @@ describe('Load default', () => {
             done();
           });
       });
+
+      test('POST /api/login should return a valid user json', done => {
+        request(app)
+          .post('/api/login')
+          .set('Content-Type', 'multipart/form-data')
+          .field('login', process.env.LOGIN)
+          .field('password', process.env.PASSWORD)
+          .then(response => {
+            const user = JSON.parse(response.headers['managebac-data']).user;
+            expect(typeof user.name).toBe('string');
+            expect(typeof user.avatar).toBe('string');
+            done();
+          });
+      });
     });
   });
 
@@ -245,6 +271,18 @@ describe('Load default', () => {
         .then(response => {
           const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
           expect(typeof notificationCount).toBe('number');
+          done();
+        });
+    });
+
+    test('GET /api/dashboard should return a valid user json', done => {
+      request(app)
+        .get('/api/dashboard')
+        .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
+        .then(response => {
+          const user = JSON.parse(response.headers['managebac-data']).user;
+          expect(typeof user.name).toBe('string');
+          expect(typeof user.avatar).toBe('string');
           done();
         });
     });

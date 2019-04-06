@@ -494,3 +494,17 @@ exports.parseStudent = document => {
   obj.tasklist_id = obj.year - 2017; // 3rd cohort is year of 2020
   return obj;
 }
+
+/**
+ * @description Prase information about the student from the top right corner menu 
+ * @param {String} document 
+ * @returns {Object}
+ */
+exports.parseUser = document => {
+  const $ = cheerio.load(document);
+
+  return {
+    name: $('.profile-link > a').text().delNewlines(),
+    avatar: $('.profile-link .avatar').css('background-image').replace(/^url\(/, '').replace(/\)$/, '')
+  };
+}
