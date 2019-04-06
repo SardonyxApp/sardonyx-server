@@ -46,6 +46,7 @@ module.exports = (req, res, next) => {
       if (response.statusCode === 401) return 1;
       if (response.statusCode === 404) return 0;
       if (response.statusCode === 500) return 0;
+      if (response.request.uri.pathname === '/login') return 1;
 
       // Check for indications of success 
       if (response.statusCode === 200) {

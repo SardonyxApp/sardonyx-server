@@ -11,6 +11,7 @@ const {
   guessFutureYear, 
   guessPastYear, 
   createDate, 
+  rgbToHex,
   toSardonyxUrl 
 } = require('./helpers');
 
@@ -184,7 +185,10 @@ exports.parseAttachments = document => {
   const payload = [];
 
   $('.content-block .list-unstyled a').each((i, el) => {
-    payload.push($(el).attr('href'));
+    payload.push({
+      name: $(el).text(),
+      link: $(el).attr('href')
+    });
   });
 
   return payload;

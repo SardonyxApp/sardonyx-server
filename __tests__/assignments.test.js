@@ -67,7 +67,6 @@ describe('Load assignment or event', () => {
           const assignment = JSON.parse(response.headers['managebac-data']).assignment;
           expect(typeof assignment.title).toBe('string');
           expect(assignment.link).toBeNull();
-          expect(Array.isArray(assignment.labels)).toBeTruthy();
           expect(assignment.deadline).toBe(false);
           expect(typeof assignment.due).toBe('string');
           expect(typeof Date.parse(assignment.due)).toBe('number');
@@ -75,6 +74,10 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
+          assignment.attachments.forEach(item => {
+            expect(typeof item.name).toBe('string');
+            expect(typeof item.link).toBe('string');
+          });
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
           assignment.dropbox.forEach(item => {
             expect(typeof item.title).toBe('string');
@@ -83,6 +86,7 @@ describe('Load assignment or event', () => {
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
+          expect(Array.isArray(assignment.dropbox)).toBeTruthy();
           assignment.messages.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
@@ -158,6 +162,10 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
+          assignment.attachments.forEach(item => {
+            expect(typeof item.name).toBe('string');
+            expect(typeof item.link).toBe('string');
+          });
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
           assignment.dropbox.forEach(item => {
             expect(typeof item.title).toBe('string');
@@ -166,6 +174,7 @@ describe('Load assignment or event', () => {
             expect(typeof Date.parse(item.date)).toBe('number');
             expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
+          expect(Array.isArray(assignment.messages)).toBeTruthy();
           assignment.messages.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
@@ -253,6 +262,10 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
+          assignment.attachments.forEach(item => {
+            expect(typeof item.name).toBe('string');
+            expect(typeof item.link).toBe('string');
+          });
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
           assignment.dropbox.forEach(item => {
             expect(typeof item.title).toBe('string');
