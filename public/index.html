@@ -9,17 +9,15 @@
   <title>Sardonyx</title>
 </head>
 <body>
-  <div id="title">
-    <svg viewBox="0 0 1024 1024" width="100" height="100" class="logo">
-      <path fill="#fff" d="M717.23,199.29,417.79,498.74a23.08,23.08,0,0,1-32.53,0h0a23.08,23.08,0,0,1,0-32.53L675.79,175.68A372.59,372.59,0,0,0,512,138c-206.55,0-374,167.45-374,374a376.27,376.27,0,0,0,6.06,67.41L296.78,426.7a23,23,0,0,1,32.52,0h0a23,23,0,0,1,0,32.52L157.38,631.14a373.61,373.61,0,0,0,70.68,124.28L541.21,442.26a23.08,23.08,0,0,1,32.53,0h0a23.08,23.08,0,0,1,0,32.53L260.09,788.44A372.66,372.66,0,0,0,512,886c206.55,0,374-167.45,374-374C886,381.24,818.89,266.15,717.23,199.29ZM367,389a23.06,23.06,0,0,1,0-32.53l45.25-45.25a23.06,23.06,0,0,1,32.53,0h0a23.06,23.06,0,0,1,0,32.53L399.52,389A23.06,23.06,0,0,1,367,389Z"/>
-    </svg>
+  <div id="title" class="orange">
+    <img class="logo" src="assets/Icon_inverted.svg">
     <div>
       <h1>Sardonyx</h1>
-      <button id="download-link" class="action" style="margin-right: 4px">Download</button>
-      <button id="app-link" class="action">Go to the app <span class="arrow">→</span></button>
+      <button class="download-link action" style="margin-right: 4px">Download (coming soon)</button>
+      <button class="app-link action">Launch app <span class="arrow">→</span></button>
     </div>
   </div>
-  <div id="nav">
+  <div id="nav" class="nav orange">
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/about">About</a></li>
@@ -29,13 +27,94 @@
       <li><a href="/privacy">Privacy</a></li>
     </ul>
   </div>
+  <div id="content">
+    <div class="block columns">
+      <div class="explanation">
+        <h2>Group tasklist specialized for students and teachers</h2>
+        <p>Sardonyx is specifically target towards students and teachers, in order to assist workload management in school.</p>
+        <p>Sorted by dates, the workload is transparent for all users.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-app.png">
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="graphic">
+        <img src="assets/screenshot-detailed.png">
+      </div>
+      <div class="explanation">
+        <h2>Seamlessly view information for each task</h2>
+        <p>The detailed view allows students and teachers to share information about each task collaboratively.</p>
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="explanation">
+        <h2>The tasklist under your control</h2>
+        <p>Settings can be adjusted to filter tasks by subjects and task categories by default, personalizing the experience.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-preferences.png">
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="graphic">
+        <img src="assets/screenshot-date.png">
+      </div>
+      <div class="explanation">
+        <h2>Collaborate effectively</h2>
+        <p>Sardonyx allows students and teachers to build a collaborative environment by allowing everyone to create, edit, and delete tasks as needed.</p>
+        <p>An intuitive user interface (UI) has been integrated to facilitate collaboration.</p>
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="explanation">
+        <h2>Non-English language support</h2>
+        <p>Sardonyx tasks support input in almost any language, in order to meet the needs of an international community.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-lang.png">
+      </div>
+    </div>
+    <div class="block center">
+      <h2>Sardonyx is free and open source</h2>
+      <p>The source code is licensed under the MIT license, accessible for anyone wishing to review and contribute to our project.</p>
+      <p>Since Sardonyx is built as a CAS project, no charges will be incurred on the user.</p>
+    </div>
+  </div>
+
+  <div id="ready" class="block orange center">
+    <h1>Ready to start?</h1>
+    <p>If you are using a computer or a tablet, our web application is accessible through a web browser.</p>
+    <button class="app-link action">Launch app <span class="arrow">→</span></button>
+    <p>If you are using a mobile phone, Sardonyx is currently developing a mobile application for both iOS and Android.</p>
+    <button class="download-link action" style="margin-right: 4px">Download (coming soon)</button>
+  </div>
+
+  <div id="footer" class="nav columns">
+    <div>
+      <p id="copyright">&#169; 2018-2019 SardonyxApp</p>
+    </div>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/download">Download</a></li>
+      <li><a href="/changelog">Changelog</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>
+  </div>
+
   <script>
-    document.getElementById('app-link').addEventListener('click', function(e) {
-      window.location.href = '/app';
+    document.querySelectorAll('.app-link').forEach(function(b) {
+      b.addEventListener('click', function(e) {
+        window.location.href = '/app';
+      });
     });
     
-    document.getElementById('download-link').addEventListener('click', function(e) {
-      window.location.href = '/download';
+    document.querySelectorAll('.download-link').forEach(function(b) {
+      b.addEventListener('click', function(e) {
+        window.location.href = '/download';
+      });
     });
   </script>
 </body>
