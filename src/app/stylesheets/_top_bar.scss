@@ -1,0 +1,64 @@
+@import './global';
+
+// TopBar
+.bar {
+  // Dimensions 
+  height: 28px;
+  width: calc(100% - 20px);  // 16px subtracted for padding 
+
+  // Position 
+  position: absolute; 
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  // Flex 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // Styling 
+  background-color: $primary;
+  color: white;
+  padding: 10px;
+
+  // Children 
+  & > * {
+    margin: 0;
+  }
+}
+
+#sardonyx {
+  flex: none;
+  
+  & > * {
+    @extend %vertical-align-middle;
+  }
+}
+
+// Title of the tasklist 
+#title {
+  flex: auto;
+  cursor: pointer;
+}
+
+#user {
+  & > * {
+    @extend %vertical-align-middle;
+    cursor: pointer;
+  }
+
+  .user-icon, .info-icon, .settings-icon, .add-to-list-icon {
+    fill: white;
+    margin-right: 4px;
+  }
+
+  h4 {
+    flex: none;
+    margin: 0 4px;
+  }
+
+  #avatar {
+    height: 28px;
+  }
+}

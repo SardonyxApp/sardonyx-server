@@ -8,5 +8,11 @@
 </head>
 <body>
   <div id="root"></div>
+  <noscript>Please turn on JavaScript on your browser to use the app.</noscript>
+  <script>
+    if (navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+      window.location.replace('ie.html');
+    }
+  </script>
 </body>
 </html>

@@ -4,9 +4,109 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://indestructibletype.com/fonts/Jost.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
   <title>Sardonyx</title>
-<link rel="shortcut icon" href="Icon.svg"></head>
+  <script>
+    var linkTo = function(target) {
+      window.location.href = target;
+    };
+  </script>
+</head>
 <body>
-  <div id="root"></div>
-<script type="text/javascript" src="index.js"></script></body>
+  <div id="title" class="orange">
+    <img class="logo" src="assets/Icon_inverted.svg">
+    <div>
+      <h1>Sardonyx</h1>
+      <button class="download-link action" style="margin-right: 4px" onclick="linkTo('/download')">Download (coming soon)</button>
+      <button class="app-link action" onclick="linkTo('/app')">Launch app <span class="arrow">→</span></button>
+    </div>
+  </div>
+  <div id="nav" class="nav orange">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/download">Download</a></li>
+      <li><a href="/changelog">Changelog</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>
+  </div>
+  <div id="content">
+    <div class="block columns">
+      <div class="explanation">
+        <h2>Group tasklist specialized for students and teachers</h2>
+        <p>Sardonyx is specifically target towards students and teachers, in order to assist workload management in school.</p>
+        <p>Sorted by dates, the workload is transparent for all users.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-app.png">
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="graphic">
+        <img src="assets/screenshot-detailed.png">
+      </div>
+      <div class="explanation">
+        <h2>Seamlessly view information for each task</h2>
+        <p>The detailed view allows students and teachers to share information about each task collaboratively.</p>
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="explanation">
+        <h2>The tasklist under your control</h2>
+        <p>Settings can be adjusted to filter tasks by subjects and task categories by default, personalizing the experience.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-preferences.png">
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="graphic">
+        <img src="assets/screenshot-date.png">
+      </div>
+      <div class="explanation">
+        <h2>Collaborate effectively</h2>
+        <p>Sardonyx allows students and teachers to build a collaborative environment by allowing everyone to create, edit, and delete tasks as needed.</p>
+        <p>An intuitive user interface (UI) has been integrated to facilitate collaboration.</p>
+      </div>
+    </div>
+    <div class="block columns">
+      <div class="explanation">
+        <h2>Non-English language support</h2>
+        <p>Sardonyx tasks support input in almost any language, in order to meet the needs of an international community.</p>
+      </div>
+      <div class="graphic">
+        <img src="assets/screenshot-lang.png">
+      </div>
+    </div>
+    <div class="block center">
+      <h2>Sardonyx is free and open source</h2>
+      <p>The source code is licensed under the MIT license, accessible for anyone wishing to review and contribute to our project.</p>
+      <p>Since Sardonyx is built as a CAS project, no charges will be incurred on the user.</p>
+    </div>
+  </div>
+
+  <div id="ready" class="block orange center">
+    <h1>Ready to start?</h1>
+    <p>If you are using a computer or a tablet, our web application is accessible through a web browser.</p>
+    <button class="app-link action" onclick="linkTo('/app')">Launch app <span class="arrow">→</span></button>
+    <p>If you are using a mobile phone, Sardonyx is currently developing a mobile application for both iOS and Android.</p>
+    <button class="download-link action" style="margin-right: 4px" onclick="linkTo('/download')">Download (coming soon)</button>
+  </div>
+
+  <div id="footer" class="nav columns">
+    <div>
+      <p id="copyright">&#169; 2018-2019 SardonyxApp</p>
+    </div>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/download">Download</a></li>
+      <li><a href="/changelog">Changelog</a></li>
+      <li><a href="/terms">Terms</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>
+  </div>
+</body>
 </html>

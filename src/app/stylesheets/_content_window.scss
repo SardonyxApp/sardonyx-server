@@ -1,0 +1,141 @@
+@import './global';
+
+// ContentWindow
+.content-window {
+  // Dimensions 
+  height: calc(100% - 48px); // so that TopBar + ContentWindow = 100%
+  width: 100%;
+
+  // Position 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: stretch;
+  z-index: -1;
+
+  // Styling 
+  background-color: #f4f4fa;
+}
+
+// TaskList and TaskInfo
+.left-view {
+  height: calc(100% - 24px);
+  width: calc(45% - 48px);
+  padding: 12px 24px;
+  flex: 0 0 auto;
+}
+
+.right-view {
+  height: calc(100% - 48px);
+  width: calc(55% - 48px);
+  padding: 24px;
+  flex: 1 1 auto;
+}
+
+#taskinfo {
+  font-size: 18px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .card {
+    height: calc(100% - 24px);
+    flex: 0 0 auto;
+
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+#task-title {
+  text-align: center;
+
+  & > .embed {
+    width: 100%;
+  }
+}
+
+#task-detail-container {
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.taskinfo-component {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+
+  svg {
+    flex: none;
+  }
+
+  & > pre, & > p {
+    flex: 1 1 auto;
+    margin-left: 8px;
+    width: calc(100% - 32px);
+  }
+}
+
+#task-labels {
+  flex-flow: wrap;
+}
+
+#task-description p:focus a {
+  cursor: auto !important;
+}
+
+#task-due .remove-icon:active {
+  transform: translateY(2px);
+}
+
+#tasks-filter {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 50px;
+  
+  & * {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  svg {
+    padding: 8px 0; // padding 8px to vertically center element without any labels 
+  }
+}
+
+#tasks-container {
+  overflow-y: auto;
+  height: calc(100% - 66px);
+  padding: 8px 8px 4px 0;
+
+  .side {
+    width: 36px;
+    margin-top: 12px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  .card { 
+    width: calc(100% - 60px);
+    display: inline-block;
+    border-radius: 8px;
+    margin-top: 12px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fbfbfb;
+    }
+  }
+}
+
+.overview-dots {
+  height: 12px;
+  margin-top: 4px;
+  display: flex;
+
+  .dot {
+    margin: 0 2px;
+  }
+}

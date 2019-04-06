@@ -1,11 +1,16 @@
+/* font */
+@import url('https://indestructibletype.com/fonts/Jost.css');
+
+/* general */
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Jost, sans-serif;
   margin: 0;
+  font-weight: 300;
 }
 
 h1, p {
   margin: 0;
-  font-weight: 100;
+  font-weight: 400;
 }
 
 #root {
@@ -19,11 +24,6 @@ h1, p {
 $primary: #d17b46;
 h1 {
   color: $primary;
-}
-
-img {
-  width: 300px;
-  height: 300px;
 }
 
 p {

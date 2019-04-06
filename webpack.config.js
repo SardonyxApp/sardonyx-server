@@ -3,11 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: {
-		'index': ['@babel/polyfill', './src/App.js']
+		'login': ['@babel/polyfill', './src/login/login.js'],
+		'password': ['@babel/polyfill', './src/login/password.js'],
+		'app': ['./src/app/App.js'],
+		'ieapp': ['@babel/polyfill', 'whatwg-fetch', './src/app/App.js']
 	},
 	output: {
 		path: path.join(__dirname, 'public'),
-		filename: '[name].js'
+		filename: 'scripts/[name].js'
 	},
 	module: {
 		rules: [
@@ -32,9 +35,24 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			chunks: ['index'],
-			template: './src/index.html',
-			favicon: './src/Icon.svg'
+      chunks: ['login'],
+      template: './src/login/login.html',
+			filename: './login/index.html'
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ['password'],
+			template: './src/login/password.html',
+			filename: './password/index.html'
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ['app'],
+			template: './src/app/app.html',
+			filename: './app/index.html'
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ['ieapp'],
+			template: './src/app/ie.html',
+			filename: './app/ie.html'
 		})
 	]
 };
