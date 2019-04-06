@@ -63,6 +63,10 @@ button, button:active, button:focus {
   text-align: center;
 }
 
+.component {
+  padding: 32px 0;
+}
+
 #title, #content {
   padding: 20px 40px;
 }
