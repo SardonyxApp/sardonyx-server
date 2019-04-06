@@ -7,21 +7,21 @@
 /**
  * @description Return month index from abbreviation
  * @param {String} abbr
- * @return {Number}
+ * @returns {Number}
  */
 exports.getMonthFromAbbr = abbr => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(abbr);
 
 /**
  * @description Return month index from full month name
  * @param {String} str 
- * @return {Number}
+ * @returns {Number}
  */
 exports.getMonth = str => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(str);
 
 /**
  * @description Guess a future year based on the month
  * @param {Number} monthIndex 
- * @return {Number}
+ * @returns {Number}
  */
 exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonth() ? new Date().getFullYear() + 1 : new Date().getFullYear();
 // Not going to be correct for dates that are two or more years ahead.
@@ -29,7 +29,7 @@ exports.guessFutureYear = monthIndex => monthIndex < new Date().getMonth() ? new
 /**
  * @description Guess a past year based on the month
  * @param {Number} monthIndex 
- * @return {Number}
+ * @returns {Number}
  */
 exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new Date().getFullYear() : new Date().getFullYear() - 1;
 // Not going to be correct for dates two or more years ago
@@ -38,7 +38,7 @@ exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new 
  * @description Create date based on date string
  * @param {String} dateString 
  * @param {Boolean} fullMonth
- * @return {Date}
+ * @retusrn {Date}
  * @example createDate('Jan 1, 2018 at 12:00 AM');
  * @example createDate('December 14, 2018 2:40 PM', true);
  */
@@ -110,7 +110,7 @@ exports.end200 = (req, res) => {
  * @description Hash a password with sha512 
  * @param {String} password 
  * @param {String} salt (optional)
- * @returns {Object} containing hashed password and salt 
+ * @returns {Object} containing hashed password sand salt 
  */
 exports.hashPassword = (password, salt) => {
   const crypto = require('crypto');
