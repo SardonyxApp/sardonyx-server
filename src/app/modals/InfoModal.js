@@ -36,6 +36,7 @@ class InfoModal extends React.Component {
               <InfoIcon style={{ cursor: 'auto' }} />
               <h3 className="subheading">About</h3>
             </div>
+            <p>&#169; 2018-2019 SardonyxApp</p>
             <p>You are running:</p>
             <ul>
               <li>Version: <b>Sardonyx Web App v1.0.0-alpha.2</b></li>
@@ -50,7 +51,7 @@ class InfoModal extends React.Component {
           <div className="section">
               <div className="heading">
                 <DescriptionIcon />
-                <h3 className="subheading">Frequently asked questions</h3>
+                <h3 className="subheading">FAQ</h3>
               </div>
               <div className="subsection">
                 <p><b>How do I create new tasks?</b></p>
