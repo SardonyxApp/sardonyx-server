@@ -94,7 +94,8 @@ a:hover {
 }
 
 input[type="submit"] {
-  background-color: #ed8a50;
+  -webkit-appearance: none;
+  background: #ed8a50;
   border: none;
   border-radius: 4px;
   width: 100%;
@@ -103,10 +104,11 @@ input[type="submit"] {
   margin: 10px 0 0 0;
   padding: 12px;
   cursor: pointer;
+  color: white;
 }
 
 input[type="submit"]:hover {
-  filter: brightness(1.25);
+  background: #fe9b61;
 }
 
 input[type="submit"]:active {
