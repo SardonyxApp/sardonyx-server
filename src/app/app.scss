@@ -1,0 +1,118 @@
+// Imports 
+@import url('https://indestructibletype.com/fonts/Jost.css');
+
+@import './stylesheets/global';
+@import './stylesheets/top_bar';
+@import './stylesheets/content_window';
+@import './stylesheets/modals';
+
+body {
+  margin: 0;
+  font-family: Jost, sans-serif;
+  color: $black;
+  overflow: hidden; // Necessary for IE 
+}
+
+h1, h2, h3, h4, p, li, a, input, textarea {
+  font-weight: 300; // For now 
+  margin: 0;
+}
+
+// Font 
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+a { 
+  text-decoration: none;
+  color: $blue;
+}
+
+input, select, select > option {
+  font-family: inherit;
+  font-weight: inherit;
+  outline: 0;
+}
+
+svg {
+  fill: $black;
+}
+
+.embed {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  outline: 0;
+}
+
+.dropdown {
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  padding: 4px;
+  text-align: center;
+  background: #eee;
+}
+
+// Miscellaneous 
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.label {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  margin: 2px 4px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.custom-scroll {
+  @extend %custom-scroll;
+}
+
+.action {
+  cursor: pointer;
+}
+
+.overview-title, .overview-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overview-description {
+  color: $dark-background;
+}
+
+.subheading {
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.error-message{
+  color: $error;
+  font-size: 12px;
+}

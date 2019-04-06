@@ -1,0 +1,154 @@
+@import './global';
+@import './color_picker';
+@import './date_picker';
+
+// Modals 
+.modal {
+  z-index: 3;
+  background: white;
+  position: fixed;
+  overflow: auto;
+}
+
+.modal-background {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+}
+
+#settings-modal, #info-modal {
+  // Position
+  height: 80%;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  // Styling 
+  border-radius: 16px;
+
+  // Children 
+  & > .remove-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .content-container {
+    position: absolute;
+    overflow-y: auto;
+    width: calc(100% - 24px);
+    height: calc(100% - 60px);
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+
+    @extend %custom-scroll;
+    
+    .heading {
+      @extend %align-with-icon;
+    }
+
+    .section {
+      padding: 0 40px;
+    }
+
+    .subsection {
+      margin-bottom: 8px;
+    }
+
+    & > div:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    .label > *, .add-icon {
+      @extend %vertical-align-middle;
+    }
+  }
+
+  .dropdown {
+    margin-left: 4px;
+  }
+}
+
+#profile-modal {  
+  @extend %small-modal;
+
+  & > div {
+    @extend %align-with-icon;
+  }
+}
+
+#tasklist-modal {
+  width: 50%;
+  transform: translate(-50%, 0);
+  
+  @extend %small-modal;
+}
+
+.overview-tasklist {
+  margin: 4px;
+  padding: 4px;
+  border-radius: 4px;
+
+  & > div > h3, & > div > svg {
+    @extend %vertical-align-middle;
+  }
+
+  &:hover {
+    background-color: #fbfbfb;
+  }
+}
+
+#labels-modal {
+  @extend %small-modal;
+
+  overflow-y: auto;
+
+  .label {
+    margin: 6px 0;
+    white-space: nowrap;
+
+    @extend %align-with-icon;
+
+    svg {
+      fill: white;
+    }
+  }
+}
+
+#add-modal {
+  @extend %small-modal;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; // Obligatory 
+
+    li {
+      cursor: pointer;
+    }
+  }
+}
+
+#add-task-modal, #add-subject-modal, #add-category-modal {
+  @extend %small-modal;
+
+  .name-input {
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px;
+
+    &:focus {
+      border-bottom: 2px solid $blue;
+    }
+  }
+
+  .next-icon:hover {
+    transform: translateX(2px);
+  }
+
+  & > div > * {
+    vertical-align: middle;
+  }
+}

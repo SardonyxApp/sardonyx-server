@@ -1,0 +1,57 @@
+$primary: #d17b46;
+$secondary: #6e4d12;
+$black: #332927;
+$gray1: #d8d8e0;
+$gray2: #babbc2;
+$blue: #2977b6;
+$error: #f44138;
+$inactive: #c2c2c2;
+$light-primary: #eda67b;
+$dark-background: #8c8c8b;
+$light-background: #f8f8fa;
+
+%custom-scroll {
+  // Firefox
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
+
+  // Webkit (Chrome, Safari)
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    // Make sure to set a padding of 8px 
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 2px;
+  }
+  
+  // MSIE not supported 
+}
+
+%vertical-align-middle {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+%align-with-icon {
+  h1, h2, h3, h4, p, svg {
+    @extend %vertical-align-middle;
+  }
+
+  h1, h2, h3, h4, p {
+    margin-left: 4px;
+  }
+}
+
+%small-modal {
+  border-radius: 8px;
+  border: 1px solid rgba(66, 71, 84, 0.14);
+  box-shadow: 0 3px 12px rgba(66, 71, 84, 0.14);
+  padding: 8px;
+}
