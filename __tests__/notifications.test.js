@@ -166,7 +166,7 @@ describe('Load notification', () => {
           expect(typeof notification.title).toBe('string');
           expect(typeof notification.author).toBe('string');
           expect(typeof notification.date).toBe('string');
-          expect(typeof Date.parse(notification.date)).toBe('number');
+          expect(isNaN(Date.parse(notification.date))).toBeFalsy();
           expect(typeof notification.content).toBe('string');
           done();
         });

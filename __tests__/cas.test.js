@@ -61,7 +61,7 @@ describe('Load CAS', () => {
           documents.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(item.similarity).toBeNull();
           });
           done();
