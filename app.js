@@ -24,6 +24,7 @@ const { end200 } = require('./helpers/helpers');
 // Determine request type 
 app.use((req, res, next) => {
   req.type = /^\/api/.test(req.path) ? 'api' : 'browser';
+  if (!req.headers['user-agent'].match(/^Mozilla/)) req.type = 'api';
   next();
 });
 
