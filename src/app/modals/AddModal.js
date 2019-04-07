@@ -65,8 +65,8 @@ class AddModal extends React.Component {
     const position = () => {
       if (this.props.modal.y > document.documentElement.clientHeight / 2) {
         return {
-          right: document.documentElement.clientWidth - this.props.modal.x,
-          bottom: document.documentElement.clientHeight - this.props.modal.x
+          left: this.props.modal.x,
+          bottom: document.documentElement.clientHeight - this.props.modal.y
         };
       }
 
