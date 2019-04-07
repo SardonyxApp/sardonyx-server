@@ -209,20 +209,17 @@ class App extends React.Component {
     .then(response => response.json())
     .then(response => {
       this.setState(prevState => {
-        const tasks = prevState.tasks;
-        tasks.push(Object.assign({
-          id: response.insertId,
-          student_name: prevState.user.teacher ? null : prevState.user.name,
-          teacher_name: prevState.user.teacher ? prevState.user.name : null,
-          subject_name: null, // TODO: initially set these according to task.subject_id 
-          subject_color: null,
-          category_name: null,
-          category_color: null
-        }, task));
-
         return {
           currentTask: response.insertId,
-          tasks
+          tasks: [...prevState.tasks, Object.assign({
+              id: response.insertId,
+              student_name: prevState.user.teacher ? null : prevState.user.name,
+              teacher_name: prevState.user.teacher ? prevState.user.name : null,
+              subject_name: null, // TODO: initially set these according to task.subject_id 
+              subject_color: null,
+              category_name: null,
+              category_color: null
+            }, task)]
         };
       });
     }).catch(err => {
@@ -258,10 +255,7 @@ class App extends React.Component {
     }).then(() => {
       // Update local state using local data, as response object does not return tables 
       this.setState(prevState => {
-        const tasks = prevState.tasks;
-        const index = tasks.findIndex(t => t.id === obj.id);
-        tasks[index] = Object.assign(tasks[index], obj);
-        return { tasks };
+        return { tasks: prevState.tasks.map(t => t.id === obj.id ? {...t, ...obj} : t) };
       });
     }).catch(err => {
       alert('There was an error while editing a task. If this error persists, please contact SardonyxApp.');
