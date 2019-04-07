@@ -51,7 +51,7 @@ class App extends React.Component {
         teacher: false,
         name: '', 
         email: '',
-        tasklistId: '',
+        tasklist_id: '',
         subjects: [],
         categories: []
       },
@@ -398,7 +398,7 @@ class App extends React.Component {
     })
     .then(() => {
       this.setState(prevState => {
-        return { user: {  ...prevState.user, tasklistId } };
+        return { user: {  ...prevState.user, tasklist_id: tasklistId } };
       });
     }).catch(err => {
       alert('There was an error while updating your default tasklist. If this error persists, please contact SardonyxApp.');
