@@ -51,7 +51,7 @@ class App extends React.Component {
         teacher: false,
         name: '', 
         email: '',
-        tasklist: '',
+        tasklistId: '',
         subjects: [],
         categories: []
       },
@@ -197,7 +197,7 @@ class App extends React.Component {
       category_id: obj.category_id || null
     };
 
-    fetch('/app/task', {
+    fetch(`/app/task?tasklist=${this.state.tasklist.id}`, {
       method: 'POST',
       body: JSON.stringify(task),
       credentials: 'include',
@@ -247,7 +247,7 @@ class App extends React.Component {
     delete body.category_color;
 
     // Send the request 
-    fetch(`/app/task?id=${obj.id}`, {
+    fetch(`/app/task?id=${obj.id}&tasklist=${this.state.tasklist.id}`, {
       body: JSON.stringify(body),
       method: 'PATCH',
       credentials: 'include',
@@ -274,7 +274,7 @@ class App extends React.Component {
    * @param {String|Number} id 
    */
   handleDeleteTask(id) {
-    fetch(`/app/task?id=${id}`, {
+    fetch(`/app/task?id=${id}&tasklist=${this.state.tasklist.id}`, {
       method: 'DELETE',
       credentials: 'include',
     }).then(() => {
@@ -296,9 +296,7 @@ class App extends React.Component {
    * @param {Object} obj label object
    */ 
   handleCreateLabel(type, obj) {
-    obj.tasklist_id = this.state.tasklist.id;
-
-    fetch(`/app/${type}`, {
+    fetch(`/app/${type}?tasklist=${this.state.tasklist.id}`, {
       method: 'POST',
       body: JSON.stringify(obj),
       credentials: 'include',
@@ -332,7 +330,7 @@ class App extends React.Component {
    * @param {String} obj.tasklist_id 
    */
   handleUpdateLabel(type, obj) {
-    fetch(`/app/${type}?id=${obj.id}`, {
+    fetch(`/app/${type}?id=${obj.id}&tasklist=${this.state.tasklist.id}`, {
       method: 'PATCH',
       body: JSON.stringify(obj),
       credentials: 'include',
@@ -343,10 +341,7 @@ class App extends React.Component {
     }).then(() => {
       this.setState(prevState => {
         const payload = {};
-        const labels = prevState[type];
-        const index = labels.findIndex(l => l.id === obj.id);
-        labels[index] = Object.assign(labels[index], obj);
-        payload[type] = labels;
+        payload[type] = prevState[type].map(l => l.id === obj.id ? {...l, ...obj} : l);
         return payload;
       });
     }).catch(err => {
@@ -361,7 +356,7 @@ class App extends React.Component {
    * @param {Number} id 
    */
   handleDeleteLabel(type, id) {
-    fetch(`/app/${type}?id=${id}`, {
+    fetch(`/app/${type}?id=${id}&tasklist=${this.state.tasklist.id}`, {
       method: 'DELETE',
       credentials: 'include'
     }).then(() => {
@@ -409,9 +404,7 @@ class App extends React.Component {
     })
     .then(() => {
       this.setState(prevState => {
-        const user = prevState.user;
-        user.tasklist_id = tasklistId;
-        return { user };
+        return { user: {  ...prevState.user, tasklistId } };
       });
     }).catch(err => {
       alert('There was an error while updating your default tasklist. If this error persists, please contact SardonyxApp.');

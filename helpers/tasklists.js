@@ -37,7 +37,8 @@ exports.loadUser = (req, res) => {
       if (obj.category_id) user.categories.push(obj.category_id);
     });
 
-    user.tasklist_id = req.token.tasklist; // Tasklist id not synced across cookies, db entry only used for new cookies 
+    user.tasklistId = Number(req.token.tasklist); // Tasklist id not synced across cookies, db entry only used for new cookies 
+    delete user.tasklist_id;
     
     res.json(user);
   }).catch(err => {
@@ -163,6 +164,7 @@ exports.craftTask = (req, res, next) => {
  * @param {Object} res 
  */
 exports.createTask = (req, res) => {
+  req.body.tasklist_id = req.token.tasklist; // Permit only authorized tasklist 
   tasks.create(req.body).then(results => {
     res.json(results);
   }).catch(err => {
@@ -172,12 +174,12 @@ exports.createTask = (req, res) => {
 }
 
 /**
- * @description Edit a task by its id 
+ * @description Update a task by its id 
  * @param {Object} req 
  * @param {Object} res 
  */
-exports.editTask = (req, res) => {
-  tasks.update(Number(req.query.id), req.body).then(results => {
+exports.updateTask = (req, res) => {
+  tasks.update(Number(req.query.id), req.token.tasklist, req.body).then(results => {
     res.json(results);
   }).catch(err => {
     console.error(err);
@@ -191,7 +193,7 @@ exports.editTask = (req, res) => {
  * @param {Object} res 
  */
 exports.deleteTask = (req, res) => {
-  tasks.delete(Number(req.query.id)).then(results => {
+  tasks.delete(Number(req.query.id), req.token.tasklist).then(results => {
     res.json(results);
   }).catch(err => {
     console.error(err);
@@ -224,6 +226,7 @@ exports.loadLabel = type => {
 exports.createLabel = type => {
   return (req, res) => {
     const target = type === 'subjects' ? subjects : categories;
+    req.body.tasklist_id = req.token.tasklist; // Permit only authorized tasklist 
     target.create(req.body).then(results => {
       res.json(results);
     }).catch(err => {
@@ -241,7 +244,7 @@ exports.createLabel = type => {
 exports.updateLabel = type => {
   return (req, res) => {
     const target = type === 'subjects' ? subjects : categories;
-    target.update(req.query.id, req.body).then(results => {
+    target.update(req.query.id, req.token.tasklist, req.body).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
@@ -258,7 +261,7 @@ exports.updateLabel = type => {
 exports.deleteLabel = type => {
   return (req, res) => {
     const target = type === 'subjects' ? subjects : categories;
-    target.delete(req.query.id).then(results => {
+    target.delete(req.query.id, req.token.tasklist).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);

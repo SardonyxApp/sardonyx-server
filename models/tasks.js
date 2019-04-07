@@ -51,12 +51,13 @@ exports.create = task => {
 /**
  * @description Edit a task by id
  * @param {Number} id 
+ * @param {Number} tasklistId permitted tasklist 
  * @param {Object} task 
  * @returns {Promise}
  */
-exports.update = (id, task) => {  
+exports.update = (id, tasklistId, task) => {  
   return new Promise((resolve, reject) => {
-    db.get().query("UPDATE tasks SET ? WHERE id = ?", [task, id], (err, results) => {
+    db.get().query("UPDATE tasks SET ? WHERE id = ? AND tasklist_id = ?", [task, id, tasklistId], (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
@@ -65,12 +66,13 @@ exports.update = (id, task) => {
 
 /**
  * @description Delete a task by id 
- * @param {Number} id 
+ * @param {Number} id
+ * @param {Number} tasklistId permitted tasklist 
  * @returns {Promise} 
  */
-exports.delete = id => {
+exports.delete = (id, tasklistId) => {
   return new Promise((resolve, reject) => {
-    db.get().query("DELETE FROM tasks WHERE id = ?", id, (err, results) => {
+    db.get().query("DELETE FROM tasks WHERE id = ? AND tasklist_id = ?", [id, tasklistId], (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
