@@ -165,7 +165,7 @@ app.patch('/app/user/tasklist', task.changeTeacherTasklist);
 app.use('/app', express.json());
 
 app.post('/app/task', task.craftTask, task.createTask);
-app.patch('/app/task', task.craftTask, task.editTask);
+app.patch('/app/task', task.craftTask, task.updateTask);
 app.post('/app/subjects', task.createLabel('subjects'));
 app.post('/app/categories', task.createLabel('categories'));
 app.patch('/app/subjects', task.updateLabel('subjects'));

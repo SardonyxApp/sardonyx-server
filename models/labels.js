@@ -45,12 +45,13 @@ class Labels {
   /**
    * @description Update a task 
    * @param {Number} id
+   * @param {Number} tasklistId permitted tasklist 
    * @param {Object} task 
    * @returns {Promise}
    */
-  update(id, task) {
+  update(id, tasklistId, task) {
     return new Promise((resolve, reject) => {
-      db.get().query("UPDATE ?? SET ? WHERE id = ?", [this.target, task, id], (err, results) => {
+      db.get().query("UPDATE ?? SET ? WHERE id = ? AND tasklist_id = ?", [this.target, task, id, tasklistId], (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
@@ -60,11 +61,12 @@ class Labels {
   /**
    * @description Delete a task 
    * @param {Number} id 
+   * @param {Number} tasklistId permitted tasklist 
    * @returns {Promise}
    */
-  delete(id) {
+  delete(id, tasklistId) {
     return new Promise((resolve, reject) => {
-      db.get().query("DELETE FROM ?? WHERE id = ?", [this.target, id], (err, results) => {
+      db.get().query("DELETE FROM ?? WHERE id = ? AND tasklist_id = ?", [this.target, id, tasklistId], (err, results) => {
         if (err) reject(err);
         resolve(results);
       });
