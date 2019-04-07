@@ -36,10 +36,6 @@ exports.loadUser = (req, res) => {
       if (obj.subject_id) user.subjects.push(obj.subject_id);
       if (obj.category_id) user.categories.push(obj.category_id);
     });
-
-    user.tasklistId = Number(req.token.tasklist); // Tasklist id not synced across cookies, db entry only used for new cookies 
-    delete user.tasklist_id;
-    
     res.json(user);
   }).catch(err => {
     console.error(err);
