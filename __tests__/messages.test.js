@@ -73,7 +73,7 @@ describe('Load message', () => {
           expect(typeof message[0].author).toBe('string');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
-          expect(typeof Date.parse(message[0].date)).toBe('number');
+          expect(isNaN(Date.parse(message[0].date))).toBeFalsy();
           expect(Array.isArray(message[0].files)).toBeTruthy();
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
@@ -83,7 +83,7 @@ describe('Load message', () => {
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.comments).toBe('boolean');
           });
           done();
@@ -158,7 +158,7 @@ describe('Load message', () => {
           expect(typeof message[0].author).toBe('string');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
-          expect(typeof Date.parse(message[0].date)).toBe('number');
+          expect(isNaN(Date.parse(message[0].date))).toBeFalsy();
           expect(Array.isArray(message[0].files)).toBeTruthy();
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
@@ -168,7 +168,7 @@ describe('Load message', () => {
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.comments).toBe('boolean');
           });
           done();
@@ -257,7 +257,7 @@ describe('Load message', () => {
   //           expect(typeof item.author).toBe('string');
   //           expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
   //           expect(typeof item.date).toBe('string');
-  //           expect(typeof Date.parse(item.date)).toBe('number');
+  //           expect(isNaN(Date.parse(item.date))).toBeFalsy();
   //         });
   //         done();
   //       });

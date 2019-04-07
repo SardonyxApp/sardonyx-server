@@ -34,7 +34,7 @@ describe('Load default', () => {
             expect(Array.isArray(item.labels)).toBeTruthy();
             expect(typeof item.deadline).toBe('boolean');
             expect(typeof item.due).toBe('string');
-            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(isNaN(Date.parse(item.due))).toBeFalsy();
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });
@@ -132,7 +132,7 @@ describe('Load default', () => {
               expect(Array.isArray(item.labels)).toBeTruthy();
               expect(typeof item.deadline).toBe('boolean');
               expect(typeof item.due).toBe('string');
-              expect(typeof Date.parse(item.due)).toBe('number');
+              expect(isNaN(Date.parse(item.due))).toBeFalsy();
               expect(typeof item.author).toBe('string');
               expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             });
@@ -228,7 +228,7 @@ describe('Load default', () => {
             expect(Array.isArray(item.labels)).toBeTruthy();
             expect(typeof item.deadline).toBe('boolean');
             expect(typeof item.due).toBe('string');
-            expect(typeof Date.parse(item.due)).toBe('number');
+            expect(isNaN(Date.parse(item.due))).toBeFalsy();
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });

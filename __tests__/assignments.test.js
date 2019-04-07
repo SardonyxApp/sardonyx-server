@@ -69,7 +69,7 @@ describe('Load assignment or event', () => {
           expect(assignment.link).toBeNull();
           expect(assignment.deadline).toBe(false);
           expect(typeof assignment.due).toBe('string');
-          expect(typeof Date.parse(assignment.due)).toBe('number');
+          expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
@@ -83,7 +83,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
           expect(Array.isArray(assignment.dropbox)).toBeTruthy();
@@ -94,7 +94,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(Array.isArray(item.files)).toBeTruthy();
           });
           done();
@@ -157,7 +157,7 @@ describe('Load assignment or event', () => {
           expect(Array.isArray(assignment.labels)).toBeTruthy();
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
-          expect(typeof Date.parse(assignment.due)).toBe('number');
+          expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
@@ -171,7 +171,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
           expect(Array.isArray(assignment.messages)).toBeTruthy();
@@ -182,7 +182,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(Array.isArray(item.files)).toBeTruthy();
           });
           done();
@@ -257,7 +257,7 @@ describe('Load assignment or event', () => {
           expect(Array.isArray(assignment.labels)).toBeTruthy();
           expect(typeof assignment.deadline).toBe('boolean');
           expect(typeof assignment.due).toBe('string');
-          expect(typeof Date.parse(assignment.due)).toBe('number');
+          expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
@@ -271,7 +271,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.similarity === 'number' || item.similarity === null).toBeTruthy();
           });
           assignment.messages.forEach(item => {
@@ -281,7 +281,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.author).toBe('string');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
-            expect(typeof Date.parse(item.date)).toBe('number');
+            expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(Array.isArray(item.files)).toBeTruthy();
           });
           done();
