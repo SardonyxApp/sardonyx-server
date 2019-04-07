@@ -13,13 +13,35 @@
     <img class="logo" src="../assets/Icon.svg">
     <div>
       <h1>Sardonyx Changelog</h1>
-      <p>Last updated: March 29 2019</p>
+      <p>Last updated: April 7 2019</p>
     </div>
   </div>
 
   <div id="content">
     <div>
       <h2>Latest version</h2>
+      <h3 class="version">v1.0.0-beta.1</h3>
+      <p>Released April 7 2019</p>
+      <h3>Features</h3>
+      <ul>
+        <li>Enabled the Managebac API to retrieve the user's name and avatar URL on default load. (Endpoints: GET /api/validate, POST /api/login, GET /api/dashboard)</li>
+      </ul>
+      <h3>Bugs</h3>
+      <ul>
+        <li>Addressed an issue where the sign in button was not displayed correctly for WebKit browsers on mobile and table devices.</li>
+        <li>Addressed an issue where the "add label" modal did not position itself correctly when it was displayed on top of the settings panel.</li>
+        <li>Addressed an issue in the Managebac API where the file names of attachments were not sent.</li>
+      </ul>
+      <h3>Security</h3>
+      <ul>
+        <li>Addressed a critical issue where there was no tasklist authentication when creating, updating, and deleting tasks and labels.</li>
+      </ul>
+      <h3>Miscellaneous</h3>
+      <ul>
+        <li>Add basic unit tests for loading tasklist related information.</li>
+      </ul>
+
+      <h2>Legacy versions</h2>
       <h3 class="version">v1.0.0-alpha.2</h3>
       <p>Released April 6 2019</p>
       <h3>Experimental features</h3>
