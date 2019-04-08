@@ -9,6 +9,11 @@ import { SearchIcon, AddIcon } from '../../logos';
 import Label from './Label';
 
 class TasksFilter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   // Event listener for icons to open filter modal 
   handleClick(e) {
     const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
@@ -26,10 +31,11 @@ class TasksFilter extends React.Component {
 
     return (
       <div id="tasks-filter" className="custom-scroll">
-        <SearchIcon onClick={e => this.handleClick(e)}/> 
+        <SearchIcon onClick={this.handleClick}/> 
         {subjects}
         {categories}
-        <AddIcon onClick={e => this.handleClick(e)}/>
+        {!subjects.length && !categories.length ? <p className="overview-description" style={{ cursor: 'pointer' }} onClick={this.handleClick}>Filter labels...</p> : null}
+        <AddIcon onClick={this.handleClick}/>
       </div>
     );
   }
