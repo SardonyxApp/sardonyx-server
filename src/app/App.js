@@ -9,6 +9,8 @@ import ReactDOM from 'react-dom';
 import './app.scss';
 import io from 'socket.io-client';
 
+const socket = io.connect(window.location.origin);
+
 // Main components 
 import TopBar from './TopBar';
 import TaskList from './TaskList';
@@ -104,6 +106,8 @@ class App extends React.Component {
         subjectsFilter: responses[0].subjects,
         categoriesFilter: responses[0].categories,
       });
+      
+      socket.emit('join room', responses[1].id);
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
       console.error(err); 
@@ -119,11 +123,27 @@ class App extends React.Component {
       console.error('There was an error while retrieving all available tasklists. If you are a student, do not worry about this error. ' + err);
     });
 
-    const socket = io.connect(window.location.origin);
-    socket.on('new', message => {
-      console.log(message);
+    socket.on('tasks', () => {
+      fetch(`/app/tasks?tasklist=${this.state.tasklist.id}&full=true`, { credentials: 'include' })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ 
+          tasks: response 
+        });
+      });
     });
-    socket.emit('confirm', 'We confirmed the connection.');
+
+    socket.on('labels', type => {
+      fetch(`/app/${type}?tasklist=${this.state.tasklist.id}`)
+      .then(response => response.json())
+      .then(response => {
+        this.setState(() => {
+          const payload = {};
+          payload[type] = response;
+          return payload;
+        });
+      });
+    });
   }
 
   /**
@@ -152,6 +172,8 @@ class App extends React.Component {
       fetch(`/app/subjects?tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json()),
       fetch(`/app/categories?tasklist=${tasklist.id}`, { credentials: 'include' }).then(response => response.json())
     ]).then(responses => {
+      socket.emit('leave room', this.state.tasklist.id);
+
       this.setState({
         user: responses[0],
         tasklist: tasklist,
@@ -162,6 +184,8 @@ class App extends React.Component {
         subjectsFilter: responses[0].subjects,
         categoriesFilter: responses[0].categories
       });
+      
+      socket.emit('join room', tasklist.id);
     }).catch(err => {
       alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -229,6 +253,8 @@ class App extends React.Component {
             }, task)]
         };
       });
+    
+      socket.emit('tasks', this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while creating a new task. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -264,6 +290,8 @@ class App extends React.Component {
       this.setState(prevState => {
         return { tasks: prevState.tasks.map(t => t.id === obj.id ? {...t, ...obj} : t) };
       });
+
+      socket.emit('tasks', this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while editing a task. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -285,6 +313,8 @@ class App extends React.Component {
           currentTask: -1
         };
       });
+
+      socket.emit('tasks', this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while deleting a task. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -315,6 +345,8 @@ class App extends React.Component {
         }, obj));
         return payload;
       });
+
+      socket.emit('labels', type, this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while creating a label. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -345,6 +377,8 @@ class App extends React.Component {
         payload[type] = prevState[type].map(l => l.id === obj.id ? {...l, ...obj} : l);
         return payload;
       });
+
+      socket.emit('labels', type, this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while editing a label. If this error persists, please contact SardonyxApp.');
       console.error(err);
@@ -366,6 +400,8 @@ class App extends React.Component {
         payload[type] = prevState[type].filter(l => l.id !== id)
         return payload;
       });
+
+      socket.emit('labels', type, this.state.tasklist.id);
     }).catch(err => {
       alert('There was an error while deleting a label. If this error persists, please contact SardonyxApp.');
       console.error(err);

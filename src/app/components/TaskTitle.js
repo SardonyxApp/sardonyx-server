@@ -21,6 +21,14 @@ class TaskTitle extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.title !== nextProps.title) {
+      if (this.state.selected && nextState.selected) return false;
+      if (this.state.error && nextState.error) return false;
+    }
+    return true;
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.title !== this.props.title)  {
       this.setState({
