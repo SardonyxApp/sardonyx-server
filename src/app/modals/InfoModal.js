@@ -81,7 +81,7 @@ class InfoModal extends React.Component {
                 <p>Links can be placed in the description of the task. When you finish editing, they will automatically embedded.</p>
               </div>
               <div className="subsection">
-                <p><b>How do I upload files realted to tasks?</b></p>
+                <p><b>How do I upload files related to tasks?</b></p>
                 <p>Sardonyx cannot store files for now. Please use services like <a href="https://drive.google.com" target="_blank">Google Drive</a>, <a href="https://onedrive.com" target="_blank">OneDrive</a>, or <a href="https://send.firefox.com" target="_blank">FireFox Send</a> to securely host your files, then link the URL to the file in the description.</p>
               </div>
           </div>
