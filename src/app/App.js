@@ -7,6 +7,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './app.scss';
+import io from 'socket.io-client';
 
 // Main components 
 import TopBar from './TopBar';
@@ -117,6 +118,12 @@ class App extends React.Component {
     }).catch(err => {
       console.error('There was an error while retrieving all available tasklists. If you are a student, do not worry about this error. ' + err);
     });
+
+    const socket = io.connect(window.location.origin);
+    socket.on('new', message => {
+      console.log(message);
+    });
+    socket.emit('confirm', 'We confirmed the connection.');
   }
 
   /**
