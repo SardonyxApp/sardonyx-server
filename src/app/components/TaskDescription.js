@@ -22,6 +22,14 @@ class TaskDescription extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.description != nextProps.description) { // React does not recommend deep equality checks in shouldComponentUpdate lifecycle 
+      if (this.state.selected && nextState.selected) return false;
+      if (this.state.error && nextState.error) return false;
+    }
+    return true;
+  }
 
   componentDidUpdate(prevProps) {
     // If current task is changed, error should be reset. If task is hidden, error gets automatically reset as it is unmounted.

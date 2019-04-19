@@ -18,4 +18,18 @@ db.connect(err => {
 io.on('connection', socket => {
   socket.emit('new', 'New user connected');
   socket.on('confirm', msg => console.log(msg));
+
+  socket.on('join room', tasklist => {
+    socket.join(tasklist);
+  });
+  socket.on('leave room', tasklist => {
+    socket.leave(tasklist);
+  });
+
+  socket.on('tasks', tasklist => {
+    socket.to(tasklist).emit('tasks');
+  });
+  socket.on('labels', (type, tasklist) => {
+    socket.to(tasklist).emit('labels', type);
+  });
 });
