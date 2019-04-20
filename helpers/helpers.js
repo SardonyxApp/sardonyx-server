@@ -98,6 +98,32 @@ exports.toSardonyxUrl = url => {
 };
 
 /**
+ * @description Reformat Sardonyx url to Managebac url 
+ * @param {String} url 
+ * @returns {String }
+ */
+exports.toManagebacUrl = url => {
+  if (!url) return;
+  url = url
+    .split('/')
+    .slice(2); // remove the first two elements of: ['', 'api', 'class', ...]
+  
+  if (url[4] === 'reply') url[4] = 'replies';
+
+  if (url[2] === 'messages') url[2] = 'discussions';
+  if (url[2] === 'overview') url.splice(2, 1);
+  
+  if (url[0] === 'class') url[0] = 'classes';
+  if (url[0] === 'group') url[0] = 'groups';
+  if (url[0] === 'notification') url[0] = 'notifications';
+  if (url[0] === 'cas') url[0] = 'ib/activity/cas';
+  if (url[0] === 'event') url[0] = 'ib/events';
+  if (url[0] === 'dashboard') url = [];
+
+  return '/student' + (url.length ? '/' : '') + url.join('/'); // Only include second / if the path is not empty 
+}
+
+/**
  * @description End request with 200 OK
  * @param {Object} req 
  * @param {Object} res 
