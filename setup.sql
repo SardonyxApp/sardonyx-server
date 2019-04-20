@@ -43,6 +43,7 @@ CREATE TABLE subjects (
   name VARCHAR(255) NOT NULL,
   color CHAR(7),
   tasklist_id INT,
+  managebac VARCHAR(255), -- managebac class or group link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_subject_tasklist(tasklist_id)
   REFERENCES tasklists(id)
@@ -55,6 +56,7 @@ CREATE TABLE categories (
   name VARCHAR(255) NOT NULL,
   color CHAR(7),
   tasklist_id INT,
+  manangebac VARCHAR(255), -- managebac class or group link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_category_tasklist(tasklist_id)
   REFERENCES tasklists(id)
@@ -72,6 +74,7 @@ CREATE TABLE tasks (
   teacher_id INT, 
   subject_id INT,
   category_id INT,
+  managebac VARCHAR(255), -- managebac assignment or event link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_task_parent_tasklist(tasklist_id)
   REFERENCES tasklists(id)

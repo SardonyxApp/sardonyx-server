@@ -8,7 +8,18 @@ const { students, teachers } = require('../models/users');
 const tasklists = require('../models/tasklists');
 const tasks = require('../models/tasks');
 const { subjects, categories } = require('../models/labels');
+const managebacLoader = require('./managebac-loader');
 const jwt = require('jsonwebtoken');
+
+/**
+ * @decription Load Managebac assignments to database 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.loadManagebac = (req, res, next) => {
+  managebacLoader(req.token, req.document); // do not await 
+  next();
+};
 
 /**
  * @description Load user information 
