@@ -125,7 +125,7 @@ app.get('/api/cas/:resourceId/learning_outcomes', mb.createUrl('ib/activity/cas'
 app.use('/login', upload.none());
 
 // Student login through web client
-app.post('/login/student', auth.loginToManagebac, auth.initiateStudent, (req, res) => {
+app.post('/login/student', auth.loginToManagebac, auth.initiateStudent, task.loadManagebac, (req, res) => {
   req.firstTime ? res.redirect('/app?info=true') : res.redirect('/app');
 });
 

@@ -178,6 +178,9 @@ exports.initiateStudent = (req, res, next) => {
       });
     }
 
+    // For later use 
+    req.token.tasklist = student.tasklist_id;
+
     next();
   }).catch(err => {
     console.error(err);
