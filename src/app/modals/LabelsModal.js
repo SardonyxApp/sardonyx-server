@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the tasks filter modal 
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { CheckIcon } from '../../logos';
 

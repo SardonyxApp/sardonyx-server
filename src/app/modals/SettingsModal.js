@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the tasklist settings and preferences modal. 
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { 
   RemoveIcon, 
@@ -20,43 +14,8 @@ import Label from '../components/Label';
 class EditableLabel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: false
-    };
 
-    this.textRef = React.createRef();
-
-    this.handleFocus = this.handleFocus.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  handleFocus() {
-    this.setState({
-      selected: true
-    });
-  }
-
-  handleBlur(type, label) {
-    this.setState({
-      selected: false
-    });
-    
-    label = Object.assign(label, {
-      name: this.textRef.current.innerText
-    });
-
-    if (label.name.length > 255) return this.handleError();
-
-    this.props.onUpdateLabel(type, label);
-  }
-
-  handleKeyDown(e) {
-    if (e.keyCode === 13 || e.keyCode === 27) {
-      this.textRef.current.blur();
-      e.preventDefault();
-    }
   }
 
   handleDelete(type, id) {
@@ -65,35 +24,26 @@ class EditableLabel extends React.Component {
     }
   }
 
-  handleError() {
-    // Do not display red bottom border to avoid confusion in red background labels 
-    alert('Labels cannot be over 255 characters long.');
-  }
-
   render() {
     return (
       <div
         className="label"
         key={this.props.label.name}
-        style={{ backgroundColor: this.props.label.color, padding: '4px 12px' }} // Modifications to .label divs in modal
+        style={{ backgroundColor: this.props.label.color, padding: '4px 12px', cursor: 'pointer' }} // Modifications to .label divs in modal
+        onClick={this.props.onClick}
       >
-        <p 
-          contentEditable
-          className="embed"
-          spellCheck={false}
-          style={{ cursor: this.state.selected ? 'auto' : 'pointer', minWidth: '24px', minHeight: '24px' }}
-          onFocus={this.handleFocus}
-          onBlur={() => this.handleBlur(this.props.type, this.props.label)}
-          onKeyDown={e => this.handleKeyDown(e)}
-          ref={this.textRef}
-        >
+        <p>
           {this.props.label.name || ''}
         </p>
+
         <RemoveIcon 
           height={20}
           width={20}
           style={{ marginLeft: '4px', fill: '#fff' }}
-          onClick={() => this.handleDelete(this.props.type, this.props.label.id)}
+          onClick={e => {
+            e.stopPropagation();
+            this.handleDelete(this.props.type, this.props.label.id);
+          }}
         />
       </div>
     );
@@ -102,14 +52,24 @@ class EditableLabel extends React.Component {
 
 class SettingsModal extends React.Component {
   handleAdd(e, fn) {
-    const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
+    const position = e.target.nodeName === 'svg' || e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
     fn(position);
   }
 
   render() {
-    const subjects = this.props.subjects.map(label => <EditableLabel label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="subjects" />);
+    const subjects = this.props.subjects.map(label => <EditableLabel 
+      label={label} 
+      onDeleteLabel={this.props.onDeleteLabel} 
+      onClick={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', position.right, position.bottom, { label_id: label.id }))} 
+      type="subjects" 
+    />);
 
-    const categories = this.props.categories.map(label => <EditableLabel label={label} onDeleteLabel={this.props.onDeleteLabel} onUpdateLabel={this.props.onUpdateLabel} type="categories" />);
+    const categories = this.props.categories.map(label => <EditableLabel 
+      label={label} 
+      onDeleteLabel={this.props.onDeleteLabel} 
+      onClick={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', position.right, position.bottom, { label_id: label.id }))} 
+      type="categories" 
+    />);
 
     const defaultSubjects = this.props.subjects
       .filter(l => this.props.user.subjects.includes(l.id))

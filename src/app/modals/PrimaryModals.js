@@ -6,7 +6,7 @@ import TasklistModal from './TasklistModal';
 import ProfileModal from './ProfileModal';
 import AddMenuModal from './AddMenuModal';
 import AddTaskModal from './AddTaskModal';
-import AddLabelModal from './AddLabelModal';
+import HandleLabelModal from './HandleLabelModal';
 import LabelsModal from './LabelsModal';
 
 const PrimaryModals = props => {
@@ -67,7 +67,7 @@ const PrimaryModals = props => {
       />;
     case 'add-subject':
     case 'add-category':
-      return <AddLabelModal 
+      return <HandleLabelModal 
         onCreateLabel={props.onCreateLabel}
 
         modal={props.modal}

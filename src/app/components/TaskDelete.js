@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render interface to delete task.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { DeleteIcon } from '../../logos';
 

@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render "Sardonyx"
- * @author SardonyxApp
- * @license MIT
- */
-
 import React from 'react';
 import { IconInverted } from '../../logos';
 

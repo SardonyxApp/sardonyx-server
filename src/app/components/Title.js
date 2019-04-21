@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component that renders the title of the tasklist.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 
 const Title = props => (

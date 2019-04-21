@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the information modal.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { RemoveIcon, Icon, InfoIcon, AddToListIcon, DescriptionIcon } from '../../logos';
 

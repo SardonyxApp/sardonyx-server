@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component for rendering the title of a task in info view.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 
 class TaskTitle extends React.Component {

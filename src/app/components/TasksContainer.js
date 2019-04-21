@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the tasklist view.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 
 const TaskListCard = props => (

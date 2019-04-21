@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the profile modal.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { UserIcon, GlobeIcon, LockIcon, ExitIcon, SettingsIcon } from '../../logos';
 

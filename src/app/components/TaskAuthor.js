@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the author of a task in info view. 
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { UserIcon } from '../../logos';
 
