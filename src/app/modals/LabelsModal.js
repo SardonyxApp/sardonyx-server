@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckIcon } from '../../logos';
+import Label from './Labels';
 
 class LabelsModal extends React.Component {
   render() {

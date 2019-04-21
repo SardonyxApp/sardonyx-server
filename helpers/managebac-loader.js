@@ -30,9 +30,9 @@ module.exports = async (tokens, document) => {
 
   Promise.all([
     // Load database info 
-    tasks.selectAllFuture(),
-    subjects.selectAll(),
-    categories.selectAll()
+    tasks.selectFutureByTasklistId(tokens.tasklist),
+    subjects.selectByTasklistId(tokens.tasklist),
+    categories.selectByTasklistId(tokens.tasklist)
   ]).then(results => {
     const assignments = results[0];
     const subjects = results[1];
