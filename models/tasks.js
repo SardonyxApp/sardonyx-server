@@ -40,7 +40,7 @@ exports.selectJoinedByTasklistId = tasklistId => {
  */
 exports.selectAllFuture = () => {
   return new Promise((resolve, reject) => {
-    db.get().query("SELECT * FROM tasks WHERE due >= NOW()", (err, results) => {
+    db.get().query("SELECT * FROM tasks WHERE due >= CURRENT_DATE()", (err, results) => {
       if (err) reject(err);
       resolve(results);
     });
