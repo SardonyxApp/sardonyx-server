@@ -17,11 +17,11 @@ class TasksFilter extends React.Component {
   render() {
     const subjects = this.props.subjects
       .filter(label => this.props.subjectsFilter.includes(label.id))
-      .map(label => <Label label={label} onUpdate={id => this.props.onFilter('subjectsFilter', id)} />);
+      .map(label => <Label label={label} onRemove={id => this.props.onFilter('subjectsFilter', id)} removable={true} />);
 
     const categories = this.props.categories
       .filter(label => this.props.categoriesFilter.includes(label.id))
-      .map(label => <Label label={label} onUpdate={id => this.props.onFilter('categoriesFilter', id)} />);
+      .map(label => <Label label={label} onRemove={id => this.props.onFilter('categoriesFilter', id)}  removable={true} />);
 
     return (
       <div id="tasks-filter" className="custom-scroll">

@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the menu bar at the top.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import './app.scss';
 

@@ -1,9 +1,3 @@
-/**
- * @fileoverview Page to change password for teachers.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Icon } from '../logos';
