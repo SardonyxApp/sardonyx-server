@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the detailed view for a task.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import TaskTitle from './components/TaskTitle';
 import TaskLabels from './components/TaskLabels';

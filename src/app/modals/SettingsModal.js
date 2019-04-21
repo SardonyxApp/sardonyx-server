@@ -11,45 +11,6 @@ import {
 } from '../../logos';
 import Label from '../components/Label';
 
-class EditableLabel extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  handleDelete(type, id) {
-    if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
-      this.props.onDeleteLabel(type, id);
-    }
-  }
-
-  render() {
-    return (
-      <div
-        className="label"
-        key={this.props.label.name}
-        style={{ backgroundColor: this.props.label.color, padding: '4px 12px', cursor: 'pointer' }} // Modifications to .label divs in modal
-        onClick={this.props.onClick}
-      >
-        <p>
-          {this.props.label.name || ''}
-        </p>
-
-        <RemoveIcon 
-          height={20}
-          width={20}
-          style={{ marginLeft: '4px', fill: '#fff' }}
-          onClick={e => {
-            e.stopPropagation();
-            this.handleDelete(this.props.type, this.props.label.id);
-          }}
-        />
-      </div>
-    );
-  }
-}
-
 class SettingsModal extends React.Component {
   handleAdd(e, fn) {
     const position = e.target.nodeName === 'svg' || e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
@@ -57,27 +18,37 @@ class SettingsModal extends React.Component {
   }
 
   render() {
-    const subjects = this.props.subjects.map(label => <EditableLabel 
+    const subjects = this.props.subjects.map(label => <Label 
       label={label} 
-      onDeleteLabel={this.props.onDeleteLabel} 
-      onClick={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', position.right, position.bottom, { label_id: label.id }))} 
-      type="subjects" 
+      onRemove={() => {
+        if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
+          this.props.onDeleteLabel('subjects', label.id);
+        }
+      }} 
+      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', position.right, position.bottom, { label_id: label.id }))} 
+      removable={true}
+      updatable={true}
     />);
 
-    const categories = this.props.categories.map(label => <EditableLabel 
+    const categories = this.props.categories.map(label => <Label 
       label={label} 
-      onDeleteLabel={this.props.onDeleteLabel} 
-      onClick={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', position.right, position.bottom, { label_id: label.id }))} 
-      type="categories" 
+      onRemove={() => {
+        if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
+          this.props.onDeleteLabel('categories', label.id);
+        }
+      }} 
+      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', position.right, position.bottom, { label_id: label.id }))} 
+      removable={true}
+      updatable={true}
     />);
 
     const defaultSubjects = this.props.subjects
       .filter(l => this.props.user.subjects.includes(l.id))
-      .map(label => <Label label={label} onUpdate={id => this.props.onUpdateUserLabel('subjects', id)} />);
+      .map(label => <Label label={label} onRemove={id => this.props.onUpdateUserLabel('subjects', id)} removable={true} />);
 
     const defaultCategories = this.props.categories
       .filter(l => this.props.user.categories.includes(l.id))
-      .map(label => <Label label={label} onUpdate={id => this.props.onUpdateUserLabel('categories', id)} />)
+      .map(label => <Label label={label} onRemove={id => this.props.onUpdateUserLabel('categories', id)} removable={true} />)
 
     return (
       <div id="settings-modal" className="modal">

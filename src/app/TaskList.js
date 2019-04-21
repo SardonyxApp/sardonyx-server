@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the tasklist view.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import TasksContainer from './components/TasksContainer';
 import TasksFilter from './components/TasksFilter';
