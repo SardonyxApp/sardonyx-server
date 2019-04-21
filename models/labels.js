@@ -29,19 +29,6 @@ class Labels {
   }
 
   /**
-   * @description Select all labels 
-   * @returns {Promise} 
-   */
-  selectAll() {
-    return new Promise((resolve, reject) => {
-      db.get().query("SELECT * FROM ??", this.target, (err, results) => {
-        if (err) reject(err);
-        resolve(results);
-      });
-    });
-  }
-
-  /**
    * @decription Create a new task 
    * @param {Object} task 
    * @returns {Promise}
