@@ -134,10 +134,11 @@
 #add-task-modal, #add-subject-modal, #add-category-modal {
   @extend %small-modal;
 
-  .name-input {
+  .name-input, .url-input {
     border: none;
-    border-bottom: 2px solid transparent;
-    padding: 8px;
+    border-bottom: 2px solid $gray1;
+    padding: 4px 8px;
+    margin: 4px 0;
 
     &:focus {
       border-bottom: 2px solid $blue;

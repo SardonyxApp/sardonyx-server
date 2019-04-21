@@ -78,46 +78,42 @@ class LabelsModal extends React.Component {
     }
 
     // Render
-    if (['subjects', 'categories', 'labels', 'filter', 'default-subjects', 'default-categories'].includes(this.props.modal.name)) {
-      let render = [];
+    let render = [];
 
-      if (this.props.modal.name === 'subjects' || this.props.modal.name === 'default-subjects') {
-        render = subjects;
-      } else if (this.props.modal.name === 'categories' || this.props.modal.name === 'default-categories') {
-        render = categories;
-      } else {
-        render = [...subjects, ...categories];
-      }
-
-      const position = () => {
-        if (this.props.modal.y > document.documentElement.clientHeight / 2) {
-          return {
-            left: this.props.modal.x,
-            bottom: document.documentElement.clientHeight - this.props.modal.y,
-            maxHeight: this.props.modal.y - 40
-          };
-        }
-        
-        return {
-          left: this.props.modal.x,
-          top: this.props.modal.y,
-          maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40
-        };
-      };
-      
-
-      return (
-        <div 
-          id="labels-modal" 
-          className="modal custom-scroll" 
-          style={{ ...position(), zIndex: this.props.zIndex }}
-        >
-          {render}
-        </div>
-      );
+    if (this.props.modal.name === 'subjects' || this.props.modal.name === 'default-subjects') {
+      render = subjects;
+    } else if (this.props.modal.name === 'categories' || this.props.modal.name === 'default-categories') {
+      render = categories;
+    } else {
+      render = [...subjects, ...categories];
     }
 
-    return null;
+    const position = () => {
+      if (this.props.modal.y > document.documentElement.clientHeight / 2) {
+        return {
+          left: this.props.modal.x,
+          bottom: document.documentElement.clientHeight - this.props.modal.y,
+          maxHeight: this.props.modal.y - 40
+        };
+      }
+      
+      return {
+        left: this.props.modal.x,
+        top: this.props.modal.y,
+        maxHeight: document.documentElement.clientHeight - this.props.modal.y - 40
+      };
+    };
+    
+
+    return (
+      <div 
+        id="labels-modal" 
+        className="modal custom-scroll" 
+        style={{ ...position(), zIndex: this.props.zIndex }}
+      >
+        {render}
+      </div>
+    );
   }
 }
 

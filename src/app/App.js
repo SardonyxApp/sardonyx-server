@@ -15,15 +15,8 @@ const socket = io.connect(window.location.origin);
 import TopBar from './TopBar';
 import TaskList from './TaskList';
 import TaskInfo from './TaskInfo';
-
-// Modals 
-import SettingsModal from './modals/SettingsModal';
-import InfoModal from './modals/InfoModal';
-import TasklistModal from './modals/TasklistModal';
-import ProfileModal from './modals/ProfileModal';
-import AddModal from './modals/AddModal';
-import LabelsModal from './modals/LabelsModal';
-
+import PrimaryModals from './modals/PrimaryModals';
+import SecondaryModals from './modals/SecondaryModals';
 import ModalBackground from './modals/ModalBackground';
 
 Array.prototype.findById = function(id) {
@@ -452,86 +445,48 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/* Primary modals */}
-        <SettingsModal 
+        <PrimaryModals 
           user={this.state.user}
+          task={this.state.tasks.findById(this.state.currentTask)}
           tasklist={this.state.tasklist}
           tasklists={this.state.tasklists}
           subjects={this.state.subjects}
           categories={this.state.categories}
-          modal={this.state.modal}
-          onModal={this.handleModal}
-          onSecondModal={this.handleSecondModal}
+          subjectsFilter={this.state.subjectsFilter}
+          categoriesFilter={this.state.categoriesFilter}
+
+          onSelectTasklist={this.handleSelectTasklist}
+          onFilter={this.handleFilter}
+          onUpdateTask={this.handleUpdateTask}
+          onCreateTask={this.handleCreateTask}
           onCreateLabel={this.handleCreateLabel}
           onUpdateLabel={this.handleUpdateLabel}
           onDeleteLabel={this.handleDeleteLabel}
           onUpdateUserLabel={this.handleUpdateUserLabel}
           onChangeUserTasklist={this.handleChangeUserTasklist}
-        />
-        <InfoModal 
-          user={this.state.user}
+
           modal={this.state.modal}
           onModal={this.handleModal}
+          onSecondModal={this.handleSecondModal}
         />
-        <TasklistModal 
-          user={this.state.user}
-          tasklist={this.state.tasklist}
-          tasklists={this.state.tasklists}
-          modal={this.state.modal}
-          onModal={this.handleModal}
-          onSelectTasklist={this.handleSelectTasklist}
-        />
-        <ProfileModal 
-          user={this.state.user}
-          modal={this.state.modal}
-          onModal={this.handleModal}
-        />
-        <AddModal
-          user={this.state.user} 
-          modal={this.state.modal}
-          onModal={this.handleModal}
-          onCreateTask={this.handleCreateTask}
-          onCreateLabel={this.handleCreateLabel}
-          zIndex={3}
-        />
-        <LabelsModal
-          task={this.state.tasks.findById(this.state.currentTask)}
-          subjects={this.state.subjects}
-          categories={this.state.categories}
-          subjectsFilter={this.state.subjectsFilter}
-          categoriesFilter={this.state.categoriesFilter}
-          modal={this.state.modal}
-          onModal={this.handleModal}
-          onFilter={this.handleFilter}
-          onUpdateTask={this.handleUpdateTask}
-          zIndex={3}
-        />
-        
         <ModalBackground 
           modal={this.state.modal}
           onModal={this.handleModal}
           zIndex={2}
         />
 
-        {/* Secondary modals */}
-        <AddModal
+        <SecondaryModals
           user={this.state.user} 
-          modal={this.state.secondModal}
-          onModal={this.handleSecondModal}
-          onCreateTask={this.handleCreateTask}
-          onCreateLabel={this.handleCreateLabel}
-          zIndex={5}
-        />
-        <LabelsModal
           subjects={this.state.subjects}
           categories={this.state.categories}
-          subjectsFilter={this.state.user.subjects}
-          categoriesFilter={this.state.user.categories}
+
+          onUpdateUserLabel={this.handleUpdateUserLabel}
+          onCreateTask={this.handleCreateTask}
+          onCreateLabel={this.handleCreateLabel}
+
           modal={this.state.secondModal}
           onModal={this.handleSecondModal}
-          onFilter={this.handleUpdateUserLabel}
-          zIndex={5}
-        />
+        />        
         <ModalBackground 
           modal={this.state.secondModal}
           onModal={this.handleSecondModal}

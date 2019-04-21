@@ -14,7 +14,7 @@ class InfoModal extends React.Component {
   }
 
   render() {
-    return this.props.modal.name === 'info' ? (
+    return (
       <div id="info-modal" className="modal custom-scroll">
         <RemoveIcon onClick={() => this.props.onModal()} />
         <div id="info-container" className="content-container">
@@ -87,7 +87,7 @@ class InfoModal extends React.Component {
           </div>
         </div>
       </div>
-    ) : null;
+    );
   }
 }
 
