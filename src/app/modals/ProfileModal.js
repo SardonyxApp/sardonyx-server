@@ -10,7 +10,7 @@ import { UserIcon, GlobeIcon, LockIcon, ExitIcon, SettingsIcon } from '../../log
 class ProfileModal extends React.Component {
   render() {
     // Position is set statically in CSS
-    return this.props.modal.name === 'profile' ? (
+    return (
       <div className="modal" id="profile-modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
         <div>
           <UserIcon width={20} height={20} />
@@ -34,7 +34,7 @@ class ProfileModal extends React.Component {
           <p onClick={() => this.props.onModal('settings')}><a style={{ cursor: 'pointer' }}>Settings</a></p>
         </div>
       </div>
-    ) : null;
+    );
   }
 }
 

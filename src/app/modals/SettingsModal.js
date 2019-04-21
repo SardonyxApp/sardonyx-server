@@ -119,7 +119,7 @@ class SettingsModal extends React.Component {
       .filter(l => this.props.user.categories.includes(l.id))
       .map(label => <Label label={label} onUpdate={id => this.props.onUpdateUserLabel('categories', id)} />)
 
-    return this.props.modal.name === 'settings' ? (
+    return (
       <div id="settings-modal" className="modal">
         <RemoveIcon onClick={() => this.props.onModal()} />
         <div id="settings-container" className="content-container">
@@ -206,7 +206,7 @@ class SettingsModal extends React.Component {
           </div>
         </div>
       </div>
-    ) : null;
+    );
   }
 }
 
