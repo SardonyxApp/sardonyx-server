@@ -56,7 +56,6 @@ CREATE TABLE categories (
   name VARCHAR(255) NOT NULL,
   color CHAR(7),
   tasklist_id INT,
-  manangebac VARCHAR(255), -- managebac class or group link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_category_tasklist(tasklist_id)
   REFERENCES tasklists(id)
