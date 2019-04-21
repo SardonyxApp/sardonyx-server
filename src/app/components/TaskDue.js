@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the due date for a task in info view. 
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { TimeIcon, RemoveIcon } from '../../logos';
 

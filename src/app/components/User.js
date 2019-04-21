@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render user information in the top bar.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { UserIcon, AddToListIcon, SettingsIcon, InfoIcon } from '../../logos'; // use this as avatar for now
 

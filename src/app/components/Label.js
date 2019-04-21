@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render a non-editable, removable label. 
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { RemoveIcon } from '../../logos';
 

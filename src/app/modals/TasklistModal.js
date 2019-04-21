@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the tasklist selector modal.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { CheckIcon } from '../../logos';
 

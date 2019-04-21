@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render the menu modal for adding new items.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 
 const AddMenuModal = props => {

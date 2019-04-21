@@ -58,7 +58,7 @@ module.exports = async (tokens, document) => {
           description += '\nThis task was automatically created by Sardonyx based on Managebac. \nSee on Managebac: ' + assignment.link;
 
           // Determine the subject label 
-          let subject = subjects.find(s => assignment.link.includes(s.name));
+          let subject = subjects.find(s => assignment.link.match(/^https:\/\/kokusaiib\.managebac\.com\/student\/(classes\/\d{1,}|groups\/\d{1,}|ib\/events)/)[0] === s.managebac);
           subject = subject ? subject.id : null;
 
           // Determine category label 

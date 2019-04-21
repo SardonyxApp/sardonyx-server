@@ -1,15 +1,19 @@
 import React from 'react';
 
-import AddLabelModal from './AddLabelModal';
+import HandleLabelModal from './HandleLabelModal';
 import LabelsModal from './LabelsModal';
 
 const SecondaryModals = props => {
   switch(props.modal.name) {
     case 'add-subject':
     case 'add-category':
-      return <AddLabelModal
-        onCreateTask={props.onCreateTask} 
+    case 'edit-subject':
+    case 'edit-category':
+      return <HandleLabelModal
+        subjects={props.subjects}
+        categories={props.categories}
         onCreateLabel={props.onCreateLabel}
+        onUpdateLabel={props.onUpdateLabel}
 
         modal={props.modal}
         onModal={props.onModal}

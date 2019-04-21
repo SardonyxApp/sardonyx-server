@@ -144,15 +144,16 @@ class App extends React.Component {
    * @param {String} name 
    * @param {Number|String} x number or pixels in string
    * @param {Number|String} y number or pixels in string
+   * @param {Object} data to contain miscellaneous data 
    */
-  handleModal(name = null, x = null, y = null) {
+  handleModal(name = null, x = null, y = null, data = null) {
     this.setState({
-      modal: { name, x, y } // x and y coordinates can either be used for left or right, depending on modal 
+      modal: { name, x, y, data } // x and y coordinates can either be used for left or right, depending on modal 
     });
   }
-  handleSecondModal(name = null, x = null, y= null) {
+  handleSecondModal(name = null, x = null, y = null, data = null) {
     this.setState({
-      secondModal: { name, x, y }
+      secondModal: { name, x, y, data }
     });
   }
 
@@ -353,7 +354,7 @@ class App extends React.Component {
    * @param {Object} obj.id required 
    * @param {String} obj.name 
    * @param {String} obj.color 
-   * @param {String} obj.tasklist_id 
+   * @param {String} obj.managebac 
    */
   handleUpdateLabel(type, obj) {
     fetch(`/app/${type}?id=${obj.id}&tasklist=${this.state.tasklist.id}`, {
@@ -480,9 +481,9 @@ class App extends React.Component {
           subjects={this.state.subjects}
           categories={this.state.categories}
 
-          onUpdateUserLabel={this.handleUpdateUserLabel}
-          onCreateTask={this.handleCreateTask}
           onCreateLabel={this.handleCreateLabel}
+          onUpdateLabel={this.handleUpdateLabel}
+          onUpdateUserLabel={this.handleUpdateUserLabel}
 
           modal={this.state.secondModal}
           onModal={this.handleSecondModal}

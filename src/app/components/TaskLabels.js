@@ -1,9 +1,3 @@
-/**
- * @fileoverview Component to render task labels in info view.
- * @author SardonyxApp
- * @license MIT 
- */
-
 import React from 'react';
 import { LabelIcon } from '../../logos';
 
