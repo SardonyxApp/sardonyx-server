@@ -64,20 +64,6 @@ class HandleLabelModal extends React.Component {
   }
 
   render() {
-    const position = () => {
-      if (this.props.modal.y > document.documentElement.clientHeight / 2) {
-        return {
-          left: this.props.modal.x + 8,
-          bottom: document.documentElement.clientHeight - this.props.modal.y
-        };
-      }
-
-      return {
-        right: document.documentElement.clientWidth - this.props.modal.x,
-        top: this.props.modal.y
-      };
-    };
-
     // Choose type of label to add/edit 
     const type = this.props.modal.name.includes('subject') ? 'subject' : 'category';
     let label;
@@ -87,7 +73,7 @@ class HandleLabelModal extends React.Component {
     }
 
     return (
-      <div id={`add-${type}-modal`} className="modal" style={{ ...position(), zIndex: this.props.zIndex }}>
+      <div id={`add-${type}-modal`} className="modal" style={{ ...this.props.modal.position, zIndex: this.props.zIndex }}>
         <div>
           <input
             id={`add-${type}-input`}

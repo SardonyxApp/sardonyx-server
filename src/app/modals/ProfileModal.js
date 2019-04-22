@@ -5,7 +5,7 @@ class ProfileModal extends React.Component {
   render() {
     // Position is set statically in CSS
     return (
-      <div className="modal" id="profile-modal" style={{ right: this.props.modal.x, top: this.props.modal.y }}>
+      <div className="modal" id="profile-modal" style={this.props.modal.position}>
         <div>
           <UserIcon width={20} height={20} />
           <p>{this.props.user.email}</p>
