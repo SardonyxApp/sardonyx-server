@@ -19,7 +19,7 @@ const { toManagebacUrl } = require('./helpers');
  * @param tokens.tasklist 
  * @param document Dashboard page HTML document 
  */
-module.exports = async (tokens, document) => {
+module.exports = (tokens, document) => {
   // Set cookies 
   const j = request.jar();  
   j.setCookie(request.cookie(tokens.cfduid), 'https://kokusaiib.managebac.com');
