@@ -17,6 +17,44 @@ class SettingsModal extends React.Component {
     fn(position);
   }
 
+  position(position) {
+    if (position.top + position.bottom < document.documentElement.clientHeight) {
+      // Upper half 
+      if (position.left + position.right > document.documentElement.clientWidth) {
+        // Right half 
+        return {
+          top: position.bottom + 8,
+          right: document.documentElement.clientWidth - position.right,
+          maxHeight: document.documentElement.clientHeight - position.bottom - 48
+        };
+      } else {
+        // Left half 
+        return {
+          top: position.bottom + 8,
+          left: position.left, 
+          maxHeight: document.documentElement.clientHeight - position.bottom - 48
+        };
+      }
+    } else {
+      // Lower half 
+      if (position.left + position.right > document.documentElement.clientWidth) {
+        // Right half 
+        return {
+          bottom: document.documentElement.clientHeight - position.top + 8,
+          right: document.documentElement.clientWidth - position.right, 
+          maxHeight: position.top - 48
+        };
+      } else {
+        // Left half 
+        return {
+          bottom: document.documentElement.clientHeight - position.top + 8,
+          left: position.left, 
+          maxHeight: position.top - 48
+        };
+      }
+    }
+  }
+
   render() {
     const subjects = this.props.subjects.map(label => <Label 
       label={label} 
@@ -25,7 +63,7 @@ class SettingsModal extends React.Component {
           this.props.onDeleteLabel('subjects', label.id);
         }
       }} 
-      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', position.right, position.bottom, { label_id: label.id }))} 
+      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', this.position(position), { label_id: label.id }))} 
       removable={true}
       updatable={true}
     />);
@@ -37,7 +75,7 @@ class SettingsModal extends React.Component {
           this.props.onDeleteLabel('categories', label.id);
         }
       }} 
-      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', position.right, position.bottom, { label_id: label.id }))} 
+      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', this.position(position), { label_id: label.id }))} 
       removable={true}
       updatable={true}
     />);
@@ -76,7 +114,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the subject of the task. (e.g. Mathematics, English)</p>
             {subjects}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-subject', this.position(position)))} />
           </div>
 
           <div className="section">
@@ -86,7 +124,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>These are used to indicate the type of the work. (e.g. Homework, Exam Preparation)</p>
             {categories}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-category', position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('add-category', this.position(position)))} />
           </div>
 
           <div className="heading">
@@ -123,7 +161,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>If you want to filter subjects by default, set them here.</p>
             {defaultSubjects}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-subjects', this.position(position)))} />
           </div>
 
           <div className="section">
@@ -133,7 +171,7 @@ class SettingsModal extends React.Component {
             </div>
             <p>If you want to filter categories by default, set them here.</p>
             {defaultCategories}
-            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-categories', position.right, position.bottom + 8))} />
+            <AddIcon onClick={e => this.handleAdd(e, position => this.props.onSecondModal('default-categories', this.position(position)))} />
           </div>
         </div>
       </div>

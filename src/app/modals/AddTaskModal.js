@@ -46,7 +46,7 @@ class AddTaskModal extends React.Component {
   render() {
     // Render interface to enter title of new task
     return (
-      <div id="add-task-modal" className="modal" style={{ right: document.documentElement.clientWidth - this.props.modal.x, top: this.props.modal.y }}>
+      <div id="add-task-modal" className="modal" style={this.props.modal.position}>
         <div>
           <input 
             id="add-task-input" 

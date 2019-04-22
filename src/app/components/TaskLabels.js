@@ -2,21 +2,15 @@ import React from 'react';
 import { LabelIcon } from '../../logos';
 import Label from './Label';
 
-// const Label = props => (
-//   <div 
-//     className="label" 
-//     style={{ background: props.color, cursor: 'pointer' }}
-//     onClick={e => {
-//       // If target is <p>, use coordinates of parent .label
-//       const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-//       return props.onModal(position.left, position.bottom + 8);
-//     }}
-//   >
-//     <p>{props.name}</p>
-//   </div>
-// );
-
 class TaskLabels extends React.Component {
+  position(position) {
+    return {
+      left: position.left,
+      top: position.bottom + 8,
+      maxHeight: document.documentElement.clientHeight - position.bottom - 48
+    };
+  }
+
   render() {
     const labels = [];
     if (this.props.task.subject_id) {
@@ -29,7 +23,7 @@ class TaskLabels extends React.Component {
           onUpdate={e => {
             // If target is <p>, use coordinates of parent .label
             const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-            this.props.onModal(this.props.task.category_id ? 'subjects' : 'labels', position.left, position.bottom + 8);
+            this.props.onModal(this.props.task.category_id ? 'subjects' : 'labels', this.position(position));
           }}
           updatable={true}
         />
@@ -46,7 +40,7 @@ class TaskLabels extends React.Component {
           onUpdate={e => {
             // If target is <p>, use coordinates of parent .label
             const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-            this.props.onModal(this.props.task.subject_id ? 'categories' : 'labels', position.left, position.bottom + 8);
+            this.props.onModal(this.props.task.subject_id ? 'categories' : 'labels', this.position(position));
           }}
           updatable={true}
         />
@@ -62,7 +56,7 @@ class TaskLabels extends React.Component {
             style={{ cursor: 'pointer' }}
             onClick={e => {
               const position = e.target.getBoundingClientRect();
-              return this.props.onModal('labels', position.left, position.bottom + 8);
+              return this.props.onModal('labels', this.position(position));
             }}
           >
             No labels set.

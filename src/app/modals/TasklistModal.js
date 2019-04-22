@@ -46,7 +46,7 @@ class TasklistModal extends React.Component {
 
     // Position is set statiscally in CSS 
     return (
-      <div id="tasklist-modal" className="modal" style={{ left: this.props.modal.x, top: this.props.modal.y }}>
+      <div id="tasklist-modal" className="modal" style={this.props.modal.position}>
         {tasklists}
       </div>
     );

@@ -10,8 +10,8 @@ class TasksFilter extends React.Component {
 
   // Event listener for icons to open filter modal 
   handleClick(e) {
-    const position = e.target.nodeName === 'svg' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
-    this.props.onModal('filter', position.left, position.bottom + 4);
+    const position = e.target.nodeName === 'svg' || e.target.nodeName === 'p' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
+    this.props.onModal('filter', { left: position.left, top: position.bottom, maxHeight: document.documentElement.clientHeight - position.bottom - 44 });
   }
 
   render() {

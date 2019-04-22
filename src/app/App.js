@@ -33,13 +33,13 @@ class App extends React.Component {
       // Display state 
       modal: { // First level modal 
         name: location.search.includes('info=true') ? 'info' : null,
-        x: null,
-        y: null
+        position: null,
+        data: null
       },
       secondModal: { // Second level modal 
         name: null,
-        x: null,
-        y: null
+        position: null,
+        data: null
       },
 
       // Data state 
@@ -142,18 +142,17 @@ class App extends React.Component {
   /**
    * Manage open/closed modals 
    * @param {String} name 
-   * @param {Number|String} x number or pixels in string
-   * @param {Number|String} y number or pixels in string
+   * @param {Object} position coordinates for top, bottom, left, right 
    * @param {Object} data to contain miscellaneous data 
    */
-  handleModal(name = null, x = null, y = null, data = null) {
+  handleModal(name = null, position = null, data = null) {
     this.setState({
-      modal: { name, x, y, data } // x and y coordinates can either be used for left or right, depending on modal 
+      modal: { name, position, data } // x and y coordinates can either be used for left or right, depending on modal 
     });
   }
-  handleSecondModal(name = null, x = null, y = null, data = null) {
+  handleSecondModal(name = null, position = null, data = null) {
     this.setState({
-      secondModal: { name, x, y, data }
+      secondModal: { name, position, data }
     });
   }
 
