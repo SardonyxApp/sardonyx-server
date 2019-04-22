@@ -1,7 +1,7 @@
 {
   "name": "sardonyx",
-  "version": "0.0.1",
-  "description": "Backend server for Sardonyx.",
+  "version": "1.0.2-beta.1",
+  "description": "Full stack web app for Sardonyx.",
   "main": "server.js",
   "scripts": {
     "client-dev": "webpack --watch",
