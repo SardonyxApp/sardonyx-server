@@ -35,7 +35,7 @@ class InfoModal extends React.Component {
             <ul>
               <li>Version: <b>Sardonyx Web App v1.0.1-beta.1</b></li>
               <li>Beta Build</li>
-              <li>Released: April 19, 2019</li>
+              <li>Released: April 22, 2019</li>
               <li>Source code: <a href="https://github.com/SardonyxApp/sardonyx-server" target="_blank">See on GitHub</a></li>
             </ul>
             <p>To view the changelog, please see <a href="/changelog">here.</a></p>

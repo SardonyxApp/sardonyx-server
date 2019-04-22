@@ -54,8 +54,13 @@ module.exports = async (tokens, document) => {
 
           // Parse the description 
           let description = $('label:contains("Details")').next().html(); // For now, since text() omits line breaks
-          description = description ? description.replace(/<(?:.|\n)*?>/gm, '\n') : '';
-          description += '\nThis task was automatically created by Sardonyx based on Managebac. \nSee on Managebac: ' + assignment.link;
+          description = description 
+          ? description
+            .replace(/<(?:div|p|h[1-6]|li|br ?\/?)*?>/gm, '\n')
+            .replace(/<(?:.*?)*?>/gm, '')
+            .replace('\n', '') // Eliminate first \n if it exists 
+          : ''; 
+          description += '\n\nThis task was automatically created by Sardonyx based on Managebac. \nSee on Managebac: ' + assignment.link;
 
           // Determine the subject label 
           let subject = subjects.find(s => assignment.link.match(/^https:\/\/kokusaiib\.managebac\.com\/student\/(classes\/\d{1,}|groups\/\d{1,}|ib\/events)/)[0] === s.managebac);
