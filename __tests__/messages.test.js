@@ -66,6 +66,8 @@ describe('Load message', () => {
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           const message = JSON.parse(response.headers['managebac-data']).message;
+          expect(typeof message[0].id).toBe('number');
+          expect(isNaN(message[0].id)).toBeFalsy();
           expect(typeof message[0].title).toBe('string');
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
@@ -78,6 +80,7 @@ describe('Load message', () => {
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
             expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
@@ -151,6 +154,8 @@ describe('Load message', () => {
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           const message = JSON.parse(response.headers['managebac-data']).message;
+          expect(typeof message[0].id).toBe('number');
+          expect(isNaN(message[0].id)).toBeFalsy();
           expect(typeof message[0].title).toBe('string');
           expect(typeof message[0].link).toBe('string');
           expect(typeof message[0].content).toBe('string');
@@ -163,6 +168,7 @@ describe('Load message', () => {
           expect(Array.isArray(message[0].comments)).toBeTruthy();
           message[0].comments.forEach(item => {
             expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
@@ -252,6 +258,7 @@ describe('Load message', () => {
   //         const replyOfReply = JSON.parse(response.headers['managebac-data']).replyOfReply;
   //         replyOfReply.forEach(item => {
   //           expect(typeof item.id).toBe('number');
+  //           expect(isNaN(item.id)).toBeFalsy();
   //           expect(typeof item.content).toBe('string');
   //           expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
   //           expect(typeof item.author).toBe('string');

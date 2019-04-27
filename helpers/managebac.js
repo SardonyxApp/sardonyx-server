@@ -74,13 +74,18 @@ exports.createUrl = (resource, subresource, subitem) => {
  * @param {Object} res 
  */
 exports.loadDefaults = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
-    deadlines: parser.parseDeadlines(req.document),
-    classes: parser.parseClasses(req.document),
-    groups: parser.parseGroups(req.document),
-    notificationCount: parser.parseNotificationCount(req.document),
-    user: parser.parseUser(req.document)
-  }));
+  try {
+    res.append('Managebac-Data', JSON.stringify({
+      deadlines: parser.parseDeadlines(req.document),
+      classes: parser.parseClasses(req.document),
+      groups: parser.parseGroups(req.document),
+      notificationCount: parser.parseNotificationCount(req.document),
+      user: parser.parseUser(req.document)
+    }));
+  } catch(e) {
+    console.error(e);
+  }
+  
 
   res.status(200).end();
 };

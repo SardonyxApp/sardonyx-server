@@ -47,6 +47,8 @@ describe('Load CAS', () => {
         .then(response => {
           const cas = JSON.parse(response.headers['managebac-data']).cas;
           cas.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.description).toBe('string');
@@ -119,6 +121,8 @@ describe('Load CAS', () => {
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           const cas = JSON.parse(response.headers['managebac-data']).cas;
+          expect(typeof cas.id).toBe('number');
+          expect(isNaN(cas.id)).toBeFalsy();
           expect(typeof cas.title).toBe('string');
           expect(typeof cas.link).toBe('string');
           expect(typeof cas.description).toBe('string');
@@ -247,6 +251,8 @@ describe('Load CAS', () => {
         .then(response => {
           const reflections = JSON.parse(response.headers['managebac-data']).reflections;
           reflections.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(Array.isArray(item.labels)).toBeTruthy();
             expect(item.type).toMatch(/reflection|link|photo|other/); // Other for types not supported (file and video)
             if (item.type === 'reflection') expect(typeof item.content).toBe('string');
