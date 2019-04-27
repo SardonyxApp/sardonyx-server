@@ -88,6 +88,9 @@ describe('Load message', () => {
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.comments).toBe('boolean');
+            item.files.forEach(file => {
+              expect(typeof file).toBe('string');
+            });
           });
           done();
         });
@@ -176,6 +179,9 @@ describe('Load message', () => {
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(typeof item.comments).toBe('boolean');
+            item.files.forEach(file => {
+              expect(typeof file).toBe('string');
+            });
           });
           done();
         });
@@ -265,6 +271,9 @@ describe('Load message', () => {
   //           expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
   //           expect(typeof item.date).toBe('string');
   //           expect(isNaN(Date.parse(item.date))).toBeFalsy();
+  //           item.files.forEach(file => {
+  //             expect(typeof file).toBe('string');
+  //           });
   //         });
   //         done();
   //       });
