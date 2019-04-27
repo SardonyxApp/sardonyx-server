@@ -285,7 +285,7 @@ exports.parseMessages = document => {
       avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
       date: createDate($(el).find('.header').text()),
       files: files,
-      comments: comments
+      comments
     });
   });
 
@@ -341,9 +341,9 @@ exports.parseCas = document => {
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.details a').attr('href')),
       description: encodeURI($(el).find('.description').text()) || null, // Doesn't exist for experiences
-      types: types,
+      types,
       status:  $(el).find('.status-icon img').attr('src').match(/approved|complete|rejected|needs_approval/)[0] || null,
-      labels: labels,
+      labels,
       project: /cas_project/.test($(el).find('.labels-and-badges img').attr('src')),
       commentCount: Number($(el).find('.comments-count').text().delNewlines()),
       reflectionCount: $(el).find('.reflections-count').text() || null // Only exists for CAS dashhboard 
@@ -424,7 +424,7 @@ exports.parseReflections = document => {
     const obj = {
       id: matchNumbers($(el).attr('id')),
       date: createDate($(el).find('h4.title').text(), true),
-      labels: labels
+      labels
     }; 
 
     if ($(el).hasClass('journal-evidence')) { // Reflection
@@ -510,9 +510,11 @@ exports.parseStudent = document => {
 exports.parseUser = document => {
   const $ = cheerio.load(document);
 
+  const url = $('.profile-link .avatar').css('background-image');
+
   return {
     id: Number($('body').data('user-id')),
     name: $('.profile-link > a').text().delNewlines(),
-    avatar: $('.profile-link .avatar').css('background-image').replace(/^url\(/, '').replace(/\)$/, '')
+    avatar: url ? url.replace(/^url\(/, '').replace(/\)$/, '') : null
   };
 }
