@@ -46,7 +46,7 @@ exports.parseDeadlines = document => {
 
   $('.agenda > .line').each((i, el) => {
     const labels = [];
-    $(el).find('.label').each((j, label) => {
+    $(el).find('.label').each((idx, label) => {
       labels.push($(label).text().delNewlines()); 
     });
 
@@ -61,21 +61,16 @@ exports.parseDeadlines = document => {
     // Two types of deadlines can be loaded:
     // 1) linked deadlines: contains id, link, author, and avatar 
     // 2) title of page: id, link, author, and avarar are null 
-    try {
-      payload.push({
-        id: matchNumbers($(el).find('.title a').attr('href')) || null,
-        title: encodeURI($(el).find('h4.title').text().delNewlines()), 
-        link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
-        labels,
-        deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-        due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
-        author: $(el).find('.author').attr('title') || null,
-        avatar: $(el).find('.avatar').attr('src') || null
-      });
-    } catch(e) {
-      console.error(e);
-    }
-    
+    payload.push({
+      id: matchNumbers($(el).find('.title a').attr('href')) || null,
+      title: encodeURI($(el).find('h4.title').text().delNewlines()), 
+      link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
+      labels,
+      deadline: $(el).find('.due').hasClass('deadline'), // Boolean
+      due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
+      author: $(el).find('.author').attr('title') || null,
+      avatar: $(el).find('.avatar').attr('src') || null
+    });
   });
 
   return payload;
@@ -253,7 +248,13 @@ exports.parseMessages = document => {
 
   $('.discussion').each((i, el) => {
     let comments = [];
-    $(el).find('.reply').each((i, elem) => {
+    $(el).find('.reply').each((idx, elem) => {
+      const files = [];
+      // Attached to new messages 
+      $(elem).find('a').each((index, element) => {
+        if ($(element).is('[data-file]')) files.push($(element).attr('href'));
+      });
+
       comments.push({
         id: matchNumbers($(elem).attr('id')),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
@@ -261,7 +262,8 @@ exports.parseMessages = document => {
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('src') || null, 
         date: createDate($(elem).find('.header').text()),
-        comments: !!$(elem).find('.show-reply').length // Boolean
+        comments: !!$(elem).find('.show-reply').length, // Boolean
+        files
       });
     });
 
@@ -271,8 +273,14 @@ exports.parseMessages = document => {
     }
 
     const files = [];
-    $(el).find('.list-unstyled a').each((i, elem) => {
+    
+    // Attached to old messages 
+    $(el).find('.list-unstyled a').each((idx, elem) => {
       files.push($(elem).attr('href'));
+    });
+    // Attached to new messages 
+    $(el).find('a').each((idx, elem) => {
+      if ($(elem).is('[data-file]')) files.push($(elem).attr('href'));
     });
 
     payload.push({
@@ -301,6 +309,11 @@ exports.parseReplyOfReply = document => {
   const $ = cheerio.load(document);
   const comments = [];
 
+  const files = [];
+  $('a').each((i, elem) => {
+    if ($(element).is('[data-file]')) files.push($(elem).attr('href'));
+  });
+
   $('.reply').each((i, elem) => {
     comments.push({
       id: matchNumbers($(elem).attr('id')),
@@ -309,6 +322,7 @@ exports.parseReplyOfReply = document => {
       author: $(elem).find('.header strong').text(),
       avatar: $(elem).find('.avatar').attr('src') || null, 
       date: createDate($(elem).find('.header').text()),
+      files
     });
   });
   return comments;
@@ -332,7 +346,7 @@ exports.parseCas = document => {
     if ($(el).find('.labels-and-badges .tip').hasClass('hour-type-hint-s')) types.push('service');
 
     const labels = [];
-    $(el).find('.labels-and-badges .label').each((i, elem) => {
+    $(el).find('.labels-and-badges .label').each((idx, elem) => {
       labels.push($(elem).text());
     });
 
@@ -438,7 +452,7 @@ exports.parseReflections = document => {
     } else if ($(el).hasClass('album-evidence')) { // Photo
       obj.type = 'photo';
       obj.photos = [];
-      $(el).find('.photo').each((i, elem) => {
+      $(el).find('.photo').each((idx, elem) => {
         obj.photos.push({
           title: encodeURI($(elem).attr('title')),
           link: $(elem).data('full-url')

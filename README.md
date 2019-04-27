@@ -141,7 +141,7 @@ Some endpoints will return the `messages` object as formatted below.
 }
 ```
 
-Some endpoitns will return the `meesage` object as formatted below.
+Some endpoints will return the `meesage` object as formatted below.
 
 ```typescript
   {
@@ -163,7 +163,8 @@ Some endpoitns will return the `meesage` object as formatted below.
             onlyVisibleForTeachers: boolean,
             author: string,
             avatar: string || null, // URL to avatar 
-            comments: true // if true, there are subcomments under the comment 
+            comments: true, // if true, there are subcomments under the comment 
+            files: Array<string> // Array of URLs
           },
 
           // ... 
@@ -384,7 +385,8 @@ Returns: `replyOfReply` object in the `Managebac-Data` headeer
       onlyVisibleForTeachers: boolean,
       author: string,
       avatar: string || avatar, // URL to avatar 
-      date: string // ISODateString
+      date: string, // ISODateString
+      files: Array<string> // Array of URLs
     },
 
     // ... 
