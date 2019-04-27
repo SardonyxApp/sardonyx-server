@@ -69,6 +69,7 @@ db.connect(err => {
             expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
             expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
             expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
+            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
             done();
           });
         });
@@ -91,6 +92,7 @@ db.connect(err => {
             expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
             expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
             expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
+            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
             done();
           });
         });
@@ -119,6 +121,7 @@ db.connect(err => {
             expect(typeof item.category_id === 'number' || item.category_id === null).toBeTruthy();
             expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
             expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
+            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
             done();
           });
         });
@@ -147,6 +150,7 @@ db.connect(err => {
             expect(typeof item.category_id === 'number' || item.category_id === null).toBeTruthy();
             expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
             expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
+            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
             done();
           });
         });
