@@ -47,6 +47,8 @@ describe('Load notifications', () => {
         .then(response => {
           const notifications= JSON.parse(response.headers['managebac-data']).notifications;
           notifications.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.author).toBe('string');
@@ -100,6 +102,8 @@ describe('Load notifications', () => {
         .then(response => {
           const notifications= JSON.parse(response.headers['managebac-data']).notifications;
           notifications.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.author).toBe('string');

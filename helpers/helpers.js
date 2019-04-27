@@ -38,7 +38,7 @@ exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new 
  * @description Create date based on date string
  * @param {String} dateString 
  * @param {Boolean} fullMonth
- * @retusrn {Date}
+ * @returns {Date}
  * @example createDate('Jan 1, 2018 at 12:00 AM');
  * @example createDate('December 14, 2018 2:40 PM', true);
  */
@@ -50,6 +50,30 @@ exports.createDate = (dateString, fullMonth = false) => {
   const year = dateString.match(/\d{4}/);
   return new Date(year, month, day, hour, minute);
 };
+
+/**
+ * @description Create a plain text version for display from html 
+ * @param {String} html 
+ * @returns {String}
+ */
+exports.toPlainText = html => (
+  html
+    .replace(/<(?:div|p|h[1-6]|li|br ?\/?)*?>/gm, '\n')
+    .replace(/<(?:.*?)*?>/gm, '')
+    .replace('\n', '') // Eliminate first \n if it exists 
+);
+
+/**
+ * @description Return the matched numbers at the end of a string 
+ * @param {String} str 
+ * @returns {Number} 
+ */
+exports.matchNumbers = str => {
+  if (!str) return null;
+  const matchObj = str.match(/\d+$/);
+  if (matchObj === null) return null;
+  return Number(matchObj[0]);
+}
 
 /**
  * @description Convert Managebac url to Sardonyx API url

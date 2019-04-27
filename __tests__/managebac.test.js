@@ -29,6 +29,8 @@ describe('Load default', () => {
         .then(response => {
           const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
           deadlines.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(Array.isArray(item.labels)).toBeTruthy();
@@ -49,6 +51,8 @@ describe('Load default', () => {
         .then(response => {
           const classes = JSON.parse(response.headers['managebac-data']).classes;
           classes.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
           });
@@ -63,6 +67,8 @@ describe('Load default', () => {
         .then(response => {
           const groups = JSON.parse(response.headers['managebac-data']).groups;
           groups.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
           });
@@ -87,6 +93,8 @@ describe('Load default', () => {
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
           const user = JSON.parse(response.headers['managebac-data']).user;
+          expect(typeof user.id).toBe('number');
+          expect(isNaN(user.id)).toBeFalsy();
           expect(typeof user.name).toBe('string');
           expect(typeof user.avatar).toBe('string');
           done();
@@ -127,6 +135,8 @@ describe('Load default', () => {
           .then(response => {
             const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
             deadlines.forEach(item => {
+              expect(typeof item.id).toBe('number');
+              expect(isNaN(item.id)).toBeFalsy();
               expect(typeof item.title).toBe('string');
               expect(typeof item.link).toBe('string');
               expect(Array.isArray(item.labels)).toBeTruthy();
@@ -149,6 +159,8 @@ describe('Load default', () => {
           .then(response => {
             const classes = JSON.parse(response.headers['managebac-data']).classes;
             classes.forEach(item => {
+              expect(typeof item.id).toBe('number');
+              expect(isNaN(item.id)).toBeFalsy();
               expect(typeof item.title).toBe('string');
               expect(typeof item.link).toBe('string');
             });
@@ -165,6 +177,8 @@ describe('Load default', () => {
           .then(response => {
             const groups = JSON.parse(response.headers['managebac-data']).groups;
             groups.forEach(item => {
+              expect(typeof item.id).toBe('number');
+              expect(isNaN(item.id)).toBeFalsy();
               expect(typeof item.title).toBe('string');
               expect(typeof item.link).toBe('string');
             });
@@ -193,6 +207,8 @@ describe('Load default', () => {
           .field('password', process.env.PASSWORD)
           .then(response => {
             const user = JSON.parse(response.headers['managebac-data']).user;
+            expect(typeof user.id).toBe('number');
+            expect(isNaN(user.id)).toBeFalsy();
             expect(typeof user.name).toBe('string');
             expect(typeof user.avatar).toBe('string');
             done();
@@ -223,6 +239,8 @@ describe('Load default', () => {
         .then(response => {
           const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
           deadlines.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(Array.isArray(item.labels)).toBeTruthy();
@@ -243,6 +261,8 @@ describe('Load default', () => {
         .then(response => {
           const classes = JSON.parse(response.headers['managebac-data']).classes;
           classes.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
           });
@@ -257,6 +277,8 @@ describe('Load default', () => {
         .then(response => {
           const groups = JSON.parse(response.headers['managebac-data']).groups;
           groups.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
           });
@@ -281,6 +303,8 @@ describe('Load default', () => {
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
           const user = JSON.parse(response.headers['managebac-data']).user;
+          expect(typeof user.id).toBe('number');
+          expect(isNaN(user.id)).toBeFalsy();
           expect(typeof user.name).toBe('string');
           expect(typeof user.avatar).toBe('string');
           done();

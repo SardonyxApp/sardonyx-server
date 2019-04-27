@@ -10,7 +10,7 @@ const request = require('request');
 const parser = require('./parsers');
 const tasks = require('../models/tasks');
 const { subjects, categories } = require('../models/labels');
-const { toManagebacUrl } = require('./helpers');
+const { toManagebacUrl, toPlainText } = require('./helpers');
 
 /**
  * @param tokens Managebac credentials 
@@ -54,12 +54,7 @@ module.exports = (tokens, document) => {
 
           // Parse the description 
           let description = $('label:contains("Details")').next().html(); // For now, since text() omits line breaks
-          description = description 
-          ? description
-            .replace(/<(?:div|p|h[1-6]|li|br ?\/?)*?>/gm, '\n')
-            .replace(/<(?:.*?)*?>/gm, '')
-            .replace('\n', '') // Eliminate first \n if it exists 
-          : ''; 
+          description = description ? toPlainText(description) : ''; 
           description += '\n\nThis task was automatically created by Sardonyx based on Managebac. \nSee on Managebac: ' + assignment.link;
 
           // Determine the subject label 

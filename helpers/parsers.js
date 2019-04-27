@@ -11,8 +11,9 @@ const {
   guessFutureYear, 
   guessPastYear, 
   createDate, 
-  rgbToHex,
-  toSardonyxUrl 
+  toPlainText,
+  matchNumbers,
+  toSardonyxUrl
 } = require('./helpers');
 
 /**
@@ -57,15 +58,24 @@ exports.parseDeadlines = document => {
     const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
     const dueYear = $(el).find('.date-badge').hasClass('past-due') ? guessPastYear(dueMonth) : guessFutureYear(dueMonth); // listed as upcoming deadline or past deadline
 
-    payload.push({
-      title: encodeURI($(el).find('h4.title').text().delNewlines()), 
-      link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
-      labels: labels,
-      deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-      due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
-      author: $(el).find('.author').attr('title') || null,
-      avatar: $(el).find('.avatar').attr('src') || null
-    });
+    // Two types of deadlines can be loaded:
+    // 1) linked deadlines: contains id, link, author, and avatar 
+    // 2) title of page: id, link, author, and avarar are null 
+    try {
+      payload.push({
+        id: matchNumbers($(el).find('.title a').attr('href')) || null,
+        title: encodeURI($(el).find('h4.title').text().delNewlines()), 
+        link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
+        labels,
+        deadline: $(el).find('.due').hasClass('deadline'), // Boolean
+        due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
+        author: $(el).find('.author').attr('title') || null,
+        avatar: $(el).find('.avatar').attr('src') || null
+      });
+    } catch(e) {
+      console.error(e);
+    }
+    
   });
 
   return payload;
@@ -82,6 +92,7 @@ exports.parseClasses = document => {
 
   $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
     payload.push({
+      id: matchNumbers($(el).find('a').attr('href')),
       title: encodeURI($(el).find('a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('a').attr('href'))
     });
@@ -102,6 +113,7 @@ exports.parseGroups = document => {
 
   $('#menu > .nav-menu > li.parent:nth-child(10) li').each((i, el) => {
     payload.push({
+      id: matchNumbers($(el).find('a').attr('href')),
       title: encodeURI($(el).find('a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('a').attr('href'))
     });
@@ -132,6 +144,7 @@ exports.parseNotifications = document => {
 
   $('tr.message').each((i, el) => {
     payload.push({
+      id: Number($(el).data('id')),
       title: encodeURI($(el).find('.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.title a').attr('href')), 
       author: $(el).find('td:nth-child(3)').text(),
@@ -242,7 +255,7 @@ exports.parseMessages = document => {
     let comments = [];
     $(el).find('.reply').each((i, elem) => {
       comments.push({
-        id: Number($(elem).attr('id').match(/\d+/)[0]),
+        id: matchNumbers($(elem).attr('id')),
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
@@ -263,6 +276,7 @@ exports.parseMessages = document => {
     });
 
     payload.push({
+      id: matchNumbers($(el).attr('id')),
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
@@ -289,7 +303,7 @@ exports.parseReplyOfReply = document => {
 
   $('.reply').each((i, elem) => {
     comments.push({
-      id: Number($(elem).attr('id').match(/\d+/)[0]),
+      id: matchNumbers($(elem).attr('id')),
       content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
       onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
       author: $(elem).find('.header strong').text(),
@@ -323,6 +337,7 @@ exports.parseCas = document => {
     });
 
     payload.push({
+      id: matchNumbers($(el).find('.details a').attr('href')),
       title: encodeURI($(el).find('h4.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.details a').attr('href')),
       description: encodeURI($(el).find('.description').text()) || null, // Doesn't exist for experiences
@@ -346,18 +361,9 @@ exports.parseCas = document => {
 exports.parseExperience = document => {
   const $ = cheerio.load(document);
 
-  const extractContents = els => {
-    let str = '';  
-    els.each((i, elem) => {
-      if (i !== 0) str += '\n';
-      str += $(elem).text();
-    });
-    return encodeURI(str);
-  }
-
   return {
-    description: extractContents($('h4').eq(1).nextUntil('h4')), 
-    learningOutcomes: extractContents($('h4').eq(2).nextUntil('.divider.compact')), // does not parse IDs
+    description: encodeURIComponent(toPlainText($('h4').eq(1).nextUntil('h4').html())),
+    learningOutcomes: encodeURIComponent(toPlainText($('h4').eq(2).nextUntil('.divider.compact').html())), // does not parse IDs
     timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
@@ -416,6 +422,7 @@ exports.parseReflections = document => {
 
     // Common for all types of evidences / reflections 
     const obj = {
+      id: matchNumbers($(el).attr('id')),
       date: createDate($(el).find('h4.title').text(), true),
       labels: labels
     }; 
@@ -504,6 +511,7 @@ exports.parseUser = document => {
   const $ = cheerio.load(document);
 
   return {
+    id: Number($('body').data('user-id')),
     name: $('.profile-link > a').text().delNewlines(),
     avatar: $('.profile-link .avatar').css('background-image').replace(/^url\(/, '').replace(/\)$/, '')
   };

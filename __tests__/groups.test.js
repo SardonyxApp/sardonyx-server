@@ -57,6 +57,8 @@ describe('Load group', () => {
         .then(response => {
           const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
           deadlines.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(Array.isArray(item.labels)).toBeTruthy();
@@ -122,6 +124,8 @@ describe('Load group', () => {
         .then(response => {
           const messages = JSON.parse(response.headers['managebac-data']).messages;
           messages.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
@@ -189,6 +193,8 @@ describe('Load group', () => {
         .then(response => {
           const messages = JSON.parse(response.headers['managebac-data']).messages;
           messages.forEach(item => {
+            expect(typeof item.id).toBe('number');
+            expect(isNaN(item.id)).toBeFalsy();
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
