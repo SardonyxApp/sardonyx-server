@@ -68,7 +68,7 @@ module.exports = (tokens, document) => {
 
           // Create the database entry 
           tasks.create({
-            name: decodeURIComponent(assignment.title),
+            name: decodeURI(assignment.title),
             description,
             due: assignment.due,
             tasklist_id: tokens.tasklist,

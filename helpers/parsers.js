@@ -376,8 +376,8 @@ exports.parseExperience = document => {
   const $ = cheerio.load(document);
 
   return {
-    description: encodeURIComponent(toPlainText($('h4').eq(1).nextUntil('h4').html())),
-    learningOutcomes: encodeURIComponent(toPlainText($('h4').eq(2).nextUntil('.divider.compact').html())), // does not parse IDs
+    description: encodeURI(toPlainText($('h4').eq(1).nextUntil('h4').html())),
+    learningOutcomes: encodeURI(toPlainText($('h4').eq(2).nextUntil('.divider.compact').html())), // does not parse IDs
     timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
