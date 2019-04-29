@@ -238,15 +238,16 @@ exports.initiateTeacher = (req, res, next) => {
  * @param {Function} next 
  */
 exports.authenticateToken = (req, res, next) => {
-  req.token = Object.assign(req.token || {}, jwt.decode(req.cookies['Sardonyx-Token']));
-  jwt.verify(req.cookies['Sardonyx-Token'], process.env.PRIVATE_KEY, (err, decoded) => {
+  console.log(req.headers);
+  req.token = Object.assign(req.token || {}, jwt.decode(req.cookies['Sardonyx-Token'] || req.headers['sardonyx-token']));
+  jwt.verify(req.cookies['Sardonyx-Token'] || req.headers['sardonyx-token'], process.env.PRIVATE_KEY, (err, decoded) => {
     if (err) { // Invalid or expired Sardonyx Token
       if (req.type === 'browser' && req.token.teacher) res.redirect('/login?teacher=true');
       else if (req.type === 'browser') res.redirect('/login');
       else res.status(401).send('Sardonyx-Token is invalid or expired. ' + err);
     } else next();
   });
-}
+};
 
 /**
  * @description Authenticates access to the requested tasklist 
@@ -263,7 +264,7 @@ exports.authenticateTasklist = (req, res, next) => {
   } else {
     next();
   }
-}
+};
 
 /**
  * @description Clears cookies to log the user out 
@@ -273,7 +274,7 @@ exports.authenticateTasklist = (req, res, next) => {
 exports.logout = (req, res) => {
   res.clearCookie('Sardonyx-Token');
   req.token.teacher ? res.redirect('/login?teacher=true&logout=true') : res.redirect('/login?logout=true');
-}
+};
 
 /**
  * @description Changes password for teachers 
@@ -288,4 +289,4 @@ exports.changePassword = (req, res) => {
     console.error(err);
     res.status(500).send('There was an error while accessing the database. ' + err);
   });
-}
+};

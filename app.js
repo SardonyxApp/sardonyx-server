@@ -33,7 +33,7 @@ app.use((req, res, next) => {
  */
 
 // Initial validation
-app.get('/api/validate', auth.createBody, auth.loginToManagebac, mb.loadDefaults);
+app.get('/api/validate', auth.createBody, auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
 
 // Reissue tokens
 app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
