@@ -88,11 +88,15 @@ exports.changeTeacherTasklist = (req, res) => {
       expiresIn: '1d',
     });
 
-    res.cookie('Sardonyx-Token', token, {
-      maxAge: 86400000, // expires in 24 hours 
-      secure: process.env.MODE === 'production', 
-      httpOnly: true 
-    });
+    if (req.type === 'api') {
+      res.append('Sardonyx-Token', token);
+    } else {
+      res.cookie('Sardonyx-Token', token, {
+        maxAge: 86400000, // expires in 24 hours 
+        secure: process.env.MODE === 'production',
+        httpOnly: true
+      });
+    }
 
     res.json(results);
   }).catch(err => {

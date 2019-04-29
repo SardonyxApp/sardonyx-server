@@ -431,8 +431,7 @@ class App extends React.Component {
     fetch(`/app/user/tasklist?id=${tasklistId}`, { 
       method: 'PATCH',
       credentials: 'include' 
-    })
-    .then(() => {
+    }).then(() => {
       this.setState(prevState => {
         return { user: {  ...prevState.user, tasklist_id: tasklistId } };
       });
