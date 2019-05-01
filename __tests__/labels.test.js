@@ -64,8 +64,8 @@ db.connect(err => {
             expect(typeof item.name).toBe('string');
             expect(typeof item.color).toBe('string');
             expect(typeof item.tasklist_id).toBe('number');
-            done();
           });
+          done();
         });
     });
 
@@ -81,8 +81,8 @@ db.connect(err => {
             expect(typeof item.name).toBe('string');
             expect(typeof item.color).toBe('string');
             expect(typeof item.tasklist_id).toBe('number');
-            done();
           });
+          done();
         });
     });
 
@@ -131,7 +131,7 @@ db.connect(err => {
         });
     });
 
-    test('GET /app/categories using valid student cookies should return a valid subjects json', done => {
+    test('GET /app/categories using valid student cookies should return a valid categories json', done => {
       request(app)
         .get('/app/categories')
         .set('Cookie', [studentCookie])
@@ -143,8 +143,8 @@ db.connect(err => {
             expect(typeof item.name).toBe('string');
             expect(typeof item.color).toBe('string');
             expect(typeof item.tasklist_id).toBe('number');
-            done();
           });
+          done();
         });
     });
 
@@ -160,8 +160,8 @@ db.connect(err => {
             expect(typeof item.name).toBe('string');
             expect(typeof item.color).toBe('string');
             expect(typeof item.tasklist_id).toBe('number');
-            done();
           });
+          done();
         });
     });
 
