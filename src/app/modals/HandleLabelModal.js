@@ -34,7 +34,7 @@ class HandleLabelModal extends React.Component {
     payload.color = this.state.color;
 
     if (type === 'subject') payload.managebac = this.urlRef.current.value;
-    if (payload.managebac.substr(-1) === '/') payload.managebac = payload.managebac.slice(0, -1)
+    if (payload.managebac && payload.managebac.substr(-1) === '/') payload.managebac = payload.managebac.slice(0, -1)
     if (payload.managebac && !payload.managebac.match(/^https:\/\/kokusaiib\.managebac\.com\/student/)) return this.handleError(this.urlRef.current);
 
     if (this.props.modal.name.includes('edit')) payload.id = this.props.modal.data.label_id;

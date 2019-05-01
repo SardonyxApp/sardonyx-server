@@ -238,7 +238,6 @@ exports.initiateTeacher = (req, res, next) => {
  * @param {Function} next 
  */
 exports.authenticateToken = (req, res, next) => {
-  console.log(req.headers);
   req.token = Object.assign(req.token || {}, jwt.decode(req.cookies['Sardonyx-Token'] || req.headers['sardonyx-token']));
   jwt.verify(req.cookies['Sardonyx-Token'] || req.headers['sardonyx-token'], process.env.PRIVATE_KEY, (err, decoded) => {
     if (err) { // Invalid or expired Sardonyx Token
