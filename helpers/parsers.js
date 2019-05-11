@@ -194,7 +194,7 @@ exports.parseAttachments = document => {
 
   $('.content-block .list-unstyled a').each((i, el) => {
     payload.push({
-      name: $(el).text(),
+      name: encodeURI($(el).text()),
       link: $(el).attr('href')
     });
   });
