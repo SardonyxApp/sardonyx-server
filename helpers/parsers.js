@@ -53,7 +53,7 @@ exports.parseDeadlines = document => {
     // Because the date format is different for this one, it uses a different implementation
     const due = $(el).find('.due').text(); // Ex: Wednesday at 8:30 PM
     const dueMinute = due.match(/\d{2}(?= [AP]M)/);
-    const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
+    const dueHour = due.match(/[AP]M/)[0] === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
     const dueDay = $(el).find('.day').text(); // Match from icon
     const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
     const dueYear = $(el).find('.date-badge').hasClass('past-due') ? guessPastYear(dueMonth) : guessFutureYear(dueMonth); // listed as upcoming deadline or past deadline
