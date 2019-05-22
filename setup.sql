@@ -20,7 +20,7 @@ CREATE TABLE students (
   year INT NOT NULL,
   tasklist_id INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY fk_tasklist(tasklist_id)
+  FOREIGN KEY fk_student_tasklist(tasklist_id)
   REFERENCES tasklists(id)
   ON UPDATE CASCADE
 ) ENGINE=INNODB;
@@ -33,7 +33,7 @@ CREATE TABLE teachers (
   password_digest CHAR(128) NOT NULL,
   salt CHAR(128) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY fk_tasklist(tasklist_id)
+  FOREIGN KEY fk_teacher_tasklist(tasklist_id)
   REFERENCES tasklists(id)
   ON UPDATE CASCADE
 ) ENGINE=INNODB;
