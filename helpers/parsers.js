@@ -67,7 +67,7 @@ exports.parseDeadlines = document => {
       link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
       labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-      due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
+      due: new Date(Date.UTC(dueYear, dueMonth, dueDay, dueHour, dueMinute) - 32400000), // Set in correct UTC
       author: $(el).find('.author').attr('title') || null,
       avatar: $(el).find('.avatar').attr('src') || null
     });
@@ -162,7 +162,7 @@ exports.parseNotification = document => {
   const payload =  {
     title: encodeURI($('.content-block h3').text().delNewlines()),
     author: $('.message-details p:first-child strong').text(),
-    date: new Date(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/))
+    date: new Date(Date.UTC(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/)) - 32400000)
   };
   $('.message-notifications .message-details').remove();
   payload.content = $('.message-notifications').html();
