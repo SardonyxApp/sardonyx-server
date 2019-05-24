@@ -22,7 +22,7 @@ exports.connect = callback => {
       user: process.env.DB_LOGIN,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      timezone: '+09:00'
+      timezone: '+00:00'
     })
     : mysql.createPool({
       host: process.env.DB_HOST,
