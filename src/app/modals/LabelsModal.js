@@ -81,24 +81,6 @@ class LabelsModal extends React.Component {
     } else {
       render = [...subjects, ...categories];
     }
-
-    // const position = () => {
-    //   // Lower half
-    //   if (this.props.modal.y > document.documentElement.clientHeight / 2) {
-    //     return {
-    //       left: this.props.modal.x,
-    //       bottom: document.documentElement.clientHeight - this.props.modal.position.top - 8,
-    //       maxHeight: this.props.modal.position.top - 48
-    //     };
-    //   }
-      
-    //   // Upper half 
-    //   return {
-    //     left: this.props.modal.x,
-    //     top: this.props.modal.bottom + 8,
-    //     maxHeight: document.documentElement.clientHeight - this.props.modal.position.bottom - 48
-    //   };
-    // };
     
 
     return (
