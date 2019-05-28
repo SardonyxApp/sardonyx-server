@@ -311,7 +311,7 @@ exports.parseReplyOfReply = document => {
 
   const files = [];
   $('a').each((i, elem) => {
-    if ($(element).is('[data-file]')) files.push($(elem).attr('href'));
+    if ($(elem).is('[data-file]')) files.push($(elem).attr('href'));
   });
 
   $('.reply').each((i, elem) => {
