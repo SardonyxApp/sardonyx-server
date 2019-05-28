@@ -48,7 +48,7 @@ exports.createDate = (dateString, fullMonth = false) => {
   const day = dateString.match(/\d{1,2}(?=, \d{4})/);
   const month = fullMonth ? exports.getMonth(dateString.match(/\w+(?= \d)/)[0]) : exports.getMonthFromAbbr(dateString.match(/\w{3}(?= {1,2}\d)/)[0]);
   const year = dateString.match(/\d{4}/);
-  return new Date(year, month, day, hour, minute);
+  return new Date(Date.UTC(year, month, day, hour, minute) - 32400000);
 };
 
 /**

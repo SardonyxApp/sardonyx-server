@@ -179,7 +179,7 @@ app.patch('/app/categories', task.updateLabel('categories'));
 // Serve html files 
 app.use(express.static('public'));
 
-app.use('/favicon.ico', express.static(__dirname + '/public/Icon.png'));
+app.use('/favicon.ico', express.static(__dirname + '/public/assets/Icon.png'));
 
 module.exports = app;
 // app.js and server.js are split for testing reasons
