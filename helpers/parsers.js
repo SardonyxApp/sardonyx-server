@@ -69,7 +69,7 @@ exports.parseDeadlines = document => {
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
       due: new Date(Date.UTC(dueYear, dueMonth, dueDay, dueHour, dueMinute) - 32400000), // Set in correct UTC
       author: $(el).find('.author').attr('title') || null,
-      avatar: $(el).find('.avatar').attr('src') || null
+      avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
     });
   });
 
@@ -233,7 +233,8 @@ exports.parseAuthorOnTheSide = document => {
 
   return {
     author: $('.mini-profile .user-name').text().delNewlines(),
-    avatar: $('.mini-profile .avatar').attr('src') || null
+    avatar: $('.mini-profile .avatar').attr('src') || null,
+    avatar: $('.mini-profile .avatar').attr('style') ? $('.mini-profile .avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
   };
 };
 
@@ -290,7 +291,7 @@ exports.parseMessages = document => {
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
-      avatar: $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] || null,
+      avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(el).find('.header').text()),
       files: files,
       comments
@@ -320,7 +321,7 @@ exports.parseReplyOfReply = document => {
       content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
       onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
       author: $(elem).find('.header strong').text(),
-      avatar: $(elem).find('.avatar').attr('src') || null, 
+      avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(elem).find('.header').text()),
       files
     });
@@ -524,11 +525,9 @@ exports.parseStudent = document => {
 exports.parseUser = document => {
   const $ = cheerio.load(document);
 
-  const url = $('.profile-link .avatar').css('background-image');
-
   return {
     id: Number($('body').data('user-id')),
     name: $('.profile-link > a').text().delNewlines(),
-    avatar: url ? url.replace(/^url\(/, '').replace(/\)$/, '') : null
+    avatar: $('.profile-link .avatar').attr('style') ? $('.profile-link .avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
   };
 }
