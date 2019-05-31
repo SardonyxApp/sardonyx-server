@@ -261,7 +261,7 @@ exports.parseMessages = document => {
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] || null, 
+        avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null, 
         date: createDate($(elem).find('.header').text()),
         comments: !!$(elem).find('.show-reply').length, // Boolean
         files
