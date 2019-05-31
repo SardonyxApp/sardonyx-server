@@ -268,9 +268,9 @@ exports.parseMessages = document => {
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.divider').next().find('a:not(.btn)').length) { 
+    if (comments.length === 0 && !!$(el).find('.divider').last().next().find('a:not(.btn)').length) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.divider').next().find('a:not(.btn)').text().match(/\d+/)[0]);
+      comments = Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]);
     }
 
     const files = [];
