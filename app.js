@@ -12,6 +12,8 @@ const upload = multer(); // Used to parse multipart/form-data
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+const jwt = require('jsonwebtoken');
+
 require('dotenv').config(); // Used to parse .env
 
 // Custom helper utilities 
@@ -175,6 +177,11 @@ app.patch('/app/categories', task.updateLabel('categories'));
 /**
  * Public 
  */
+
+app.get('/', (req, res, next) => {
+  if (jwt.decode(req.cookies['Sardonyx-Token']) && req.query.redirect !== 'false') return res.redirect('/app');
+  next();
+});
 
 // Serve html files 
 app.use(express.static('public'));
