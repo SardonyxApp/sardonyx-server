@@ -35,14 +35,14 @@ app.use((req, res, next) => {
  */
 
 // Initial validation
-app.get('/api/validate', auth.createBody, auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
+app.get('/api/validate', auth.createBody, auth.loginToManagebac, auth.initiateStudent, task.loadManagebac, mb.loadDefaults);
 
 // Reissue tokens
 app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.initiateStudent, task.loadManagebac, mb.loadDefaults);
 
 // Create tokens for all Managebac API requests
 app.use('/api', auth.createTokens);
