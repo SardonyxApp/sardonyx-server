@@ -53,7 +53,7 @@ exports.parseDeadlines = document => {
     // Because the date format is different for this one, it uses a different implementation
     const due = $(el).find('.due').text(); // Ex: Wednesday at 8:30 PM
     const dueMinute = due.match(/\d{2}(?= [AP]M)/);
-    const dueHour = due.match(/[AP]M$/) === 'AM' ? due.match(/\d{1,2}(?=:\d{2})/)[0] : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
+    const dueHour = due.match(/[AP]M/)[0] === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
     const dueDay = $(el).find('.day').text(); // Match from icon
     const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
     const dueYear = $(el).find('.date-badge').hasClass('past-due') ? guessPastYear(dueMonth) : guessFutureYear(dueMonth); // listed as upcoming deadline or past deadline
@@ -67,9 +67,9 @@ exports.parseDeadlines = document => {
       link: toSardonyxUrl($(el).find('.title a').attr('href')) || null,
       labels,
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
-      due: new Date(dueYear, dueMonth, dueDay, dueHour, dueMinute),
+      due: new Date(Date.UTC(dueYear, dueMonth, dueDay, dueHour, dueMinute) - 32400000), // Set in correct UTC
       author: $(el).find('.author').attr('title') || null,
-      avatar: $(el).find('.avatar').attr('src') || null
+      avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
     });
   });
 
@@ -162,7 +162,7 @@ exports.parseNotification = document => {
   const payload =  {
     title: encodeURI($('.content-block h3').text().delNewlines()),
     author: $('.message-details p:first-child strong').text(),
-    date: new Date(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/))
+    date: new Date(Date.UTC(date.match(/\d{4}/), getMonth(date.match(/^\w+/)[0]), date.match(/\d{1,2}(?=,)/), date.match(/\d{1,2}(?=:)/), date.match(/\d{2}$/)) - 32400000)
   };
   $('.message-notifications .message-details').remove();
   payload.content = $('.message-notifications').html();
@@ -194,7 +194,7 @@ exports.parseAttachments = document => {
 
   $('.content-block .list-unstyled a').each((i, el) => {
     payload.push({
-      name: $(el).text(),
+      name: encodeURI($(el).text()),
       link: $(el).attr('href')
     });
   });
@@ -233,7 +233,8 @@ exports.parseAuthorOnTheSide = document => {
 
   return {
     author: $('.mini-profile .user-name').text().delNewlines(),
-    avatar: $('.mini-profile .avatar').attr('src') || null
+    avatar: $('.mini-profile .avatar').attr('src') || null,
+    avatar: $('.mini-profile .avatar').attr('style') ? $('.mini-profile .avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
   };
 };
 
@@ -260,7 +261,7 @@ exports.parseMessages = document => {
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('src') || null, 
+        avatar: $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] || null, 
         date: createDate($(elem).find('.header').text()),
         comments: !!$(elem).find('.show-reply').length, // Boolean
         files
@@ -290,7 +291,7 @@ exports.parseMessages = document => {
       content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
       onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
-      avatar: $(el).find('.discussion-content .avatar').attr('src') || null,
+      avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(el).find('.header').text()),
       files: files,
       comments
@@ -311,7 +312,7 @@ exports.parseReplyOfReply = document => {
 
   const files = [];
   $('a').each((i, elem) => {
-    if ($(element).is('[data-file]')) files.push($(elem).attr('href'));
+    if ($(elem).is('[data-file]')) files.push($(elem).attr('href'));
   });
 
   $('.reply').each((i, elem) => {
@@ -320,7 +321,7 @@ exports.parseReplyOfReply = document => {
       content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
       onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
       author: $(elem).find('.header strong').text(),
-      avatar: $(elem).find('.avatar').attr('src') || null, 
+      avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(elem).find('.header').text()),
       files
     });
@@ -376,8 +377,8 @@ exports.parseExperience = document => {
   const $ = cheerio.load(document);
 
   return {
-    description: encodeURIComponent(toPlainText($('h4').eq(1).nextUntil('h4').html())),
-    learningOutcomes: encodeURIComponent(toPlainText($('h4').eq(2).nextUntil('.divider.compact').html())), // does not parse IDs
+    description: encodeURI(toPlainText($('h4').eq(1).nextUntil('h4').html())),
+    learningOutcomes: encodeURI(toPlainText($('h4').eq(2).nextUntil('.divider.compact').html())), // does not parse IDs
     timespan: $('.cas-activity-calendar').text().delNewlines()
   };
 };
@@ -524,11 +525,9 @@ exports.parseStudent = document => {
 exports.parseUser = document => {
   const $ = cheerio.load(document);
 
-  const url = $('.profile-link .avatar').css('background-image');
-
   return {
     id: Number($('body').data('user-id')),
     name: $('.profile-link > a').text().delNewlines(),
-    avatar: url ? url.replace(/^url\(/, '').replace(/\)$/, '') : null
+    avatar: $('.profile-link .avatar').attr('style') ? $('.profile-link .avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
   };
 }
