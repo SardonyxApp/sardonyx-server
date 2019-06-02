@@ -20,6 +20,7 @@ class TaskLabels extends React.Component {
             name: this.props.task.subject_name, 
             color: this.props.task.subject_color
           }}
+          key={this.props.task.subject_id}
           onUpdate={e => {
             // If target is <p>, use coordinates of parent .label
             const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();
@@ -37,6 +38,7 @@ class TaskLabels extends React.Component {
             name: this.props.task.category_name,
             color: this.props.task.category_color
           }}
+          key={this.props.task.category_id}
           onUpdate={e => {
             // If target is <p>, use coordinates of parent .label
             const position = e.target.nodeName === 'DIV' ? e.target.getBoundingClientRect() : e.target.parentNode.getBoundingClientRect();

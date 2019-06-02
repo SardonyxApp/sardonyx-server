@@ -50,7 +50,7 @@ module.exports = (tokens, document) => {
         }, (err, response) => {
           if (err) return console.error(err);
           
-          const $ = cheerio.load(response.body);
+          const $ = cheerio.load(response.body, { decodeEntities: false });
 
           // Parse the description 
           let description = $('label:contains("Details")').next().html(); // For now, since text() omits line breaks
@@ -68,7 +68,7 @@ module.exports = (tokens, document) => {
 
           // Create the database entry 
           tasks.create({
-            name: decodeURIComponent(assignment.title),
+            name: decodeURI(assignment.title),
             description,
             due: assignment.due,
             tasklist_id: tokens.tasklist,

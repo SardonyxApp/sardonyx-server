@@ -21,13 +21,15 @@ exports.connect = callback => {
 	    socketPath: `/cloudsql/${process.env.DB_INSTANCE}`,
       user: process.env.DB_LOGIN,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE
+      database: process.env.DB_DATABASE,
+      timezone: '+09:00'
     })
     : mysql.createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_LOGIN,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE
+      database: process.env.DB_DATABASE,
+      timezone: '+09:00'
     });
 
   console.log(`Created pool. User: ${process.env.DB_LOGIN}@${process.env.DB_HOST || '%'} and Database: ${process.env.DB_DATABASE}`);
