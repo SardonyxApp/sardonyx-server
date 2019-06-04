@@ -12,6 +12,8 @@ const upload = multer(); // Used to parse multipart/form-data
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+const jwt = require('jsonwebtoken');
+
 require('dotenv').config(); // Used to parse .env
 
 // Custom helper utilities 
@@ -33,14 +35,14 @@ app.use((req, res, next) => {
  */
 
 // Initial validation
-app.get('/api/validate', auth.createBody, auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
+app.get('/api/validate', auth.createBody, auth.loginToManagebac, auth.initiateStudent, task.loadManagebac, mb.loadDefaults);
 
 // Reissue tokens
 app.get('/api/login', auth.createBody, auth.loginToManagebac, end200);
 
 // Initial login
 // use upload.none() when it's only text fields
-app.post('/api/login', upload.none(), auth.loginToManagebac, auth.initiateStudent, mb.loadDefaults);
+app.post('/api/login', upload.none(), auth.loginToManagebac, auth.initiateStudent, task.loadManagebac, mb.loadDefaults);
 
 // Create tokens for all Managebac API requests
 app.use('/api', auth.createTokens);
@@ -175,6 +177,11 @@ app.patch('/app/categories', task.updateLabel('categories'));
 /**
  * Public 
  */
+
+app.get('/', (req, res, next) => {
+  if (jwt.decode(req.cookies['Sardonyx-Token']) && req.query.redirect !== 'false') return res.redirect('/app');
+  next();
+});
 
 // Serve html files 
 app.use(express.static('public'));
