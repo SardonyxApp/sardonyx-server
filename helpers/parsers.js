@@ -261,16 +261,16 @@ exports.parseMessages = document => {
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] || null, 
+        avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null, 
         date: createDate($(elem).find('.header').text()),
         comments: !!$(elem).find('.show-reply').length, // Boolean
         files
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.divider').next().find('a:not(.btn)').length) { 
+    if (comments.length === 0 && !!$(el).find('.divider').last().next().find('a:not(.btn)').length) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.divider').next().find('a:not(.btn)').text().match(/\d+/)[0]);
+      comments = Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]);
     }
 
     const files = [];
