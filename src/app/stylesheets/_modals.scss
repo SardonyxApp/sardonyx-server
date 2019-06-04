@@ -71,6 +71,17 @@
   }
 }
 
+// For mobile devices 
+@media only screen and (max-width: 500px) {
+  #settings-modal, #info-modal {
+    width: 80%;
+
+    .section { 
+      padding: 0 !important;
+    }
+  } 
+}
+
 #profile-modal {  
   @extend %small-modal;
 
