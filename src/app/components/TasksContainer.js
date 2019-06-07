@@ -10,8 +10,8 @@ const TaskListCard = props => (
     <h3 className="overview-title">{props.task.name}</h3>
     <p className="overview-description">{props.task.description}</p>
     <div className="overview-dots" style={{ display: props.task.subject_id || props.task.category_id ? '' : 'none'}}>
-      <div class="dot" style={{ backgroundColor: props.task.subject_color, display: props.task.subject_id ? '' : 'none' }}></div>
-      <div class="dot" style={{ backgroundColor: props.task.category_color, display: props.task.category_id ? '' : 'none' }}></div>
+      <div className="dot" style={{ backgroundColor: props.task.subject_color, display: props.task.subject_id ? '' : 'none' }}></div>
+      <div className="dot" style={{ backgroundColor: props.task.category_color, display: props.task.category_id ? '' : 'none' }}></div>
     </div>
   </div>
 );

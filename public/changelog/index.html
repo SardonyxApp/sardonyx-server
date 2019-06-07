@@ -20,81 +20,119 @@
   <div id="content">
     <div>
       <h2>Latest version</h2>
-      <h3 class="version">v1.0.1-beta.1</h3>
-      <p>Released April 23 2019</p>
-      <h3>Features</h3>
-      <ul>
-        <li>Enabled automatic syncing with Managebac.</li>
-        <li>Enabled users to edit label colors.</li>
-      </ul>
-      <h3>Bugs</h3>
-      <ul>
-        <li>Addressed an issue where UI panels were not positioned properly.</li>
-      </ul>
+
+      <div>
+        <h3 class="version">v1.0.3-beta.1</h3>
+        <p>Released June 7 2019</p>
+        <h3>Features</h3>
+        <ul>
+          <li>Update the Managebac API by a little.</li>
+        </ul>
+        <h3>Bugs</h3>
+        <ul>
+          <li>Addressed styling issues for mobile clients with small screens.</li>
+          <li>Addressed an issue with non-English character encoding for synced Managebac tasks.</li>
+          <li>Addressed an issue where the due date was stored incorrectly for synced Managebac tasks.</li>
+          <li>Addressed an issue where user avatars were not loaded in the Managebac API.</li>
+          <li>Addressed an issue where the favicon was not being fetched properly.</li>
+          <li>Addressed other minor issues.</li>
+        </ul>
+        <h3>Security</h3>
+        <ul>
+          <li>Patched vulnerabiliites caused by developer dependencies.</li>
+        </ul>
+        <h3>Miscellaneous</h3>
+        <ul>
+          <li>Set up a redirect from root to app when the user carries a valid cookie.</li>
+        </ul>
+      </div>
 
       <h2>Legacy versions</h2>
-      <h3 class="version">v1.0.2-beta.1</h3>
-      <p>Released April 19 2019</p>
-      <h3>Features</h3>
-      <ul>
-        <li>Enabled real time updates of tasklist contents.</li>
-      </ul>
-      <h3>Security</h3>
-      <ul>
-        <li>Patched vulnerabilities caused by developer dependencies. (<a href="https://nodesecurity.io/advisories/755">#755</a>, <a href="https://nodesecurity.io/advisories/803">#803</a>, <a href="https://nodesecurity.io/advisories/813">#813</a>)</li>
-      </ul>
-      <h3>Miscellaneous</h3>
-      <ul>
-        <li>Updated homepage content.</li>
-        <li>Updated TaskFilter UX.</li>
-      </ul>
 
-      <h3 class="version">v1.0.0-beta.1</h3>
-      <p>Released April 7 2019</p>
-      <h3>Features</h3>
-      <ul>
-        <li>Enabled the Managebac API to retrieve the user's name and avatar URL on default load. (Endpoints: GET /api/validate, POST /api/login, GET /api/dashboard)</li>
-      </ul>
-      <h3>Bugs</h3>
-      <ul>
-        <li>Addressed an issue where the sign in button was not displayed correctly for WebKit browsers on mobile and table devices.</li>
-        <li>Addressed an issue where the "add label" modal did not position itself correctly when it was displayed on top of the settings panel.</li>
-        <li>Addressed an issue in the Managebac API where the file names of attachments were not sent.</li>
-      </ul>
-      <h3>Security</h3>
-      <ul>
-        <li>Addressed a critical issue where there was no tasklist authentication when creating, updating, and deleting tasks and labels.</li>
-      </ul>
-      <h3>Miscellaneous</h3>
-      <ul>
-        <li>Added basic unit tests for loading tasklist related information.</li>
-      </ul>
+      <div>
+        <h3 class="version">v1.0.2-beta.1</h3>
+        <p>Released April 23 2019</p>
+        <h3>Features</h3>
+        <ul>
+          <li>Enabled automatic syncing with Managebac.</li>
+          <li>Enabled users to edit label colors.</li>
+        </ul>
+      </div>
 
-      <h3 class="version">v1.0.0-alpha.2</h3>
-      <p>Released April 6 2019</p>
-      <h3>Experimental features</h3>
-      <ul>
-        <li>For newly registered students and newly logged in teachers, the info panel will be displayed automatically.</li>
-      </ul>
-      <h3>Bugs</h3>
-      <ul>
-        <li>Addressed an issue where the "change password" (for teachers only) and "log out" icons navigated to their respective targets improperly.</li>
-      </ul>
-      <h3>Security</h3>
-      <ul>
-        <li>Addressed an issue where Safari and some mobile browsers did not automatically use HTTPS over HTTP.</li>
-        <li>Addressed an issue where the application was prone to CSRF attacks due to loose CORS settings. This may cause a problem with API compatibility for mobile applications.</li>
-      </ul>
-      <h3>Miscellaneous</h3>
-      <ul>
-        <li>Created the Home, About, and Download pages.</li>
-      </ul>
+      <div>
+        <h3>Bugs</h3>
+        <ul>
+          <li>Addressed an issue where UI panels were not positioned properly.</li>
+        </ul>
+        <h3 class="version">v1.0.1-beta.1</h3>
+        <p>Released April 19 2019</p>
+        <h3>Features</h3>
+        <ul>
+          <li>Enabled real time updates of tasklist contents.</li>
+        </ul>
+        <h3>Security</h3>
+        <ul>
+          <li>Patched vulnerabilities caused by developer dependencies. (<a href="https://nodesecurity.io/advisories/755">#755</a>, <a href="https://nodesecurity.io/advisories/803">#803</a>, <a href="https://nodesecurity.io/advisories/813">#813</a>)</li>
+        </ul>
+        <h3>Miscellaneous</h3>
+        <ul>
+          <li>Updated homepage content.</li>
+          <li>Updated TaskFilter UX.</li>
+        </ul>
+      </div>
 
-      <h3 class="version">v1.0.0-alpha.1</h3>
-      <p>Released March 29 2019</p>
-      <ul>
-        <li>Application first built for alpha testing.</li>
-      </ul>
+      <div>
+        <h3 class="version">v1.0.0-beta.1</h3>
+        <p>Released April 7 2019</p>
+        <h3>Features</h3>
+        <ul>
+          <li>Enabled the Managebac API to retrieve the user's name and avatar URL on default load. (Endpoints: GET /api/validate, POST /api/login, GET /api/dashboard)</li>
+        </ul>
+        <h3>Bugs</h3>
+        <ul>
+          <li>Addressed an issue where the sign in button was not displayed correctly for WebKit browsers on mobile and table devices.</li>
+          <li>Addressed an issue where the "add label" modal did not position itself correctly when it was displayed on top of the settings panel.</li>
+          <li>Addressed an issue in the Managebac API where the file names of attachments were not sent.</li>
+        </ul>
+        <h3>Security</h3>
+        <ul>
+          <li>Addressed a critical issue where there was no tasklist authentication when creating, updating, and deleting tasks and labels.</li>
+        </ul>
+        <h3>Miscellaneous</h3>
+        <ul>
+          <li>Added basic unit tests for loading tasklist related information.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="version">v1.0.0-alpha.2</h3>
+        <p>Released April 6 2019</p>
+        <h3>Experimental features</h3>
+        <ul>
+          <li>For newly registered students and newly logged in teachers, the info panel will be displayed automatically.</li>
+        </ul>
+        <h3>Bugs</h3>
+        <ul>
+          <li>Addressed an issue where the "change password" (for teachers only) and "log out" icons navigated to their respective targets improperly.</li>
+        </ul>
+        <h3>Security</h3>
+        <ul>
+          <li>Addressed an issue where Safari and some mobile browsers did not automatically use HTTPS over HTTP.</li>
+          <li>Addressed an issue where the application was prone to CSRF attacks due to loose CORS settings. This may cause a problem with API compatibility for mobile applications.</li>
+        </ul>
+        <h3>Miscellaneous</h3>
+        <ul>
+          <li>Created the Home, About, and Download pages.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="version">v1.0.0-alpha.1</h3>
+        <p>Released March 29 2019</p>
+        <ul>
+          <li>Application first built for alpha testing.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </body>
