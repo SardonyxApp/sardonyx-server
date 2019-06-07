@@ -52,8 +52,14 @@ exports.parseDeadlines = document => {
 
     // Because the date format is different for this one, it uses a different implementation
     const due = $(el).find('.due').text(); // Ex: Wednesday at 8:30 PM
+
+    // If hour is 12 AM or PM, convert to 0 AM or 0 PM for accurate processing
+    let hour = due.match(/\d{1,2}(?=:\d{2})/)[0];
+    hour = hour % 12 === 0 ? 0 : hour;
+
+    // Build each component of time
     const dueMinute = due.match(/\d{2}(?= [AP]M)/);
-    const dueHour = due.match(/[AP]M/)[0] === 'AM' ? Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) : Number(due.match(/\d{1,2}(?=:\d{2})/)[0]) + 12; // if PM, add 12 hours
+    const dueHour = due.match(/[AP]M/)[0] === 'AM' ? Number(hour) : Number(hour) + 12; // if PM, add 12 hours
     const dueDay = $(el).find('.day').text(); // Match from icon
     const dueMonth = getMonthFromAbbr($(el).find('.month').text()); // Match from icon
     const dueYear = $(el).find('.date-badge').hasClass('past-due') ? guessPastYear(dueMonth) : guessFutureYear(dueMonth); // listed as upcoming deadline or past deadline
@@ -261,16 +267,16 @@ exports.parseMessages = document => {
         content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
-        avatar: $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] || null, 
+        avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null, 
         date: createDate($(elem).find('.header').text()),
         comments: !!$(elem).find('.show-reply').length, // Boolean
         files
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.divider').next().find('a:not(.btn)').length) { 
+    if (comments.length === 0 && !!$(el).find('.divider').last().next().find('a:not(.btn)').length) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.divider').next().find('a:not(.btn)').text().match(/\d+/)[0]);
+      comments = Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]);
     }
 
     const files = [];

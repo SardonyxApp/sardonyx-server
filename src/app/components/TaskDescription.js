@@ -72,7 +72,7 @@ class TaskDescription extends React.Component {
   }
 
   render() {
-    const desc = this.props.description ? this.props.description.replace(/https?:\/\/[^\s/$.?#].[^\s]*/g, '<a href="$&" style="cursor:pointer">$&</a>') : '\n'; 
+    const desc = this.props.description ? this.props.description.replace(/https?:\/\/[^\s/$.?#&;][^\s]*/g, '<a href="$&" style="cursor:pointer">$&</a>') : '\n'; 
     return (
       <React.Fragment>
         <div id="task-description" className="taskinfo-component">
