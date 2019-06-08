@@ -183,7 +183,7 @@ exports.parseNotification = document => {
 exports.parseDetails = document => {
   const $ = cheerio.load(document);
   try {
-    return $('label:contains("Details")').next().html().delNewlines(); // This is potentially dangerous, XSS
+    return $('label:contains("Details")').next().html().delNewlines();
   } catch (e) {
     return null; // If the assignment/event has no details, it will throw an error which will be catched here
   }
@@ -264,7 +264,7 @@ exports.parseMessages = document => {
 
       comments.push({
         id: matchNumbers($(elem).attr('id')),
-        content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+        content: $(elem).find('.body .fix-body-margins').html(),
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
         avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null, 
@@ -274,9 +274,9 @@ exports.parseMessages = document => {
       });
     });
 
-    if (comments.length === 0 && !!$(el).find('.divider').last().next().find('a:not(.btn)').length) { 
+    if (comments.length === 0) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]);
+      comments = $(el).find('.divider').last().next().find('a:not(.btn)').length ? Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]) : 0;
     }
 
     const files = [];
@@ -294,7 +294,7 @@ exports.parseMessages = document => {
       id: matchNumbers($(el).attr('id')),
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
-      content: $(el).find('.discussion-content .fix-body-margins').html(), // This is potentially dangerous, XSS
+      content: $(el).find('.discussion-content .fix-body-margins').html(),
       onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
       avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
@@ -324,7 +324,7 @@ exports.parseReplyOfReply = document => {
   $('.reply').each((i, elem) => {
     comments.push({
       id: matchNumbers($(elem).attr('id')),
-      content: $(elem).find('.body .fix-body-margins').html(), // This is potentially dangerous, XSS
+      content: $(elem).find('.body .fix-body-margins').html(),
       onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
       author: $(elem).find('.header strong').text(),
       avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
@@ -450,7 +450,7 @@ exports.parseReflections = document => {
 
     if ($(el).hasClass('journal-evidence')) { // Reflection
       obj.type = 'reflection';
-      obj.content = encodeURI($(el).find('.fix-body-margins').html()); // This is potentially dangerous, XSS
+      obj.content = encodeURI($(el).find('.fix-body-margins').html());
     } else if ($(el).hasClass('website-evidence')) { // Link
       obj.type = 'link';
       obj.title = encodeURI($(el).find('.body a').text().delNewlines());
