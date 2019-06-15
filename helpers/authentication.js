@@ -113,9 +113,10 @@ exports.loginToManagebac = (req, res, next) => {
       req.document = response.body;
       return next();
     }
-
+    
     // Nonexistent or incorrect redirection, unauthorized
-    if (req.type === 'api') res.status(401).send('The login was rejected by Managebac.');
+    if (response.request.uri.href.includes('status.managebac.com')) res.status(503).send('Managebac is under maintenance.');
+    else if (req.type === 'api') res.status(401).send('The login was rejected by Managebac.');
     else res.redirect('/login?invalid=true'); 
   });
 };
