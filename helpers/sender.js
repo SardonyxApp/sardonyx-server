@@ -43,6 +43,7 @@ module.exports = (req, res, next) => {
     }
 
     let option = (() => {
+      if (response.request.uri.href.includes('status.managebac.com')) return 3;
       if (response.statusCode === 401) return 1;
       if (response.statusCode === 404) return 0;
       if (response.statusCode === 500) return 0;
@@ -72,6 +73,7 @@ module.exports = (req, res, next) => {
     // 0 ... 400 Bad Request  
     // 1 ... 401 Unauthorized
     // 2 ... 200 OK
+    // 3 ... 503 Bad Gateway (Maintenance)
 
     // Successful requests
     if (option === 2) {
@@ -93,6 +95,7 @@ module.exports = (req, res, next) => {
 
     // Nonexistent or invalid request 
     if (option === 1) res.status(401).send('Access was rejected by Managebac.');
+    else if (option === 3) res.status(503).send('Managebac is under maintenance.');
     else res.status(400).send('There was an error accessing Managebac.'); 
   });
 }
