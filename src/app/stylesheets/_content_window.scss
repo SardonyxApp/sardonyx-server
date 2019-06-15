@@ -132,7 +132,7 @@
     display: inline-block;
   }
 
-  svg {
+  & > svg {
     padding: 8px 0; // padding 8px to vertically center element without any labels 
   }
 }
