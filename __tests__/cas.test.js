@@ -45,7 +45,7 @@ describe('Load CAS', () => {
         .get('/api/cas')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const cas = JSON.parse(response.headers['managebac-data']).cas;
+          const cas = response.body.cas;
           cas.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -59,7 +59,7 @@ describe('Load CAS', () => {
             expect(typeof item.commentCount).toBe('number');
             expect(typeof item.reflectionCount).toBe('string');
           });
-          const documents = JSON.parse(response.headers['managebac-data']).documents;
+          const documents = response.body.documents;
           documents.forEach(item => {
             expect(typeof item.title).toBe('string');
             expect(typeof item.link).toBe('string');
@@ -120,7 +120,7 @@ describe('Load CAS', () => {
         .get(`/api/cas/${process.env.CAS_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const cas = JSON.parse(response.headers['managebac-data']).cas;
+          const cas = response.body.cas;
           expect(typeof cas.id).toBe('number');
           expect(isNaN(cas.id)).toBeFalsy();
           expect(typeof cas.title).toBe('string');
@@ -188,7 +188,7 @@ describe('Load CAS', () => {
         .get(`/api/cas/${process.env.CAS_ID}/answers`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const answers = JSON.parse(response.headers['managebac-data']).answers;
+          const answers = response.body.answers;
           expect(Array.isArray(answers)).toBeTruthy();
           expect(answers.length).toBe(3);
           answers.forEach(item => {
@@ -249,7 +249,7 @@ describe('Load CAS', () => {
         .get(`/api/cas/${process.env.CAS_ID}/reflections`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const reflections = JSON.parse(response.headers['managebac-data']).reflections;
+          const reflections = response.body.reflections;
           reflections.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -324,7 +324,7 @@ describe('Load CAS', () => {
         .get(`/api/cas/${process.env.CAS_ID}/learning_outcomes`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const learningOutcomes = JSON.parse(response.headers['managebac-data']).learningOutcomes;
+          const learningOutcomes = response.body.learningOutcomes;
           learningOutcomes.forEach(outcome => {
             expect(typeof outcome.id).toBe('number');
             expect(typeof outcome.name).toBe('string');

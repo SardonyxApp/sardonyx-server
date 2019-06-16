@@ -55,7 +55,7 @@ describe('Load class', () => {
         .get(`/api/class/${process.env.CLASS_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          const deadlines = response.body.deadlines;
           deadlines.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -122,7 +122,7 @@ describe('Load class', () => {
         .get(`/api/class/${process.env.CLASS_ID}/assignments`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const dataObj = JSON.parse(response.headers['managebac-data']);
+          const dataObj = response.body;
           dataObj.upcoming.concat(dataObj.completed).forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -189,7 +189,7 @@ describe('Load class', () => {
         .get(`/api/class/${process.env.CLASS_ID}/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          const messages = response.body.messages;
           messages.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -204,7 +204,7 @@ describe('Load class', () => {
             expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
             // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });
@@ -259,7 +259,7 @@ describe('Load class', () => {
         .get(`/api/class/${process.env.CLASS_ID}/messages?pageParam=${process.env.CLASS_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          const messages = response.body.messages;
           messages.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -275,7 +275,7 @@ describe('Load class', () => {
             expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
             // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });

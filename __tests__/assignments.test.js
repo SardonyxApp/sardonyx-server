@@ -64,7 +64,7 @@ describe('Load assignment or event', () => {
         .get(`/api/class/${process.env.CLASS_ID}/assignments/${process.env.CLASS_ASSIGNMENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const assignment = JSON.parse(response.headers['managebac-data']).assignment;
+          const assignment = response.body.assignment;
           expect(assignment.id === null).toBeTruthy();
           expect(typeof assignment.title).toBe('string');
           expect(assignment.link).toBeNull();
@@ -152,7 +152,7 @@ describe('Load assignment or event', () => {
         .get(`/api/event/${process.env.EVENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const assignment = JSON.parse(response.headers['managebac-data']).assignment;
+          const assignment = response.body.assignment;
           expect(assignment.id === null).toBeTruthy();
           expect(typeof assignment.title).toBe('string');
           expect(assignment.link).toBeNull();
@@ -253,7 +253,7 @@ describe('Load assignment or event', () => {
         .get(`/api/group/${process.env.GROUP_ID}/events/${process.env.GROUP_EVENT_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const assignment = JSON.parse(response.headers['managebac-data']).assignment;
+          const assignment = response.body.assignment;
           expect(assignment.id === null).toBeTruthy();
           expect(typeof assignment.title).toBe('string');
           expect(assignment.link).toBeNull();

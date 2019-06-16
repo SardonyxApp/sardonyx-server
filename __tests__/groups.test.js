@@ -55,7 +55,7 @@ describe('Load group', () => {
         .get(`/api/group/${process.env.GROUP_ID}/overview`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          const deadlines = response.body.deadlines;
           deadlines.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -122,7 +122,7 @@ describe('Load group', () => {
         .get(`/api/group/${process.env.GROUP_ID}/messages`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          const messages = response.body.messages;
           messages.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -137,7 +137,7 @@ describe('Load group', () => {
             expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
             // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });
@@ -192,7 +192,7 @@ describe('Load group', () => {
         .get(`/api/group/${process.env.GROUP_ID}/messages?pageParam=${process.env.GROUP_MESSAGE_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const messages = JSON.parse(response.headers['managebac-data']).messages;
+          const messages = response.body.messages;
           messages.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -207,7 +207,7 @@ describe('Load group', () => {
             expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
             // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });
