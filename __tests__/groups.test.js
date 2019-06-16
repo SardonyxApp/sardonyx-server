@@ -134,7 +134,8 @@ describe('Load group', () => {
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(Array.isArray(item.files)).toBeTruthy();
-            expect(typeof item.comments).toBe('number');
+            expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
+            // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
@@ -203,7 +204,8 @@ describe('Load group', () => {
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
             expect(Array.isArray(item.files)).toBeTruthy();
-            expect(typeof item.comments).toBe('number');
+            expect(typeof item.comments === 'number' || (Array.isArray(item.comments) && item.comments.length === 0)).toBeTruthy(); 
+            // When all class messages do not have comments, the number of comments are not displayed. Due to this, the API will return an empty array.
           });
           expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
           done();
