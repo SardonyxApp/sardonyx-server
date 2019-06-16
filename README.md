@@ -74,7 +74,7 @@ GET /api/validate
 
 Required: `Login-Token` header with `login` and `password` for `https://kokusaiib.managebac.com`
 
-Returns: `defaults` array containing upcoming deadlines in the dashboard page in the `Managebac-Data` header
+Returns: `defaults` array containing upcoming deadlines in the dashboard page in the body
 
 #### Validate login based on multipart form 
 
@@ -84,7 +84,7 @@ POST /api/login
 
 Required: multipart form in request body with `login` and `password` for `https://kokusaiib.managebac.com`
 
-Returns: `defaults` array containing upcoming deadlines in the dashboard page in the `Managebac-Data` header
+Returns: `defaults` array containing upcoming deadlines in the dashboard page in the body
 
 #### Reissue Managebac cookies based on token 
 
@@ -182,7 +182,7 @@ GET /api/dashboard
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
-Returns: `deadlines` object containing upcoming deadlines in the dashboard page in the `Managebac-Data` header 
+Returns: `deadlines` object containing upcoming deadlines in the dashboard page in the body 
 
 #### Load class 
 
@@ -192,7 +192,7 @@ Load class overview
 GET /api/class/:classId/overview
 ```
 
-Returns: the `deadlines` object containing upcoming deadlines in the dashboard page in the `Managebac-Data` header
+Returns: the `deadlines` object containing upcoming deadlines in the dashboard page in the body
 
 Load class assignments 
 
@@ -200,7 +200,7 @@ Load class assignments
 GET /api/class/:classId/assignments
 ```
 
-Returns the `assignments` object in the `Managebac-Data` header
+Returns the `assignments` object in the body
 
 ```typescript
 {
@@ -246,7 +246,7 @@ GET /api/class/:classId/messages?pageParam=:pageParam
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
-Returns: `meesages` object and number of pages in the `Managebac-Data` header
+Returns: `meesages` object and number of pages in the body
 
 #### Load group
 
@@ -255,7 +255,7 @@ Load group overview
 GET /api/group/:groupId/overview
 ```
 
-Returns: `deadlines` object containing upcoming deadlines in the `Managebac-Data` header 
+Returns: `deadlines` object containing upcoming deadlines in the body 
 
 Load group messages
 
@@ -266,7 +266,7 @@ GET /api/group/:groupId/messages
 GET /api/group/:groupId/messages?pageParam=:pageParam
 ```
 
-Returns: `messages` array array containing upcoming deadlines in the `Managebac-Data` header 
+Returns: `messages` array array containing upcoming deadlines in the body 
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
@@ -298,7 +298,7 @@ GET /api/group/:groupId/events/:eventId
 
 Required: `Login-Token` header with JSON containing `cfduid` and `managebacSession` properties
 
-Returns: `assignment` object in the `Managebac-Data` header
+Returns: `assignment` object in the body
 
 ```typescript 
 {
@@ -357,7 +357,7 @@ Load single class message
 GET /api/class/:classId/messages/:messageId
 ```
 
-Returns: `message` object in the `Managebac-Data` header
+Returns: `message` object in the body
 
 Load single group message 
 
@@ -365,7 +365,7 @@ Load single group message
 GET /api/group/:groupId/messages/:messageId
 ```
 
-Returns: `message` object in the `Managebac-Data` header
+Returns: `message` object in the body
 
 Load comments to a comment message
 
@@ -567,7 +567,7 @@ GET /api/notification
 GET /api/notification?pageId=:pageId
 ```
 
-Returns: `notifications` object and number of pages in the `Managebac-Data` header 
+Returns: `notifications` object and number of pages in the body 
 
 ```typescript
 {
@@ -592,7 +592,7 @@ Load single notification
 GET /api/notification/:notificationId
 ```
 
-Returns: `notification` object in the `Managebac-Data` header 
+Returns: `notification` object in the body 
 
 ```typescript
 {
@@ -615,7 +615,7 @@ Load CAS worksheet
 GET /api/cas 
 ```
 
-Returns: `cas` object in the `Managebac-Data` header 
+Returns: `cas` object in the body 
 
 ```typescript
 {
@@ -653,7 +653,7 @@ Load CAS experience overview
 GET /api/cas/:casId/overview
 ```
 
-Returns extended `cas` object in the `Managebac-Data` header 
+Returns extended `cas` object in the body 
 
 ```typescript 
 {
@@ -682,7 +682,7 @@ Load CAS questions and answers
 GET /api/cas/:casId/answers
 ```
 
-Returns: `answers` object in the `Managebac-Data` header 
+Returns: `answers` object in the body 
 
 ```typescript
 {
@@ -703,7 +703,7 @@ Load CAS reflections and evidences
 GET /api/cas/:casId/reflections
 ```
 
-Returns `reflections` object in the `Managebac-Data` header
+Returns `reflections` object in the body
 
 ```typescript
 {
