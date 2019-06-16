@@ -160,8 +160,8 @@ app.delete('/app/categories', task.deleteLabel('categories'));
 
 app.post('/app/user/subjects', task.changeUserLabel('subjects', 'add'));
 app.delete('/app/user/subjects', task.changeUserLabel('subjects', 'delete'));
-app.post('/app/user/subjects', task.changeUserLabel('categories', 'add'));
-app.delete('/app/user/subjects', task.changeUserLabel('categories', 'delete'));
+app.post('/app/user/categories', task.changeUserLabel('categories', 'add'));
+app.delete('/app/user/categories', task.changeUserLabel('categories', 'delete'));
 app.patch('/app/user/tasklist', task.changeTeacherTasklist);
 
 // Data with JSON body 
