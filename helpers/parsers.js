@@ -276,7 +276,7 @@ exports.parseMessages = document => {
 
     if (comments.length === 0) { 
       // No comments attached, however there may be an indication of the number of comments
-      comments = $(el).find('.divider').last().next().find('a:not(.btn)').length ? Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]) : 0;
+      comments = $(el).find('.divider').last().next().find('a:not(.btn)').length ? Number($(el).find('.divider').last().next().find('a:not(.btn)').text().match(/\d+/)[0]) : [];
     }
 
     const files = [];
