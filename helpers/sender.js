@@ -38,7 +38,7 @@ module.exports = (req, res, next) => {
   }, (err, response) => {
     if (err) {
       console.error(err);
-      res.status(502).end();
+      res.status(502).json({ error: 'There was an error making the Managebac request.' });
       return;
     }
 
@@ -94,8 +94,8 @@ module.exports = (req, res, next) => {
     }
 
     // Nonexistent or invalid request 
-    if (option === 1) res.status(401).send('Access was rejected by Managebac.');
-    else if (option === 3) res.status(503).send('Managebac is under maintenance.');
-    else res.status(400).send('There was an error accessing Managebac.'); 
+    if (option === 1) res.status(401).json({ error: 'Access was rejected by Managebac.' });
+    else if (option === 3) res.status(503).json({ error: 'Managebac is under maintenance.' });
+    else res.status(400).json({ error: 'There was an error accessing Managebac.' }); 
   });
 }
