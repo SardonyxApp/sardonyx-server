@@ -33,7 +33,7 @@ exports.createBody = (req, res, next) => {
     next();
   } else {
     // The request did not contain a login-token, unauthorize them before sending useless requests
-    res.status(401).send('The request did not contain the necessary credentials.');
+    res.status(401).json({ error: 'The request did not contain the necessary credentials.' });
   }
 };
 
@@ -66,7 +66,7 @@ exports.createTokens = (req, res, next) => {
     next();
   } else {
     // The request did not contain token information, redirect them to reissue
-    res.status(401).send('The request did not contain the necessary credentials.');
+    res.status(401).json({ error: 'The request did not contain the necessary credentials.' });
   }
 };
 
@@ -89,7 +89,7 @@ exports.loginToManagebac = (req, res, next) => {
   }, (err, response) => {
     if (err) {
       console.error(err);
-      res.status(502).send('There was an error connecting to Managebac. ' + err);
+      res.status(502).json({ error: 'There was an error connecting to Managebac. ' + err });
       return;
     }
 
@@ -115,8 +115,8 @@ exports.loginToManagebac = (req, res, next) => {
     }
     
     // Nonexistent or incorrect redirection, unauthorized
-    if (response.request.uri.href.includes('status.managebac.com')) res.status(503).send('Managebac is under maintenance.');
-    else if (req.type === 'api') res.status(401).send('The login was rejected by Managebac.');
+    if (response.request.uri.href.includes('status.managebac.com')) res.status(503).json({ error: 'Managebac is under maintenance.' });
+    else if (req.type === 'api') res.status(401).json({ error: 'The login was rejected by Managebac.' });
     else res.redirect('/login?invalid=true'); 
   });
 };
@@ -185,7 +185,7 @@ exports.initiateStudent = (req, res, next) => {
     next();
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error accessing the database. ' + err });
   });
 };
 
@@ -228,7 +228,7 @@ exports.initiateTeacher = (req, res, next) => {
     }
   }).catch(err => {
     console.error(err);
-    res.status(500).end('There was an error accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error accessing the database. ' + err });
   });
 };
 
@@ -287,6 +287,6 @@ exports.changePassword = (req, res) => {
     req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 };
