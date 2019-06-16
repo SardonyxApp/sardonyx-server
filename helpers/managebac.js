@@ -74,20 +74,13 @@ exports.createUrl = (resource, subresource, subitem) => {
  * @param {Object} res 
  */
 exports.loadDefaults = (req, res) => {
-  try {
-    res.append('Managebac-Data', JSON.stringify({
-      deadlines: parser.parseDeadlines(req.document),
-      classes: parser.parseClasses(req.document),
-      groups: parser.parseGroups(req.document),
-      notificationCount: parser.parseNotificationCount(req.document),
-      user: parser.parseUser(req.document)
-    }));
-  } catch(e) {
-    console.error(e);
-  }
-  
-
-  res.status(200).end();
+  res.json({
+    deadlines: parser.parseDeadlines(req.document),
+    classes: parser.parseClasses(req.document),
+    groups: parser.parseGroups(req.document),
+    notificationCount: parser.parseNotificationCount(req.document),
+    user: parser.parseUser(req.document)
+  });
 };
 
 /**
@@ -96,11 +89,9 @@ exports.loadDefaults = (req, res) => {
  * @param {Object} res 
  */
 exports.loadOverview = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     deadlines: parser.parseDeadlines(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -110,12 +101,10 @@ exports.loadOverview = (req, res) => {
  */
 exports.loadAssignments = (req, res) => {
   const arr = parser.parseDeadlines(req.document);
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     upcoming: arr.filter(val => val.due.getTime() >= new Date().getTime()),
     completed: arr.filter(val => val.due.getTime() < new Date().getTime())
-  }));
-
-  res.status(200).end();
+  });
 };
 
 
@@ -125,12 +114,10 @@ exports.loadAssignments = (req, res) => {
  * @param {Object} res 
  */
 exports.loadMessages = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     messages: parser.parseMessages(req.document),
     numberOfPages: parser.parseNumberOfPages(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -139,16 +126,14 @@ exports.loadMessages = (req, res) => {
  * @param {Object} res 
  */
 exports.loadAssignment = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     assignment: Object.assign(parser.parseDeadlines(req.document)[0], {
       details: parser.parseDetails(req.document),
       attachments: parser.parseAttachments(req.document),
       dropbox: parser.parseDropbox(req.document),
       messages: parser.parseMessages(req.document)
     }, parser.parseAuthorOnTheSide(req.document))
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -157,11 +142,9 @@ exports.loadAssignment = (req, res) => {
  * @param {Object} res 
  */
 exports.loadMessage = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     message: parser.parseMessages(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -192,11 +175,9 @@ exports.loadReplyOfReply = (req, res) => {
     .replace(/\\\\/g, '') // remove unnecessary backslashes 
     .replace(/\\(?=['"\/])/g, '');
 
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     replyOfReply: parser.parseReplyOfReply(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -276,12 +257,10 @@ exports.craftReply = (req, res, next) => {
  * @param {Object} res 
  */
 exports.loadNotifications = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     notifications: parser.parseNotifications(req.document),
     numberOfPages: parser.parseNumberOfPages(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -290,11 +269,9 @@ exports.loadNotifications = (req, res) => {
  * @param {Object} res 
  */
 exports.loadNotification = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     notification: parser.parseNotification(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -303,12 +280,10 @@ exports.loadNotification = (req, res) => {
  * @param {Object} res 
  */
 exports.loadCas = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     cas: parser.parseCas(req.document),
     documents: parser.parseDropbox(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -317,11 +292,9 @@ exports.loadCas = (req, res) => {
  * @param {Object} res 
  */
 exports.loadExperience = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     cas: Object.assign(parser.parseCas(req.document)[0], parser.parseExperience(req.document))
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -330,11 +303,9 @@ exports.loadExperience = (req, res) => {
  * @param {Object} res 
  */
 exports.loadAnswers = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     answers: parser.parseAnswers(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -363,11 +334,9 @@ exports.craftAnswers = (req, res, next) => {
  * @param {Object} res 
  */
 exports.loadReflections = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     reflections: parser.parseReflections(req.document)
-  }));
-
-  res.status(200).end();
+  });
 };
 
 /**
@@ -409,8 +378,7 @@ exports.craftReflection = (req, res, next) => {
  * @param {Object} res 
  */
 exports.loadLearningOutcomes = (req, res) => {
-  res.append('Managebac-Data', JSON.stringify({
+  res.json({
     learningOutcomes: parser.parseLearningOutcomes(req.document)
-  }));
-  res.status(200).end();
+  });
 };

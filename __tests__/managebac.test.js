@@ -27,7 +27,7 @@ describe('Load default', () => {
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          const deadlines = response.body.deadlines;
           deadlines.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -49,7 +49,7 @@ describe('Load default', () => {
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          const classes = JSON.parse(response.headers['managebac-data']).classes;
+          const classes = response.body.classes;
           classes.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -65,7 +65,7 @@ describe('Load default', () => {
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          const groups = JSON.parse(response.headers['managebac-data']).groups;
+          const groups = response.body.groups;
           groups.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -81,7 +81,7 @@ describe('Load default', () => {
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
+          const notificationCount = response.body.notificationCount;
           expect(typeof notificationCount).toBe('number');
           done();
         });
@@ -92,7 +92,7 @@ describe('Load default', () => {
         .get('/api/validate')
         .set('Login-Token', `{"login":"${process.env.LOGIN}","password":"${process.env.PASSWORD}"}`)
         .then(response => {
-          const user = JSON.parse(response.headers['managebac-data']).user;
+          const user = response.body.user;
           expect(typeof user.id).toBe('number');
           expect(isNaN(user.id)).toBeFalsy();
           expect(typeof user.name).toBe('string');
@@ -133,7 +133,7 @@ describe('Load default', () => {
           .field('login', process.env.LOGIN)
           .field('password', process.env.PASSWORD)
           .then(response => {
-            const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+            const deadlines = response.body.deadlines;
             deadlines.forEach(item => {
               expect(typeof item.id).toBe('number');
               expect(isNaN(item.id)).toBeFalsy();
@@ -157,7 +157,7 @@ describe('Load default', () => {
           .field('login', process.env.LOGIN)
           .field('password', process.env.PASSWORD)
           .then(response => {
-            const classes = JSON.parse(response.headers['managebac-data']).classes;
+            const classes = response.body.classes;
             classes.forEach(item => {
               expect(typeof item.id).toBe('number');
               expect(isNaN(item.id)).toBeFalsy();
@@ -175,7 +175,7 @@ describe('Load default', () => {
           .field('login', process.env.LOGIN)
           .field('password', process.env.PASSWORD)
           .then(response => {
-            const groups = JSON.parse(response.headers['managebac-data']).groups;
+            const groups = response.body.groups;
             groups.forEach(item => {
               expect(typeof item.id).toBe('number');
               expect(isNaN(item.id)).toBeFalsy();
@@ -193,7 +193,7 @@ describe('Load default', () => {
           .field('login', process.env.LOGIN)
           .field('password', process.env.PASSWORD)
           .then(response => {
-            const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
+            const notificationCount = response.body.notificationCount;
             expect(typeof notificationCount).toBe('number');
             done();
           });
@@ -206,7 +206,7 @@ describe('Load default', () => {
           .field('login', process.env.LOGIN)
           .field('password', process.env.PASSWORD)
           .then(response => {
-            const user = JSON.parse(response.headers['managebac-data']).user;
+            const user = response.body.user;
             expect(typeof user.id).toBe('number');
             expect(isNaN(user.id)).toBeFalsy();
             expect(typeof user.name).toBe('string');
@@ -237,7 +237,7 @@ describe('Load default', () => {
         .get('/api/dashboard')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const deadlines = JSON.parse(response.headers['managebac-data']).deadlines;
+          const deadlines = response.body.deadlines;
           deadlines.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -259,7 +259,7 @@ describe('Load default', () => {
         .get('/api/dashboard')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const classes = JSON.parse(response.headers['managebac-data']).classes;
+          const classes = response.body.classes;
           classes.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -275,7 +275,7 @@ describe('Load default', () => {
         .get('/api/dashboard')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const groups = JSON.parse(response.headers['managebac-data']).groups;
+          const groups = response.body.groups;
           groups.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -291,7 +291,7 @@ describe('Load default', () => {
         .get('/api/dashboard')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const notificationCount = JSON.parse(response.headers['managebac-data']).notificationCount;
+          const notificationCount = response.body.notificationCount;
           expect(typeof notificationCount).toBe('number');
           done();
         });
@@ -302,7 +302,7 @@ describe('Load default', () => {
         .get('/api/dashboard')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const user = JSON.parse(response.headers['managebac-data']).user;
+          const user = response.body.user;
           expect(typeof user.id).toBe('number');
           expect(isNaN(user.id)).toBeFalsy();
           expect(typeof user.name).toBe('string');

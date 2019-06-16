@@ -45,7 +45,7 @@ describe('Load notifications', () => {
         .get('/api/notification')
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const notifications= JSON.parse(response.headers['managebac-data']).notifications;
+          const notifications= response.body.notifications;
           notifications.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -55,7 +55,7 @@ describe('Load notifications', () => {
             expect(typeof item.dateString).toBe('string');
             expect(typeof item.unread).toBe('boolean');
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });
@@ -100,7 +100,7 @@ describe('Load notifications', () => {
         .get(`/api/notification?pageId=${process.env.NOTIFICATION_PAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const notifications= JSON.parse(response.headers['managebac-data']).notifications;
+          const notifications= response.body.notifications;
           notifications.forEach(item => {
             expect(typeof item.id).toBe('number');
             expect(isNaN(item.id)).toBeFalsy();
@@ -110,7 +110,7 @@ describe('Load notifications', () => {
             expect(typeof item.dateString).toBe('string');
             expect(typeof item.unread).toBe('boolean');
           });
-          expect(JSON.parse(response.headers['managebac-data'])).toHaveProperty('numberOfPages');
+          expect(response.body).toHaveProperty('numberOfPages');
           done();
         });
     });
@@ -166,7 +166,7 @@ describe('Load notification', () => {
         .get(`/api/notification/${process.env.NOTIFICATION_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const notification = JSON.parse(response.headers['managebac-data']).notification;
+          const notification = response.body.notification;
           expect(typeof notification.title).toBe('string');
           expect(typeof notification.author).toBe('string');
           expect(typeof notification.date).toBe('string');

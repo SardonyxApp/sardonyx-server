@@ -65,7 +65,7 @@ describe('Load message', () => {
         .get(`/api/class/${process.env.CLASS_ID}/messages/${process.env.CLASS_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const message = JSON.parse(response.headers['managebac-data']).message;
+          const message = response.body.message;
           expect(typeof message[0].id).toBe('number');
           expect(isNaN(message[0].id)).toBeFalsy();
           expect(typeof message[0].title).toBe('string');
@@ -156,7 +156,7 @@ describe('Load message', () => {
         .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}`)
         .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
         .then(response => {
-          const message = JSON.parse(response.headers['managebac-data']).message;
+          const message = response.body.message;
           expect(typeof message[0].id).toBe('number');
           expect(isNaN(message[0].id)).toBeFalsy();
           expect(typeof message[0].title).toBe('string');
@@ -261,7 +261,7 @@ describe('Load message', () => {
   //       .get(`/api/group/${process.env.GROUP_ID}/messages/${process.env.GROUP_MESSAGE_ID}/reply/${process.env.GROUP_REPLY_OF_REPLY_ID}`)
   //       .set('Login-Token', `{"cfduid": "${process.env.CFDUID}", "managebacSession": "${process.env.MANAGEBAC_SESSION}"}`)
   //       .then(response => {
-  //         const replyOfReply = JSON.parse(response.headers['managebac-data']).replyOfReply;
+  //         const replyOfReply = response.body.replyOfReply;
   //         replyOfReply.forEach(item => {
   //           expect(typeof item.id).toBe('number');
   //           expect(isNaN(item.id)).toBeFalsy();
