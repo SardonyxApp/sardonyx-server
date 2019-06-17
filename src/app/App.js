@@ -62,7 +62,9 @@ class App extends React.Component {
       subjects: [],
       categories: [],
       subjectsFilter: [],
-      categoriesFilter: []
+      categoriesFilter: [],
+
+      displayPastTasks: false
     };
 
     this.handleModal = this.handleModal.bind(this);
@@ -70,6 +72,7 @@ class App extends React.Component {
     this.handleSelectTasklist = this.handleSelectTasklist.bind(this);
     this.handleSelectTask = this.handleSelectTask.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
+    this.handleLoadAllTasks = this.handleLoadAllTasks.bind(this);
     this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
@@ -117,12 +120,15 @@ class App extends React.Component {
     });
 
     socket.on('tasks', () => {
-      fetch(`/app/tasks?tasklist=${this.state.tasklist.id}&full=true`, { credentials: 'include' })
+      fetch(`/app/tasks?tasklist=${this.state.tasklist.id}&full=true${this.state.displayPastTasks ? '&all=true' : ''}`, { credentials: 'include' })
       .then(response => response.json())
       .then(response => {
         this.setState({ 
           tasks: response 
         });
+      }).catch(err => {
+        alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
+        console.error(err);
       });
     });
 
@@ -135,6 +141,9 @@ class App extends React.Component {
           payload[type] = response;
           return payload;
         });
+      }).catch(err => {
+        alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
+        console.error(err);
       });
     });
   }
@@ -202,6 +211,26 @@ class App extends React.Component {
       const obj = {};
       obj[type] = prevState[type].includes(id) ? prevState[type].filter(l => l !== id) : prevState[type].concat([id]);
       return obj;
+    });
+  }
+
+  /**
+   * @description Load past tasks 
+   */
+  handleLoadAllTasks() {
+    console.log('function called');
+    fetch(`/app/tasks?full=true&tasklist=${this.state.tasklist.id}&all=true`, { 
+      credentials: 'include' 
+    })
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        tasks: response,
+        displayPastTasks: true
+      });
+    }).catch(err => {
+      alert('There was an error while retrieving information. If this error persists, please contact SardonyxApp.');
+      console.error(err);
     });
   }
 
@@ -506,9 +535,11 @@ class App extends React.Component {
             currentTask={this.state.currentTask}
             subjectsFilter={this.state.subjectsFilter}
             categoriesFilter={this.state.categoriesFilter}
+            displayPastTasks={this.state.displayPastTasks}
             onModal={this.handleModal}
             onSelectTask={this.handleSelectTask}
             onFilter={this.handleFilter}
+            onLoadAllTasks={this.handleLoadAllTasks}
           />
           <TaskInfo 
             task={this.state.tasks.findById(this.state.currentTask)}

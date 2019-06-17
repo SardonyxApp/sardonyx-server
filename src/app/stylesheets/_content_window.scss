@@ -160,6 +160,20 @@
       background-color: #fbfbfb;
     }
   }
+
+  .loader {
+    width: 100%;
+    margin-top: 12px;
+    font-family: inherit;
+    font-size: 16px;
+    color: $black;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .loader:active {
+    transform: translateY(4px);
+  }
 }
 
 @media only screen and (max-width: 700px) {

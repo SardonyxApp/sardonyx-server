@@ -19,8 +19,10 @@ class TaskList extends React.Component {
           tasks={this.props.tasks}
           subjectsFilter={this.props.subjectsFilter}
           categoriesFilter={this.props.categoriesFilter}
+          displayPastTasks={this.props.displayPastTasks}
           currentTask={this.props.currentTask}
           onSelectTask={this.props.onSelectTask}
+          onLoadAllTasks={this.props.onLoadAllTasks}
         />
       </div>
     );

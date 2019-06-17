@@ -150,7 +150,7 @@ app.use('/app', auth.authenticateToken, auth.authenticateTasklist);
 
 app.get('/app/user', task.loadUser); // Tasklist can be specified for user too because of preferred labels
 app.get('/app/tasklist', task.loadTasklist);
-app.get('/app/tasks', task.loadTasks);
+app.get('/app/tasks', task.loadTasks); // Append ?all=true to include past tasks as well and ?full=true to load tasks with related label info
 app.get('/app/subjects', task.loadLabel('subjects'));
 app.get('/app/categories', task.loadLabel('categories'));
 
