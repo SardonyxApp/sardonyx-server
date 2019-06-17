@@ -33,7 +33,7 @@ exports.loadUser = (req, res) => {
     target.selectLabels(req.token.id, req.token.tasklist)
   ]).then(results => {
     const user = results[0][0];
-    if (!results[0].length) res.status(400).send('Invalid user requested.');
+    if (!results[0].length) res.status(400).json({ error: 'Invalid user requested.' });
     
     // For teachers
     delete user.password_digest;
@@ -50,7 +50,7 @@ exports.loadUser = (req, res) => {
     res.json(user);
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 };
 
@@ -67,7 +67,7 @@ exports.changeUserLabel = (type, action) => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   };
 };
@@ -101,7 +101,7 @@ exports.changeTeacherTasklist = (req, res) => {
     res.json(results);
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 };
 
@@ -117,16 +117,16 @@ exports.loadTasklist = (req, res) => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   } else {
     // Select by tasklist_id  
     tasklists.select(req.token.tasklist).then(results => {
-      if (!results.length) res.status(400).send('Invalid tasklist requested.');
+      if (!results.length) res.status(400).json({ error: 'Invalid tasklist requested.' });
       res.json(results[0]);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   }
 };
@@ -137,21 +137,18 @@ exports.loadTasklist = (req, res) => {
  * @param {Object} res 
  */
 exports.loadTasks = (req, res) => {
-  if (req.query.full = 'true') {
-    tasks.selectJoinedByTasklistId(req.token.tasklist).then(results => {
-      res.json(results);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
-    });
-  } else {
-    tasks.selectByTasklistId(req.token.tasklist).then(results => {
-      res.json(results);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
-    });
-  }
+  let func;
+  if (req.query.full === 'true' && req.query.all === 'true') func = tasks.selectJoinedByTasklistId;
+  else if (req.query.full === 'true') func = tasks.selectFutureJoinedByTasklistId;
+  else if (req.query.all === 'true') func = tasks.selectByTasklistId;
+  else func = tasks.selectFutureByTasklistId;
+  
+  func.call(tasks, req.token.tasklist).then(results => {
+    res.json(results);
+  }).catch(err => {
+    console.error(err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
+  });
 };
 
 /**
@@ -180,7 +177,7 @@ exports.createTask = (req, res) => {
     res.json(results);
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 }
 
@@ -194,7 +191,7 @@ exports.updateTask = (req, res) => {
     res.json(results);
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 }
 
@@ -208,7 +205,7 @@ exports.deleteTask = (req, res) => {
     res.json(results);
   }).catch(err => {
     console.error(err);
-    res.status(500).send('There was an error while accessing the database. ' + err);
+    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
   });
 }
 
@@ -224,7 +221,7 @@ exports.loadLabel = type => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   };  
 };
@@ -242,7 +239,7 @@ exports.createLabel = type => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   };  
 };
@@ -259,7 +256,7 @@ exports.updateLabel = type => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   };
 };
@@ -276,7 +273,7 @@ exports.deleteLabel = type => {
       res.json(results);
     }).catch(err => {
       console.error(err);
-      res.status(500).send('There was an error while accessing the database. ' + err);
+      res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
     });
   };
 };

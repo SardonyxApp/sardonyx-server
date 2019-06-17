@@ -134,6 +134,7 @@ class TasksContainer extends React.Component {
         >
           No tasks found
         </h4>
+        {this.props.displayPastTasks ? null : <div className="loader" onClick={this.props.onLoadAllTasks}>Load more tasks</div>}
       </div>
     );
   }

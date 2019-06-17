@@ -66,12 +66,10 @@ db.connect(err => {
             expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
             expect(typeof item.tasklist_id).toBe('number');
             expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
             expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
             expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-            done();
           });
+          done();
         });
     });
 
@@ -89,18 +87,16 @@ db.connect(err => {
             expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
             expect(typeof item.tasklist_id).toBe('number');
             expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
             expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
             expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-            done();
           });
+          done();
         });
     });
 
     test('GET /app/tasks?full=true using valid student cookies should return a valid tasks json', done => {
       request(app)
-        .get('/app/tasks')
+        .get('/app/tasks?full=true')
         .set('Cookie', [studentCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
@@ -122,14 +118,14 @@ db.connect(err => {
             expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
             expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
             expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-            done();
           });
+          done();
         });
     });
 
     test('GET /app/tasks?full=true using valid teacher cookies should return a valid tasks json', done => {
       request(app)
-        .get('/app/tasks')
+        .get('/app/tasks?full=true')
         .set('Cookie', [teacherCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
@@ -151,8 +147,8 @@ db.connect(err => {
             expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
             expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
             expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-            done();
           });
+          done();
         });
     });
 
@@ -176,8 +172,8 @@ db.connect(err => {
           tasks.forEach(item => {
             // test omitted for a myriad of other properties tested above 
             expect(item.tasklist_id).toBe(Number(process.env.TASKLIST_ID));
-            done();
           });
+          done();
         });
     });
 
