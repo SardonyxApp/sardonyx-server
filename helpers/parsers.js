@@ -359,7 +359,7 @@ exports.parseCas = document => {
 
     payload.push({
       id: matchNumbers($(el).find('.details a').attr('href')),
-      title: encodeURI($(el).find('h4.title a').text().delNewlines()),
+      title: encodeURI($(el).find('h3.title a').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.details a').attr('href')),
       description: encodeURI($(el).find('.description').text()) || null, // Doesn't exist for experiences
       types,

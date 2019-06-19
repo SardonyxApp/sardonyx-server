@@ -374,7 +374,7 @@ GET /api/class/:classId/messages/:messageId/reply/:replyId
 GET /api/group/:groupId/messages/:messageId/reply/:replyId
 ```
 
-Returns: `replyOfReply` object in the `Managebac-Data` headeer
+Returns: `replyOfReply` object in the body
 
 ```typescript
 {
