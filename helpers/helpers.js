@@ -43,11 +43,15 @@ exports.guessPastYear = monthIndex => monthIndex <= new Date().getMonth() ? new 
  * @example createDate('December 14, 2018 2:40 PM', true);
  */
 exports.createDate = (dateString, fullMonth = false) => {
-  const minute = dateString.match(/\d{2}(?= [AP]M)/);
-  const hour = dateString.match(/[AP]M/) === 'AM' ? dateString.match(/\d{1,2}(?=:\d{2})/) : Number(dateString.match(/\d{1,2}(?=:\d{2})/)) + 12;
-  const day = dateString.match(/\d{1,2}(?=, \d{4})/);
+  // If hour is 12 AM or PM, convert to 0 AM or 0 PM for accurate processing
+  let h = dateString.match(/\d{1,2}(?=:\d{2})/)[0];
+  h = h % 12 === 0 ? 0 : h;
+
+  const minute = dateString.match(/\d{2}(?= [AP]M)/)[0];
+  const hour = dateString.match(/[AP]M/)[0] === 'PM' ? Number(h) + 12 : Number(h);
+  const day = dateString.match(/\d{1,2}(?=, \d{4})/)[0];
   const month = fullMonth ? exports.getMonth(dateString.match(/\w+(?= \d)/)[0]) : exports.getMonthFromAbbr(dateString.match(/\w{3}(?= {1,2}\d)/)[0]);
-  const year = dateString.match(/\d{4}/);
+  const year = dateString.match(/\d{4}/)[0];
   return new Date(Date.UTC(year, month, day, hour, minute) - 32400000);
 };
 
