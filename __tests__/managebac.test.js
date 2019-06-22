@@ -38,6 +38,7 @@ describe('Load default', () => {
             expect(typeof item.due).toBe('string');
             expect(isNaN(Date.parse(item.due))).toBeFalsy();
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });
           done();
@@ -144,6 +145,7 @@ describe('Load default', () => {
               expect(typeof item.due).toBe('string');
               expect(isNaN(Date.parse(item.due))).toBeFalsy();
               expect(typeof item.author).toBe('string');
+              expect(typeof item.authorId).toBe('number');
               expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             });
             done();
@@ -248,6 +250,7 @@ describe('Load default', () => {
             expect(typeof item.due).toBe('string');
             expect(isNaN(Date.parse(item.due))).toBeFalsy();
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });
           done();

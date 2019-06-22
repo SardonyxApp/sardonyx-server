@@ -33,6 +33,7 @@ Some endpoints will return the `defaults` array as formatted below.
       deadline: boolean // true if it is a deadline
       due: string, // ISODateString
       author: string,
+      authorId: number,
       avatar: string || null // URL to avatar
     },
 
@@ -109,6 +110,7 @@ Some endpoints will return the `deadlines` object as formatted below.
       deadline: boolean // true if it is a deadline
       due: string, // ISODateString
       author: string,
+      authorId: number,
       avatar: string || null // URL to avatar
     },
 
@@ -129,6 +131,7 @@ Some endpoints will return the `messages` object as formatted below.
       content: string,
       onlyVisibleForTeachers: boolean,
       author: string,
+      authorId: number,
       avatar: string || null, // URL to avatar
       date: string, // ISODateString
       files: Array<string>, // array of URLs
@@ -153,6 +156,7 @@ Some endpoints will return the `meesage` object as formatted below.
         content: string,
         onlyVisibleForTeachers: boolean,
         author: string,
+        authorId: number,
         avatar: string || null, // URL to avatar
         date: string, // ISODateString
         files: Array<string>, // array of URLs
@@ -162,6 +166,7 @@ Some endpoints will return the `meesage` object as formatted below.
             content: string, // html string 
             onlyVisibleForTeachers: boolean,
             author: string,
+            authorId: number,
             avatar: string || null, // URL to avatar 
             comments: true, // if true, there are subcomments under the comment 
             files: Array<string> // Array of URLs
@@ -213,6 +218,7 @@ Returns the `assignments` object in the body
       deadline: boolean // true if it is a deadline
       due: string, // ISODateString
       author: string,
+      authorId: number,
       avatar: string || null // URL to avatar
     },
 
@@ -227,6 +233,7 @@ Returns the `assignments` object in the body
       deadline: boolean // true if it is a deadline
       due: string, // ISODateString
       author: string,
+      authorId: number,
       avatar: string || null // URL to avatar
     },
     
@@ -336,6 +343,7 @@ Returns: `assignment` object in the body
         content: string, // html string 
         onlyVisibleForTeachers: boolean,
         author: string,
+        authorId: number,
         avatar: string || null, // URL to avatar
         date: string, // ISODateString
         files: Array<string>, // array of URLs
@@ -384,6 +392,7 @@ Returns: `replyOfReply` object in the body
       content: string, // html string 
       onlyVisibleForTeachers: boolean,
       author: string,
+      authorId: number,
       avatar: string || avatar, // URL to avatar 
       date: string, // ISODateString
       files: Array<string> // Array of URLs

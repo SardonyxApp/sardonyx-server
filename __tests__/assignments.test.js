@@ -72,6 +72,7 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.due).toBe('string');
           expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.authorId).toBe('number');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
@@ -93,6 +94,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
@@ -161,6 +163,7 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.due).toBe('string');
           expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.authorId).toBe('number');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
@@ -182,6 +185,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
@@ -262,6 +266,7 @@ describe('Load assignment or event', () => {
           expect(typeof assignment.due).toBe('string');
           expect(isNaN(Date.parse(assignment.due))).toBeFalsy();
           expect(typeof assignment.author).toBe('string');
+          expect(typeof assignment.authorId).toBe('number');
           expect(typeof assignment.avatar === 'string' || assignment.avatar === null).toBeTruthy();
           expect(assignment).toHaveProperty('details');
           expect(Array.isArray(assignment.attachments)).toBeTruthy();
@@ -282,6 +287,7 @@ describe('Load assignment or event', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
