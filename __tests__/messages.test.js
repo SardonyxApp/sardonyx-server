@@ -73,6 +73,7 @@ describe('Load message', () => {
           expect(typeof message[0].content).toBe('string');
           expect(typeof message[0].onlyVisibleForTeachers).toBe('boolean');
           expect(typeof message[0].author).toBe('string');
+          expect(typeof message[0].authorId).toBe('number');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
           expect(isNaN(Date.parse(message[0].date))).toBeFalsy();
@@ -84,6 +85,7 @@ describe('Load message', () => {
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
@@ -164,6 +166,7 @@ describe('Load message', () => {
           expect(typeof message[0].content).toBe('string');
           expect(typeof message[0].onlyVisibleForTeachers).toBe('boolean');
           expect(typeof message[0].author).toBe('string');
+          expect(typeof message[0].authorId).toBe('number');
           expect(typeof message[0].avatar === 'string' || message[0].avatar === null).toBeTruthy();
           expect(typeof message[0].date).toBe('string');
           expect(isNaN(Date.parse(message[0].date))).toBeFalsy();
@@ -175,6 +178,7 @@ describe('Load message', () => {
             expect(typeof item.content).toBe('string');
             expect(typeof item.onlyVisibleForTeachers).toBe('boolean');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
