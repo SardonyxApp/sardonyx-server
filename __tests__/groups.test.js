@@ -66,6 +66,7 @@ describe('Load group', () => {
             expect(typeof item.due).toBe('string');
             expect(isNaN(Date.parse(item.due))).toBeFalsy();
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
           });
           done();
@@ -130,6 +131,7 @@ describe('Load group', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
@@ -200,6 +202,7 @@ describe('Load group', () => {
             expect(typeof item.link).toBe('string');
             expect(typeof item.content).toBe('string');
             expect(typeof item.author).toBe('string');
+            expect(typeof item.authorId).toBe('number');
             expect(typeof item.avatar === 'string' || item.avatar === null).toBeTruthy();
             expect(typeof item.date).toBe('string');
             expect(isNaN(Date.parse(item.date))).toBeFalsy();
