@@ -75,6 +75,7 @@ exports.parseDeadlines = document => {
       deadline: $(el).find('.due').hasClass('deadline'), // Boolean
       due: new Date(Date.UTC(dueYear, dueMonth, dueDay, dueHour, dueMinute) - 32400000), // Set in correct UTC
       author: $(el).find('.author').attr('title') || null,
+      authorId: Number($(el).find('.avatar').data('id')),
       avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
     });
   });
@@ -239,6 +240,7 @@ exports.parseAuthorOnTheSide = document => {
 
   return {
     author: $('.mini-profile .user-name').text().delNewlines(),
+    authorId: Number($('.mini-profile .avatar').data('id')),
     avatar: $('.mini-profile .avatar').attr('src') || null,
     avatar: $('.mini-profile .avatar').attr('style') ? $('.mini-profile .avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null
   };
@@ -267,6 +269,7 @@ exports.parseMessages = document => {
         content: $(elem).find('.body .fix-body-margins').html(),
         onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
         author: $(elem).find('.header strong').text(),
+        authorId: Number($(elem).find('.avatar').data('id')),
         avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null, 
         date: createDate($(elem).find('.header').text()),
         comments: !!$(elem).find('.show-reply').length, // Boolean
@@ -297,6 +300,7 @@ exports.parseMessages = document => {
       content: $(el).find('.discussion-content .fix-body-margins').html(),
       onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
+      authorId: Number($(el).find('.avatar').data('id')),
       avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(el).find('.header').text()),
       files: files,
@@ -327,6 +331,7 @@ exports.parseReplyOfReply = document => {
       content: $(elem).find('.body .fix-body-margins').html(),
       onlyVisibleForTeachers: $(elem).find('.header .label-danger').text() === 'Only Visible for Teachers',
       author: $(elem).find('.header strong').text(),
+      authorId: Number($(elem).find('.avatar').data('id')),
       avatar: $(elem).find('.avatar').attr('style') ? $(elem).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
       date: createDate($(elem).find('.header').text()),
       files
