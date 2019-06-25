@@ -51,6 +51,19 @@ button, button:active, button:focus {
   display: inline;
 }
 
+.action-colored {
+  border: 2px solid #d17b46;
+  color: #d17b46;
+  background: transparent;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.action-colored:hover {
+  border: 2px solid #c06a35;
+  color: #c06a35;
+}
+
 .orange {
   background: #d17b46;
 }
