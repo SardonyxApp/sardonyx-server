@@ -7,6 +7,11 @@
   <link href="https://indestructibletype.com/fonts/Jost.css" rel="stylesheet">
   <link href="../index.css" rel="stylesheet">
   <title>Sardonyx - Download</title>
+  <script>
+    var linkTo = function(target) {
+      window.location.href = target;
+    };
+  </script>
 </head>
 <body>
   <div id="title" class="orange">
@@ -28,8 +33,13 @@
   </div>
   <div id="content">
     <div class="component">
-      <h2>Mobile App</h2>
-      <p>The Sardonyx mobile application is currently under development. This will be released soon.</p>
+      <h2>Mobile App (Android)</h2>
+      <p>Please download the app from the Google Play Store.</p>
+      <button class="download-link action-colored" style="margin-top: 8px" onclick="linkTo('https:\/\/play.google.com/store/apps/details?id=app.sardonyx')">Download</button>
+    </div>
+    <div class="component">
+      <h2>Mobile App (iOS)</h2>
+      <p>Coming soon</p>
     </div>
     <div class="component">
       <h2>Source Code</h2>
