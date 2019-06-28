@@ -92,7 +92,7 @@ exports.parseClasses = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
-  $('#menu > .nav-menu > li.parent:nth-child(6) li').each((i, el) => {
+  $('#menu > .nav-menu > li[data-path*="classes"] li').each((i, el) => {
     payload.push({
       id: matchNumbers($(el).find('a').attr('href')),
       title: encodeURI($(el).find('a').text().delNewlines()),
@@ -113,7 +113,7 @@ exports.parseGroups = document => {
   const $ = cheerio.load(document);
   const payload = [];
 
-  $('#menu > .nav-menu > li.parent:nth-child(10) li').each((i, el) => {
+  $('#menu > .nav-menu > li[data-path*="groups"] li').each((i, el) => {
     payload.push({
       id: matchNumbers($(el).find('a').attr('href')),
       title: encodeURI($(el).find('a').text().delNewlines()),
