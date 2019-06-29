@@ -145,7 +145,7 @@ class SettingsModal extends React.Component {
                 <b>Default tasklist</b>: 
                 <select className="dropdown" onChange={e => this.props.onChangeUserTasklist(Number(e.target.value))}>
                   {this.props.tasklists.map(t => (
-                    <option selected={t.id == this.props.user.tasklistId ? 'selected' : ''} value={t.id}>
+                    <option selected={t.id == this.props.user.tasklist_id ? 'selected' : ''} value={t.id}>
                       {t.name}
                     </option>
                   ))}
