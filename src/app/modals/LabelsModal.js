@@ -26,16 +26,17 @@ class LabelsModal extends React.Component {
       );
     };
 
-    let subjects, categories;
+    let subjects = this.props.subjects.sort((a, b) => a.name.localeCompare(b.name));
+    let categories = this.props.categories.sort((a, b) => a.name.localeCompare(b.name));
 
     // Prepare task labels
     if (this.props.modal.name === 'filter') {
-      subjects = this.props.subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjectsFilter', l.id)));
-      categories = this.props.categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categoriesFilter', l.id)));
+      subjects = subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjectsFilter', l.id)));
+      categories = categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categoriesFilter', l.id)));
     }
 
     if (this.props.modal.name === 'labels' || this.props.modal.name === 'subjects' || this.props.modal.name === 'categories') {
-      subjects = this.props.subjects.map(mapFunction([this.props.task.subject_id], l => {
+      subjects = subjects.map(mapFunction([this.props.task.subject_id], l => {
         this.props.onModal();
         this.props.task.subject_id !== l.id ? this.props.onUpdateTask({
             id: this.props.task.id,
@@ -50,7 +51,7 @@ class LabelsModal extends React.Component {
           });
       }));
 
-      categories = this.props.categories.map(mapFunction([this.props.task.category_id], l => {
+      categories = categories.map(mapFunction([this.props.task.category_id], l => {
         this.props.onModal();
         this.props.task.category_id !== l.id ? this.props.onUpdateTask({
             id: this.props.task.id,
@@ -67,8 +68,8 @@ class LabelsModal extends React.Component {
     }
 
     if (this.props.modal.name === 'default-subjects' || this.props.modal.name === 'default-categories') {
-      subjects = this.props.subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjects', l.id)));
-      categories = this.props.categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categories', l.id)));
+      subjects = subjects.map(mapFunction(this.props.subjectsFilter, l => this.props.onFilter('subjects', l.id)));
+      categories = categories.map(mapFunction(this.props.categoriesFilter, l => this.props.onFilter('categories', l.id)));
     }
 
     // Render
