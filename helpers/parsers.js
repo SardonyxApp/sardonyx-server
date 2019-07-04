@@ -31,7 +31,7 @@ String.prototype.delNewlines = function(str = '') { // replace with '' by defaul
  * @returns {String}
  */
 exports.parseAuthenticityToken = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   return $('meta[name="csrf-token"]').attr('content');
 };
 
@@ -41,7 +41,7 @@ exports.parseAuthenticityToken = document => {
  * @returns {Array}
  */
 exports.parseDeadlines = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.agenda > .line').each((i, el) => {
@@ -89,7 +89,7 @@ exports.parseDeadlines = document => {
  * @returns {Array}
  */
 exports.parseClasses = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('#menu > .nav-menu > li[data-path*="classes"] li').each((i, el) => {
@@ -110,7 +110,7 @@ exports.parseClasses = document => {
  * @returns {Array}
  */
 exports.parseGroups = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('#menu > .nav-menu > li[data-path*="groups"] li').each((i, el) => {
@@ -131,7 +131,7 @@ exports.parseGroups = document => {
  * @returns {Number}
  */
 exports.parseNotificationCount = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   return $('.notifications-count').data('count');
 };
 
@@ -141,7 +141,7 @@ exports.parseNotificationCount = document => {
  * @returns {Array}
  */
 exports.parseNotifications = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('tr.message').each((i, el) => {
@@ -164,7 +164,7 @@ exports.parseNotifications = document => {
  * @returns {Object}
  */
 exports.parseNotification = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const date = $('.message-details p:last-child strong').text();
   const payload =  {
     title: encodeURI($('.content-block h3').text().delNewlines()),
@@ -182,7 +182,7 @@ exports.parseNotification = document => {
  * @returns {String}
  */
 exports.parseDetails = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   try {
     return $('label:contains("Details")').next().html().delNewlines();
   } catch (e) {
@@ -196,7 +196,7 @@ exports.parseDetails = document => {
  * @returns {Array}
  */
 exports.parseAttachments = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.content-block .list-unstyled a').each((i, el) => {
@@ -215,7 +215,7 @@ exports.parseAttachments = document => {
  * @returns {Array} 
  */
 exports.parseDropbox = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.row.file').each((i, el) => {
@@ -236,7 +236,7 @@ exports.parseDropbox = document => {
  * @returns {Object} merge this with the main object 
  */
 exports.parseAuthorOnTheSide = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
 
   return {
     author: $('.mini-profile .user-name').text().delNewlines(),
@@ -252,7 +252,7 @@ exports.parseAuthorOnTheSide = document => {
  * @returns {Array}
  */
 exports.parseMessages = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.discussion').each((i, el) => {
@@ -317,7 +317,7 @@ exports.parseMessages = document => {
  * @returns {Array} 
  */
 exports.parseReplyOfReply = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const comments = [];
 
   const files = [];
@@ -346,7 +346,7 @@ exports.parseReplyOfReply = document => {
  * @returns {Array}
  */
 exports.parseCas = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.activity-tile').each((i, el) => {
@@ -385,7 +385,7 @@ exports.parseCas = document => {
  * @returns {Object}
  */
 exports.parseExperience = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
 
   return {
     description: encodeURI(toPlainText($('h4').eq(0).nextUntil('h4').html())),
@@ -400,7 +400,7 @@ exports.parseExperience = document => {
  * @returns {Array} 
  */
 exports.parseAnswers = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   if ($('.content-block form').length > 0) { // Ongoing CAS experience
@@ -437,7 +437,7 @@ exports.parseAnswers = document => {
  * @returns {Array}
  */
 exports.parseReflections = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
 
   $('.evidence').each((i, el) => {
@@ -487,7 +487,7 @@ exports.parseReflections = document => {
  * @returns {Array} 
  */
 exports.parseLearningOutcomes = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   const payload = [];
   
   $('input[type="checkbox"]').each((i, el) => {
@@ -506,7 +506,7 @@ exports.parseLearningOutcomes = document => {
  * @returns {Number}
  */
 exports.parseNumberOfPages = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
 
   const len = $('.pagination').find('li').length - 2; // Subtract back and next buttons
   return len === -2 ? 1 : len; // If there are no buttons, len = -2. In that case there is 1 page
@@ -518,7 +518,7 @@ exports.parseNumberOfPages = document => {
  * @returns {Object}
  */
 exports.parseStudent = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
   
   const obj = {
     name: $('.profile-link > a ').text().delNewlines(),
@@ -534,7 +534,7 @@ exports.parseStudent = document => {
  * @returns {Object}
  */
 exports.parseUser = document => {
-  const $ = cheerio.load(document);
+  const $ = cheerio.load(document, { decodeEntities: false });
 
   return {
     id: Number($('body').data('user-id')),
