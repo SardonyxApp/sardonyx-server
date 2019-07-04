@@ -218,7 +218,6 @@ class App extends React.Component {
    * @description Load past tasks 
    */
   handleLoadAllTasks() {
-    console.log('function called');
     fetch(`/app/tasks?full=true&tasklist=${this.state.tasklist.id}&all=true`, { 
       credentials: 'include' 
     })
