@@ -6,8 +6,11 @@ import './login.css';
 class ChangePassword extends React.Component {
   constructor() {
     super();
+    let errorMessage = null;
+    if (location.search.includes('invalid=true')) errorMessage = 'The old password was incorrect.';
+
     this.state = {
-      errorMessage: null
+      errorMessage
     };
   }
 
@@ -25,7 +28,11 @@ class ChangePassword extends React.Component {
         state = reason;
       };
 
-      const password = [document.getElementById('new_password'), document.getElementById('confirm_password')];
+      const password = [
+        document.getElementById('old_password'), 
+        document.getElementById('new_password'), 
+        document.getElementById('confirm_password')
+      ];
 
       if (!password[0].value) insufficient(password[0], 'empty');
       else sufficient(password[0]);
@@ -33,9 +40,12 @@ class ChangePassword extends React.Component {
       if (!password[1].value) insufficient(password[1], 'empty');
       else sufficient(password[1]);
 
-      if (password[0].value !== password[1].value) {
-        insufficient(password[0], 'unequal');
+      if (!password[2].value) insufficient(password[2], 'empty');
+      else sufficient(password[2]);
+
+      if (password[1].value !== password[2].value) {
         insufficient(password[1], 'unequal');
+        insufficient(password[2], 'unequal');
       }
 
       if (state === 'empty') {
@@ -63,6 +73,8 @@ class ChangePassword extends React.Component {
           <p>You can change the password for your teacher account using this form.</p>
           <p id="try-again">{this.state.errorMessage}</p>
           <form action="/password" method="post" encType="multipart/form-data" noValidate>
+            <label>Old Password</label>
+            <input id="old_password" type="password" name="old_password" />
             <label>New Password</label>
             <input id="new_password" type="password" name="new_password" />
             <label>Confirm Password</label>
