@@ -287,11 +287,25 @@ exports.logout = (req, res) => {
  * @param {Object} res 
  */
 exports.changePassword = (req, res) => {
-  teachers.updatePassword(req.token.email, req.body.new_password).then(results => {
-    res.clearCookie('Sardonyx-Token');
-    req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
-  }).catch(err => {
-    console.error(err);
-    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
-  });
+  teachers.selectByEmail(req.token.email).then(results => {
+    if (results.length) {
+      // Match found
+      bcrypt.compare(req.body.old_password, results[0].password_digest, (err, bool) => {
+        if (bool) {
+          // Correct old password
+          teachers.updatePassword(req.token.email, req.body.new_password).then(r => {
+            res.clearCookie('Sardonyx-Token');
+            req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
+          }).catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
+          });
+        } else {
+          res.redirect('/password?invalid=true');
+        }
+      });
+    } else {
+      res.redirect('/password?invalid=true');
+    }
+  });  
 };
