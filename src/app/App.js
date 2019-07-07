@@ -184,7 +184,8 @@ class App extends React.Component {
         categories: responses[3],
         currentTask: -1,
         subjectsFilter: responses[0].subjects,
-        categoriesFilter: responses[0].categories
+        categoriesFilter: responses[0].categories,
+        displayPastTasks: false
       });
       
       socket.emit('join room', tasklist.id);
