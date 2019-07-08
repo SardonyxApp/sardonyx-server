@@ -19,7 +19,7 @@ const TaskDue = props => (
     <RemoveIcon 
       width={16}
       height={16}
-      style={{ display: props.due ? '' : 'none' }}
+      style={{ visibility: props.due ? '' : 'hidden' }}
       onClick={() => props.onUpdateTask({ id: props.id, due: null })}
     />
   </div>
