@@ -298,7 +298,7 @@ exports.parseMessages = document => {
       title: encodeURI($(el).find('.discussion-content h4.title').text().delNewlines()),
       link: toSardonyxUrl($(el).find('.discussion-content h4.title a').attr('href')),
       content: $(el).find('.discussion-content .fix-body-margins').html(),
-      onlyVisibleForTeachers: $(el).find('.header .label-danger').text() == 'Only Visible for Teachers',
+      onlyVisibleForTeachers: $(el).find('.discussion-content .header .label-danger').text() == 'Only Visible for Teachers',
       author: $(el).find('.discussion-content .header strong').text(),
       authorId: Number($(el).find('.avatar').data('id')),
       avatar: $(el).find('.avatar').attr('style') ? $(el).find('.avatar').attr('style').match(/background-image: url\((.*)\)/)[1] : null,
