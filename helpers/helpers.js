@@ -4,6 +4,8 @@
  * @license MIT
  */
 
+const bcrypt = require('bcrypt');
+
 /**
  * @description Return month index from abbreviation
  * @param {String} abbr
@@ -161,21 +163,10 @@ exports.end200 = (req, res) => {
 };
 
 /**
- * @description Hash a password with sha512 
- * @param {String} password 
- * @param {String} salt (optional)
- * @returns {Object} containing hashed password sand salt 
+ * @description Generate a hash for password using bcrypt
+ * @param password
+ * Output for console 
  */
-exports.hashPassword = (password, salt) => {
-  const crypto = require('crypto');
-
-  // Generate a random bit sequence to use as salt if salt is not provided
-  if (!salt) salt = crypto.randomBytes(64).toString('hex');
-
-  // Create a hash based on salt
-  const hmac = crypto.createHmac('sha512', salt);
-  hmac.update(password);
-  const password_digest = hmac.digest('hex');
-
-  return { password_digest, salt };
+exports.hashPassword = password => {
+  bcrypt.hash(password, 12, (err, res) => console.log(res));
 };

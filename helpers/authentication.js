@@ -6,12 +6,12 @@
 
 const request = require('request');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
 const parser = require('./parsers');
 const { students, teachers } = require('../models/users');
-const { hashPassword } = require('./helpers');
 
 /**
  * @description Convert Login-Token header to req.body FormData
@@ -202,28 +202,33 @@ exports.initiateTeacher = (req, res, next) => {
   }
 
   teachers.selectByEmail(req.body.login).then(results => {
-    if (results.length && hashPassword(req.body.password, results[0].salt).password_digest === results[0].password_digest) {
-      // Valid account and correct password 
+    if (results.length) {
+      bcrypt.compare(req.body.password, results[0].password_digest, (err, bool) => {
+        if (bool) {
+          // Valid account and correct password 
+          const token = jwt.sign({
+            teacher: true, 
+            id: results[0].id,
+            email: req.body.login,
+            tasklist: results[0].tasklist_id
+          }, process.env.PRIVATE_KEY, {
+            expiresIn: '1d',
+          });
 
-      const token = jwt.sign({
-        teacher: true, 
-        id: results[0].id,
-        email: req.body.login,
-        tasklist: results[0].tasklist_id
-      }, process.env.PRIVATE_KEY, {
-        expiresIn: '1d',
+          res.cookie('Sardonyx-Token', token, {
+            maxAge: 86400000, // expires in 24 hours 
+            secure: process.env.MODE === 'production', 
+            httpOnly: true 
+          });
+
+          next();
+        } else {
+          // Incorrect password 
+          res.redirect('/login?teacher=true&invalid=true');
+        }
       });
-
-      res.cookie('Sardonyx-Token', token, {
-        maxAge: 86400000, // expires in 24 hours 
-        secure: process.env.MODE === 'production', 
-        httpOnly: true 
-      });
-
-      next();
     } else { 
-      // Invalid account or incorrect password 
-
+      // Invalid account
       res.redirect('/login?teacher=true&invalid=true');
     }
   }).catch(err => {
@@ -282,11 +287,25 @@ exports.logout = (req, res) => {
  * @param {Object} res 
  */
 exports.changePassword = (req, res) => {
-  teachers.updatePassword(req.token.email, req.body.new_password).then(results => {
-    res.clearCookie('Sardonyx-Token');
-    req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
-  }).catch(err => {
-    console.error(err);
-    res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
-  });
+  teachers.selectByEmail(req.token.email).then(results => {
+    if (results.length) {
+      // Match found
+      bcrypt.compare(req.body.old_password, results[0].password_digest, (err, bool) => {
+        if (bool) {
+          // Correct old password
+          teachers.updatePassword(req.token.email, req.body.new_password).then(r => {
+            res.clearCookie('Sardonyx-Token');
+            req.type === 'browser' ? res.redirect('/login?teacher=true&password=true') : res.status(200).send('Password changed successfuly');
+          }).catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'There was an error while accessing the database. ' + err });
+          });
+        } else {
+          res.redirect('/password?invalid=true');
+        }
+      });
+    } else {
+      res.redirect('/password?invalid=true');
+    }
+  });  
 };
