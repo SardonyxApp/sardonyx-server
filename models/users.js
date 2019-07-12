@@ -4,8 +4,8 @@
  * @license MIT 
  */
 
- const db = require('../db');
- const { hashPassword } = require('../helpers/helpers');
+const db = require('../db');
+const bcrypt = require('bcrypt');
 
 class User {
   /**
@@ -109,9 +109,9 @@ students.create = params => {
  * @returns {Promise} results
  */
 teachers.updatePassword = (email, password) => { 
-  return new Promise((resolve, reject) => {
-    const obj = hashPassword(password);
-    db.get().query("UPDATE teachers SET ? WHERE email = ?", [obj, email], (err, results) => {
+  return new Promise(async (resolve, reject) => {
+    const password_digest = await bcrypt.hash(password, 12);
+    db.get().query("UPDATE teachers SET ? WHERE email = ?", [{ password_digest }, email], (err, results) => {
       if (err) reject(err);
       resolve(results);
     });

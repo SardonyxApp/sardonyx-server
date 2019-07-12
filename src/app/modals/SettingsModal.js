@@ -56,35 +56,41 @@ class SettingsModal extends React.Component {
   }
 
   render() {
-    const subjects = this.props.subjects.map(label => <Label 
-      label={label} 
-      onRemove={() => {
-        if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
-          this.props.onDeleteLabel('subjects', label.id);
-        }
-      }} 
-      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', this.position(position), { label_id: label.id }))} 
-      removable={true}
-      updatable={true}
-    />);
+    const subjects = this.props.subjects
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(label => <Label 
+        label={label} 
+        onRemove={() => {
+          if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
+            this.props.onDeleteLabel('subjects', label.id);
+          }
+        }} 
+        onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-subject', this.position(position), { label_id: label.id }))} 
+        removable={true}
+        updatable={true}
+      />);
 
-    const categories = this.props.categories.map(label => <Label 
-      label={label} 
-      onRemove={() => {
-        if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
-          this.props.onDeleteLabel('categories', label.id);
-        }
-      }} 
-      onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', this.position(position), { label_id: label.id }))} 
-      removable={true}
-      updatable={true}
-    />);
+    const categories = this.props.categories
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(label => <Label 
+        label={label} 
+        onRemove={() => {
+          if (confirm('Once deleted, the label cannot be restored. Are you sure?')) {
+            this.props.onDeleteLabel('categories', label.id);
+          }
+        }} 
+        onUpdate={e => this.handleAdd(e, position => this.props.onSecondModal('edit-category', this.position(position), { label_id: label.id }))} 
+        removable={true}
+        updatable={true}
+      />);
 
     const defaultSubjects = this.props.subjects
+      .sort((a, b) => a.name.localeCompare(b.name))
       .filter(l => this.props.user.subjects.includes(l.id))
       .map(label => <Label label={label} onRemove={id => this.props.onUpdateUserLabel('subjects', id)} removable={true} />);
 
     const defaultCategories = this.props.categories
+      .sort((a, b) => a.name.localeCompare(b.name))
       .filter(l => this.props.user.categories.includes(l.id))
       .map(label => <Label label={label} onRemove={id => this.props.onUpdateUserLabel('categories', id)} removable={true} />)
 

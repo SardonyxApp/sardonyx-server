@@ -4,6 +4,10 @@
   margin-left: 8px;
   flex: 1 1 100%;
 
+  .react-datepicker__input-container {
+    width: 100%;
+  }
+
   input {
     border: none;
     width: 100%;

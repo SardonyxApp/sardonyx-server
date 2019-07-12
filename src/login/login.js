@@ -63,7 +63,7 @@ class Login extends React.Component {
     if (location.search.includes('password=true')) errorMessage = 'Password changed successfully.'; // Same with this one 
     
     this.state = {
-      errorMessage: errorMessage,
+      errorMessage,
       teacher: location.search.includes('teacher=true')
     };
 
