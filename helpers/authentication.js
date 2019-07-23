@@ -173,7 +173,7 @@ exports.initiateStudent = (req, res, next) => {
       res.append('Sardonyx-Token', token);
     } else {
       res.cookie('Sardonyx-Token', token, {
-        maxAge: 86400000, // expires in 24 hours 
+        maxAge: 2419200000, // expires in 24 hours 
         secure: process.env.MODE === 'production',
         httpOnly: true
       });
@@ -216,7 +216,7 @@ exports.initiateTeacher = (req, res, next) => {
           });
 
           res.cookie('Sardonyx-Token', token, {
-            maxAge: 86400000, // expires in 24 hours 
+            maxAge: 86400000, // expires in 28 days 
             secure: process.env.MODE === 'production', 
             httpOnly: true 
           });
