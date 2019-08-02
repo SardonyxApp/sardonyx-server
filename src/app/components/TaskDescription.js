@@ -35,7 +35,10 @@ class TaskDescription extends React.Component {
   }
 
   handleMouseDown(e) {
-    if (e.target.nodeName === 'A' && !this.state.selected) {
+    // Last clause serves to prevent activation on right click
+    // By WC3 standards, e.button === 0 is left click (1 is middle click)
+    // By Microsoft standards, e.button === 1 is left click
+    if (e.target.nodeName === 'A' && !this.state.selected && (e.which === 1 || e.button === 0 || e.button === 1)) {
       this.textareaRef.current.blur();
       window.open(e.target.getAttribute('href'), '_blank');
       e.preventDefault();
