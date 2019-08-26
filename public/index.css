@@ -80,8 +80,8 @@ button, button:active, button:focus {
   padding: 32px 0;
 }
 
-#title, #content {
-  padding: 20px 40px;
+#title, #content, #ready {
+  padding: 40px 20vw;
 }
 
 #title > div {
@@ -98,6 +98,10 @@ img.logo {
   width: 150px;
   margin-right: 30px;
   vertical-align: middle;
+}
+
+.nav {
+  padding: 24px 20vw;
 }
 
 .nav > ul {
@@ -171,10 +175,6 @@ img.logo {
 #ready p {
   padding: 8px 0;
   margin: 0 24px;
-}
-
-.nav {
-  padding: 24px;
 }
 
 #copyright {
