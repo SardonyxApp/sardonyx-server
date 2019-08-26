@@ -88,10 +88,12 @@ class Login extends React.Component {
     return (
       <div id="login" className="root">
         <div id="login-box" className="container">
-          <Icon />
+          <div style={{ cursor: 'pointer', display: 'inline-block' }} onClick={() => window.location.replace('/?redirect=false')}>
+            <Icon />
+          </div>
           <h1>Welcome</h1>
-          <p style={{ display: !this.state.teacher ? 'block' : 'none' }}>Please use your Kokusai High School ManageBac information to log in to Sardonyx.</p>
-          <p style={{ display: this.state.teacher ? 'block' : 'none' }}>Please login to Sardonyx (for teachers).</p>
+          <p style={{ display: !this.state.teacher ? 'block' : 'none' }}>Login with Managebac.</p>
+          <p style={{ display: this.state.teacher ? 'block' : 'none' }}>Login to Sardonyx (for teachers).</p>
           <p id="try-again">{this.state.errorMessage}</p>
           <LoginForm 
             onValidationError={this.handleValidationError} 
