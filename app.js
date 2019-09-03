@@ -53,6 +53,7 @@ app.get('/api/dashboard', mb.createUrl(), send, mb.loadDefaults);
 // Load class
 app.get('/api/class/:resourceId/overview', mb.createUrl('classes'), send, mb.loadOverview);
 app.get('/api/class/:resourceId/assignments', mb.createUrl('classes', 'assignments'), send, mb.loadAssignments);
+app.get('/api/class/:resourceId/core_tasks', mb.createUrl('classes', 'core_tasks'), send, mb.loadAssignments);
 app.get('/api/class/:resourceId/messages', mb.createUrl('classes', 'discussions'), send, mb.loadMessages);
 
 // Load group 
@@ -61,6 +62,7 @@ app.get('/api/group/:resourceId/messages', mb.createUrl('groups', 'discussions')
 
 // Load assignment or event
 app.get('/api/class/:resourceId/assignments/:subresourceId', mb.createUrl('classes', 'assignments'), send, mb.loadAssignment);
+app.get('/api/class/:resourceId/core_tasks/:subresourceId', mb.createUrl('classes', 'core_tasks'), send, mb.loadAssignment);
 app.get('/api/event/:resourceId', mb.createUrl('ib/events'), send, mb.loadAssignment);
 app.get('/api/class/:resourceId/events/:subresourceId', mb.createUrl('classes', 'events'), send, mb.loadAssignment);
 app.get('/api/group/:resourceId/events/:subresourceId', mb.createUrl('groups', 'events'), send, mb.loadAssignment);
