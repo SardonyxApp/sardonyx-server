@@ -298,3 +298,8 @@ describe('Load assignment or event', () => {
     });
   });
 });
+
+// Core tasks cannot be tested currently by the developers
+// I'd imagine they would share similar functionality as assignments 
+// but the code is written from pure speculation 
+// The core_tasks API is unstable and is prone to break
