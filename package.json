@@ -1,6 +1,6 @@
 {
   "name": "sardonyx",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Full stack web app for Sardonyx.",
   "main": "server.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "test": "jest --detectOpenHandles"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
   "license": "MIT",
   "author": "SardonyxApp",
