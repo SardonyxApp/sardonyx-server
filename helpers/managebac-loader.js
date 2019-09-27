@@ -52,6 +52,11 @@ module.exports = (tokens, document) => {
           
           const $ = cheerio.load(response.body, { decodeEntities: false });
 
+          // Convert all links to full
+          $('label:contains("Details")').next().find('a').each((i, el) => {
+            if (/^https?.*(\.\.\.)$/.test($(el).text())) $(el).text($(el).attr('href'));
+          });
+
           // Parse the description 
           let description = $('label:contains("Details")').next().html(); // For now, since text() omits line breaks
           description = description ? toPlainText(description) : ''; 
