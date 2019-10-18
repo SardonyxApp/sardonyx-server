@@ -54,8 +54,8 @@ exports.parseDeadlines = document => {
     const due = $(el).find('.due').text(); // Ex: Wednesday at 8:30 PM
 
     // If hour is 12 AM or PM, convert to 0 AM or 0 PM for accurate processing
-    let hour = due.match(/\d{1,2}(?=:\d{2})/)[0];
-    hour = hour % 12 === 0 ? 0 : hour;
+    let hour = due.match(/\d{1,2}(?=:\d{2})/)[0] || null; // hour is null for all day tasks
+    hour = hour !== null && hour % 12 === 0 ? 0 : hour;
 
     // Build each component of time
     const dueMinute = due.match(/\d{2}(?= [AP]M)/);
