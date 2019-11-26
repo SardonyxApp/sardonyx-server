@@ -275,6 +275,7 @@ describe('Load CAS', () => {
     }); 
   });
 
+  // This test can only succeed on ongoing experiences - disable this test if this feature is not available for testing in your account.
   describe('GET /api/cas/:resourceId/learning_outcomes', () => {
     test('GET /api/cas/:resourceId/learning_outcomes should return valid tokens', done => {
       request(app)
