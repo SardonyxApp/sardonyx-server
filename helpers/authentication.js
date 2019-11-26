@@ -38,6 +38,35 @@ exports.createBody = (req, res, next) => {
 };
 
 /**
+ * @description Obtain authenticity token and cookies
+ * @param {Object} req
+ * @param {Obejct} res
+ * @param {Function} next
+ */
+exports.obtainToken = (req, res, next) => {
+  const j = request.jar();
+
+  request({
+    url: 'https://kokusaiib.managebac.com/login',
+    jar: j
+  }, (err, response) => {
+    if (err) {
+      console.error(err);
+      res.status(502).json({ error: 'There was an error making the Managebac request.' });
+      return;
+    }
+
+    req.token = {
+      cfduid: j.getCookieString('https://kokusaiib.managebac.com').split(';')[0],
+      managebacSession: j.getCookieString('https://kokusaiib.managebac.com').split(';')[1].trim() // cut the whitespace in the beginning
+    };
+
+    req.body.authenticityToken = parser.parseAuthenticityToken(response.body);
+    return next();
+  });
+}
+
+/**
  * @description Convert Login-Token header to req.token
  * @param {Object} req 
  * req should have the header 'Login-Token'
@@ -78,15 +107,20 @@ exports.loginToManagebac = (req, res, next) => {
   const additionalFormData = {
     'remember_me': 1
   };
+
   const cookieJar = request.jar();
+  cookieJar.setCookie(request.cookie(req.token.cfduid), 'https://kokusaiib.managebac.com');
+  cookieJar.setCookie(request.cookie(req.token.managebacSession), 'https://kokusaiib.managebac.com');
 
   // Relay POST request with 'login' and 'password' to ManageBac
   request.post({
     url: 'https://kokusaiib.managebac.com/sessions',
     form: { ...req.body, ...additionalFormData },
     jar: cookieJar,
-    followAllRedirects: true,
-  }, (err, response) => {
+    followAllRedirects: true
+  }, (err, response, body) => {
+    console.log({...req.body, ...additionalFormData }, cookieJar, body, response.request.uri);
+
     if (err) {
       console.error(err);
       res.status(502).json({ error: 'There was an error connecting to Managebac. ' + err });
