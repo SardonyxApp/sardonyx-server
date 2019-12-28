@@ -154,7 +154,7 @@ exports.loginToManagebac = (req, res, next) => {
     // Teacher logged in using Managebac from mobile
     else if (response.request.uri.href.includes('https://kokusaiib.managebac.com/teacher') && req.type === 'api') res.status(403).json({ error: 'Service unavailable to teachers.' });
     // Teacher logged in using Managebac from web student login
-    else if (response.request.uri.href.includes('https://kokusaiib.managebac.com/teachers')) res.redirect('/login?teacher=true&invalid=true'); 
+    else if (response.request.uri.href.includes('https://kokusaiib.managebac.com/teacher')) res.redirect('/login?teacher=true&invalid=true'); 
     // Bad Managebac username and password combination
     else if (req.type === 'api') res.status(401).json({ error: 'The login was rejected by Managebac.' });
     else res.redirect('/login?invalid=true'); 
