@@ -8,20 +8,10 @@ require('dotenv').config();
 
 jest.setTimeout(60000);
 
-const studentCookie = `Sardonyx-Token=${jwt.sign({
-  teacher: false,
-  id: process.env.STUDENT_ID,
-  email: process.env.STUDENT_EMAIL,
-  tasklist: process.env.STUDENT_TASKLIST
-}, process.env.PRIVATE_KEY, {
-  expiresIn: '1d'
-})}`;
-
-const teacherCookie = `Sardonyx-Token=${jwt.sign({
-  teacher: true,
-  id: process.env.TEACHER_ID,
-  email: process.env.TEACHER_EMAIL,
-  tasklist: process.env.TEACHER_DEFAULT_TASKLIST
+const userCookie = `Sardonyx-Token=${jwt.sign({
+  id: process.env.USER_ID,
+  email: process.env.USER_EMAIL,
+  tasklist: process.env.USER_DEFAULT_TASKLIST
 }, process.env.PRIVATE_KEY, {
   expiresIn: '1d'
 })}`;
@@ -52,10 +42,10 @@ db.connect(err => {
         });
     });
 
-    test('GET /app/tasklist using valid student cookies should return a valid tasklist json', done => {
+    test('GET /app/tasklist using valid user cookies should return a valid tasklist json', done => {
       request(app)
         .get('/app/tasklist')
-        .set('Cookie', [studentCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasklist = response.body;
@@ -66,34 +56,10 @@ db.connect(err => {
         });
     });
 
-    test('GET /app/tasklist using valid teacher cookies should return a valid tasklist json', done => {
-      request(app)
-        .get('/app/tasklist')
-        .set('Cookie', [teacherCookie])
-        .then(response => {
-          expect(response.statusCode).toBe(200);
-          const tasklist = response.body;
-          expect(typeof tasklist.id).toBe('number');
-          expect(typeof tasklist.name).toBe('string');
-          expect(typeof tasklist.description === 'string' || tasklist.description === null).toBeTruthy();
-          done();
-        });
-    });
-
-    test('GET /app/tasklist?tasklist=:tasklist using valid student cookies should return 403 when student is not allowed access', done => {
+    test('GET /app/tasklist?tasklist=:tasklist using valid user cookies should return a valid tasklist json', done => {
       request(app)
         .get(`/app/tasklist?tasklist=${process.env.TASKLIST_ID}`)
-        .set('Cookie', [studentCookie])
-        .then(response => {
-          expect(response.statusCode).toBe(403);
-          done();
-        });
-    });
-
-    test('GET /app/tasklist?tasklist=:tasklist using valid teacher cookies should return a valid tasklist json', done => {
-      request(app)
-        .get(`/app/tasklist?tasklist=${process.env.TASKLIST_ID}`)
-        .set('Cookie', [teacherCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasklist = response.body;
@@ -102,10 +68,10 @@ db.connect(err => {
         });
     });
 
-    test('GET /app/tasklist?tasklist=all using valid teacher cookies should return a valid tasklists json', done => {
+    test('GET /app/tasklist?tasklist=all using valid user cookies should return a valid tasklists json', done => {
       request(app)
         .get(`/app/tasklist?tasklist=all`)
-        .set('Cookie', [teacherCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasklists = response.body;

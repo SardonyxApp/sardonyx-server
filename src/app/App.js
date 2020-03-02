@@ -44,7 +44,6 @@ class App extends React.Component {
 
       // Data state 
       user: { 
-        teacher: false,
         name: '', 
         email: '',
         tasklist_id: '',
@@ -56,7 +55,7 @@ class App extends React.Component {
         name: '',
         description: ''
       },
-      tasklists: [], // Store information about other tasklists (teachers only)
+      tasklists: [], // Store information about other tasklists
       tasks: [],
       currentTask: -1, // Store the id of current task: -1 -> no task selected 
       subjects: [],
@@ -116,7 +115,7 @@ class App extends React.Component {
         tasklists: response
       });
     }).catch(err => {
-      console.error('There was an error while retrieving all available tasklists. If you are a student, do not worry about this error. ' + err);
+      console.error('There was an error while retrieving all available tasklists. If this error persists, please contact SardonyxApp.' + err);
     });
 
     socket.on('tasks', () => {
@@ -244,8 +243,7 @@ class App extends React.Component {
       description: obj.description || null,
       due: obj.due || null,
       tasklist_id: this.state.tasklist.id,
-      student_id: this.state.user.teacher ? null : this.state.user.id,
-      teacher_id: this.state.user.teacher ? this.state.user.id : null,
+      user_id: this.state.user.id,
       subject_id: obj.subject_id || null,
       category_id: obj.category_id || null
     };
@@ -266,8 +264,7 @@ class App extends React.Component {
           currentTask: response.insertId,
           tasks: [...prevState.tasks, Object.assign({
               id: response.insertId,
-              student_name: prevState.user.teacher ? null : prevState.user.name,
-              teacher_name: prevState.user.teacher ? prevState.user.name : null,
+              user_name: prevState.user.name,
               subject_name: null, // TODO: initially set these according to task.subject_id 
               subject_color: null,
               category_name: null,
@@ -432,7 +429,7 @@ class App extends React.Component {
 
   /**
    * @description Add or delete a user's default label
-   * @param {String} type 
+   * @param {String} type subject or category
    * @param {Number} id 
    */
   handleUpdateUserLabel(type, id) {
@@ -453,7 +450,7 @@ class App extends React.Component {
   }
 
   /**
-   * @description Update a teacher's default tasklist 
+   * @description Update default tasklist 
    * @param {Number} tasklistId 
    */
   handleChangeUserTasklist(tasklistId) {

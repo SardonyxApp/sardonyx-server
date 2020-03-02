@@ -30,12 +30,12 @@ class InfoModal extends React.Component {
               <InfoIcon style={{ cursor: 'auto' }} />
               <h3 className="subheading">About</h3>
             </div>
-            <p>&#169; 2018-2019 SardonyxApp</p>
+            <p>&#169; 2018-2020 SardonyxApp</p>
             <p>You are running:</p>
             <ul>
               <li>Version: <b>Sardonyx Web App v1.2.0</b></li>
               <li>Stable Release Build</li>
-              <li>Released: September 25 2019</li>
+              <li>Released: March 2 2020</li>
               <li>Source code: <a href="https://github.com/SardonyxApp/sardonyx-server" target="_blank">See on GitHub</a></li>
             </ul>
             <p>To view the changelog, please see <a href="/changelog">here.</a></p>
@@ -59,17 +59,14 @@ class InfoModal extends React.Component {
                 <p><b>How do I delete tasks?</b></p>
                 <p>Select a task from the list on the left, then simply click on "delete task" at the bottom. Do this carefully, as this action cannot be reversed.</p>
               </div>
-              {this.props.user.teacher ? (
-                <div className="subsection">
-                  <p><b>How do I switch between tasklists?</b></p>
-                  <p>Click on the name of the tasklist on the top menu, then select the tasklist of your choice.</p>
-                </div>
-              ) : null}
-              {this.props.user.teacher ? (<div className="subsection">
+              <div className="subsection">
+                <p><b>How do I switch between tasklists?</b></p>
+                <p>Click on the name of the tasklist on the top menu, then select the tasklist of your choice.</p>
+              </div>
+              <div className="subsection">
                   <p><b>How do I change my default tasklist?</b></p>
                   <p>In the <a href="" onClick={e => this.handleNavigation(e)}>settings panel</a>, you can change your account preferences at the bottom.</p>
                 </div>
-              ) : null}
               <div className="subsection">
                 <p><b>How do I share links related to tasks?</b></p>
                 <p>Links can be placed in the description of the task. When you finish editing, they will automatically embedded.</p>

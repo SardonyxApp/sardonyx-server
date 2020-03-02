@@ -33,7 +33,7 @@ class TaskInfo extends React.Component {
               onUpdateTask={this.props.onUpdateTask}
             />
             <TaskAuthor 
-              author={this.props.task.student_name || this.props.task.teacher_name}
+              author={this.props.task.user_name}
             />
             <TaskDelete 
               task={this.props.task}

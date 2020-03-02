@@ -8,20 +8,10 @@ require('dotenv').config();
 
 jest.setTimeout(60000);
 
-const studentCookie = `Sardonyx-Token=${jwt.sign({
-  teacher: false,
-  id: process.env.STUDENT_ID,
-  email: process.env.STUDENT_EMAIL,
-  tasklist: process.env.STUDENT_TASKLIST
-}, process.env.PRIVATE_KEY, {
-  expiresIn: '1d'
-})}`;
-
-const teacherCookie = `Sardonyx-Token=${jwt.sign({
-  teacher: true,
-  id: process.env.TEACHER_ID,
-  email: process.env.TEACHER_EMAIL,
-  tasklist: process.env.TEACHER_DEFAULT_TASKLIST
+const userCookie = `Sardonyx-Token=${jwt.sign({
+  id: process.env.USER_ID,
+  email: process.env.USER_EMAIL,
+  tasklist: process.env.USER_DEFAULT_TASKLIST
 }, process.env.PRIVATE_KEY, {
   expiresIn: '1d'
 })}`;
@@ -52,10 +42,10 @@ db.connect(err => {
         });
     });
 
-    test('GET /app/tasks using valid student cookies should return a valid tasks json', done => {
+    test('GET /app/tasks using valid user cookies should return a valid tasks json', done => {
       request(app)
         .get('/app/tasks')
-        .set('Cookie', [studentCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasks = response.body;
@@ -65,39 +55,16 @@ db.connect(err => {
             expect(typeof item.description === 'string' || item.description === null).toBeTruthy();
             expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
             expect(typeof item.tasklist_id).toBe('number');
-            expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
+            expect(typeof item.user_id === 'number' || item.user_id === null).toBeTruthy();
           });
           done();
         });
     });
 
-    test('GET /app/tasks using valid teacher cookies should return a valid tasks json', done => {
-      request(app)
-        .get('/app/tasks')
-        .set('Cookie', [teacherCookie])
-        .then(response => {
-          expect(response.statusCode).toBe(200);
-          const tasks = response.body;
-          tasks.forEach(item => {
-            expect(typeof item.id).toBe('number');
-            expect(typeof item.name).toBe('string');
-            expect(typeof item.description === 'string' || item.description === null).toBeTruthy();
-            expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
-            expect(typeof item.tasklist_id).toBe('number');
-            expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-          });
-          done();
-        });
-    });
-
-    test('GET /app/tasks?full=true using valid student cookies should return a valid tasks json', done => {
+    test('GET /app/tasks?full=true using valid user cookies should return a valid tasks json', done => {
       request(app)
         .get('/app/tasks?full=true')
-        .set('Cookie', [studentCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasks = response.body;
@@ -107,65 +74,23 @@ db.connect(err => {
             expect(typeof item.description === 'string' || item.description === null).toBeTruthy();
             expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
             expect(typeof item.tasklist_id).toBe('number');
-            expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
-            expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
+            expect(typeof item.user_id === 'number' || item.user_id === null).toBeTruthy();
+            expect(typeof item.user_name === 'string' || item.user_name === null).toBeTruthy();
             expect(typeof item.subject_id === 'number' || item.subject_id === null).toBeTruthy();
             expect(typeof item.subject_name === 'string' || item.subject_name === null).toBeTruthy();
             expect(typeof item.subject_color === 'string' || item.subject_color === null).toBeTruthy();
             expect(typeof item.category_id === 'number' || item.category_id === null).toBeTruthy();
             expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
             expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
-            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
           });
           done();
         });
     });
 
-    test('GET /app/tasks?full=true using valid teacher cookies should return a valid tasks json', done => {
-      request(app)
-        .get('/app/tasks?full=true')
-        .set('Cookie', [teacherCookie])
-        .then(response => {
-          expect(response.statusCode).toBe(200);
-          const tasks = response.body;
-          tasks.forEach(item => {
-            expect(typeof item.id).toBe('number');
-            expect(typeof item.name).toBe('string');
-            expect(typeof item.description === 'string' || item.description === null).toBeTruthy();
-            expect(!isNaN(Date.parse(item.due)) || item.due === null).toBeTruthy();
-            expect(typeof item.tasklist_id).toBe('number');
-            expect(typeof item.student_id === 'number' || item.student_id === null).toBeTruthy();
-            expect(typeof item.student_name === 'string' || item.student_name === null).toBeTruthy();
-            expect(typeof item.teacher_id === 'number' || item.teacher_id === null).toBeTruthy();
-            expect(typeof item.teacher_name === 'string' || item.teacher_name === null).toBeTruthy();
-            expect(typeof item.subject_id === 'number' || item.subject_id === null).toBeTruthy();
-            expect(typeof item.subject_name === 'string' || item.subject_name === null).toBeTruthy();
-            expect(typeof item.subject_color === 'string' || item.subject_color === null).toBeTruthy();
-            expect(typeof item.category_id === 'number' || item.category_id === null).toBeTruthy();
-            expect(typeof item.category_name === 'string' || item.category_name === null).toBeTruthy();
-            expect(typeof item.category_color === 'string' || item.category_color === null).toBeTruthy();
-            expect(typeof item.managebac === 'string' || item.managebac === null).toBeTruthy();
-          });
-          done();
-        });
-    });
-
-    test('GET /app/tasks?tasklist=:tasklist using valid student cookies should return 403 when student is not allowed access', done => {
+    test('GET /app/tasks?tasklist=:tasklist using valid user cookies should return a valid tasks json', done => {
       request(app)
         .get(`/app/tasks?tasklist=${process.env.TASKLIST_ID}`)
-        .set('Cookie', [studentCookie])
-        .then(response => {
-          expect(response.statusCode).toBe(403);
-          done();
-        });
-    });
-
-    test('GET /app/tasks?tasklist=:tasklist using valid teacher cookies should return a valid tasks json', done => {
-      request(app)
-        .get(`/app/tasks?tasklist=${process.env.TASKLIST_ID}`)
-        .set('Cookie', [teacherCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           const tasks = response.body;
@@ -177,10 +102,10 @@ db.connect(err => {
         });
     });
 
-    test('GET /appp/tasks?tasklist=:tasklist using valid teacher cookies and invalid tasklist id should return empty array', done => {
+    test('GET /appp/tasks?tasklist=:tasklist using valid user cookies and invalid tasklist id should return empty array', done => {
       request(app)
         .get(`/app/tasks?tasklist=foobar`)
-        .set('Cookie', [teacherCookie])
+        .set('Cookie', [userCookie])
         .then(response => {
           expect(response.statusCode).toBe(200);
           expect(response.body.length).toBe(0);
@@ -198,8 +123,7 @@ db.connect(err => {
   //         description: null,
   //         due: null,
   //         tasklist_id: process.env.TASKLIST_ID,
-  //         student_id: process.env.STUDENT_ID,
-  //         teacher_id: null,
+  //         user_id: null,
   //         subject_id: null,
   //         category_id: null
   //       })
@@ -218,8 +142,7 @@ db.connect(err => {
   //         description: null,
   //         due: null,
   //         tasklist_id: process.env.TASKLIST_ID,
-  //         student_id: process.env.STUDENT_ID,
-  //         teacher_id: null,
+  //         user_id: null,
   //         subject_id: null,
   //         category_id: null
   //       })
@@ -274,38 +197,16 @@ db.connect(err => {
   //       });
   //   });
 
-  //   test('POST /app/tasks using valid student cookies should return a valid insertId', done => {
+  //   test('POST /app/tasks using valid user cookies should return a valid insertId', done => {
   //     request(app)
   //       .post('/app/tasks')
-  //       .set('Cookie', [process.env.studentCookie])
+  //       .set('Cookie', [process.env.userCookie])
   //       .send({
   //         name: process.env.TASK_ID,
   //         description: null,
   //         due: null,
   //         tasklist_id: process.env.TASKLIST_ID,
-  //         student_id: process.env.STUDENT_ID,
-  //         teacher_id: null,
-  //         subject_id: null,
-  //         category_id: null
-  //       })
-  //       .then(response => {
-  //         expect(response.statusCode).toBe(200);
-  //         expect(typeof response.body.insertId).toBe('number');
-  //         done();
-  //       });
-  //   });
-
-  //   test('POST /app/tasks using valid teacher cookies should return a valid insertId', done => {
-  //     request(app)
-  //       .post('/app/tasks')
-  //       .set('Cookie', [process.env.teacherCookie])
-  //       .send({
-  //         name: process.env.TASK_ID,
-  //         description: null,
-  //         due: null,
-  //         tasklist_id: process.env.TASKLIST_ID,
-  //         student_id: null,
-  //         teacher_id: process.env.TEACHER_ID,
+  //         user_id: process.env.USER_ID,
   //         subject_id: null,
   //         category_id: null
   //       })
