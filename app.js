@@ -1,5 +1,5 @@
 /**
- * @fileoverview Manage routes for the Managebac parser, tasklist, and web pages.
+ * @fileoverview Manage routes for the tasklist and web pages.
  * @author SardonyxApp
  * @license MIT 
  */
@@ -34,14 +34,17 @@ app.use((req, res, next) => {
 
 app.use('/login', upload.none());
 
-// Login through web client 
 app.post('/login', auth.initiateUser, (req, res) => {
-  // First time users do not have cookies 
-  if (!req.cookies['Sardonyx-Token']) {
-    // Display the info window for first time users 
-    res.redirect('/app?info=true');
+  if (req.type === 'browser') {
+    // First time users do not have cookies 
+    if (!req.cookies['Sardonyx-Token']) {
+      // Display the info window for first time users 
+      res.redirect('/app?info=true');
+    } else {
+      res.redirect('/app');
+    }
   } else {
-    res.redirect('/app');
+    res.status(200).send("Login successful.");
   }
 });
 
