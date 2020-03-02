@@ -44,7 +44,6 @@ class LoginForm extends React.Component {
         <input id="session_login" name="login" type="email" autoFocus/>
         <label htmlFor="session_password">Password</label>
         <input id="session_password" name="password" type="password"/>
-        <p id="forgot-password"><a href="https://kokusaiib.managebac.com/reset-password/new" target="_blank">Forgot password?</a></p>
         <p>By accessing Sardonyx, you agree to our <a href="../terms" target="_blank">Terms of Service</a> and <a href="../privacy" target="_blank">Privacy Policy</a>. You also agree to the use of necessary cookies to run this application.</p>
         <input name="commit" type="submit" value="Sign in" />
       </form>
