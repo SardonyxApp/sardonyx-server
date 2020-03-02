@@ -1,5 +1,5 @@
 /**
- * @fileoverview Interact with the students and teachers table of the database.
+ * @fileoverview Interact with the users table of the database.
  * @author SardonyxApp
  * @license MIT 
  */
@@ -8,12 +8,9 @@ const db = require('../db');
 const bcrypt = require('bcrypt');
 
 class User {
-  /**
-   * @param {String} type students or teachers 
-   */
-  constructor(type) {
-    this.target = type;
-    this.idName = type === 'students' ? 'student_id' : 'teacher_id';
+  constructor() {
+    this.target = 'users';
+    this.idName = 'user_id';
   }
 
   /**
@@ -82,55 +79,39 @@ class User {
       });
     });
   }
+
+  /**
+   * @description Update password 
+   * @param {String} email 
+   * @param {String} password 
+   * @returns {Promise} results
+   */
+  updatePassword(email, password) { 
+    return new Promise(async (resolve, reject) => {
+      const password_digest = await bcrypt.hash(password, 12);
+      db.get().query("UPDATE users SET ? WHERE email = ?", [{ password_digest }, email], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  };
+
+  /**
+   * @description Update default tasklist 
+   * @param {Number} id 
+   * @param {Number} tasklist_id
+   * @returns {Promise} results
+   */
+  updateTasklist(id, tasklistId) {
+    return new Promise((resolve, reject) => {
+      db.get().query("UPDATE users SET tasklist_id = ? WHERE id = ?", [tasklistId, id], (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
+    });
+  };
 }
 
-const students = new User('students');
-const teachers = new User('teachers');
+const users = new User();
 
-/**
- * @description Create a student 
- * @param {Array} params 
- * name, email, year, tasklist_id are required
- * @returns {Promise} results
- */
-students.create = params => {
-  return new Promise((resolve, reject) => {
-    db.get().query("INSERT INTO students (name, email, year, tasklist_id) VALUES (?, ?, ?, ?)", params, (err, results) => {
-      if (err) reject(err);
-      resolve(results);
-    });
-  });  
-};
-
-/**
- * @description Update a teacher's password 
- * @param {String} email 
- * @param {String} password 
- * @returns {Promise} results
- */
-teachers.updatePassword = (email, password) => { 
-  return new Promise(async (resolve, reject) => {
-    const password_digest = await bcrypt.hash(password, 12);
-    db.get().query("UPDATE teachers SET ? WHERE email = ?", [{ password_digest }, email], (err, results) => {
-      if (err) reject(err);
-      resolve(results);
-    });
-  });
-};
-
-/**
- * @description Update a teacher's default tasklist 
- * @param {Number} id 
- * @param {Number} tasklist_id
- * @returns {Promise} results
- */
-teachers.updateTasklist = (id, tasklistId) => {
-  return new Promise((resolve, reject) => {
-    db.get().query("UPDATE teachers SET tasklist_id = ? WHERE id = ?", [tasklistId, id], (err, results) => {
-      if (err) reject(err);
-      resolve(results);
-    });
-  });
-};
-
-module.exports = { students, teachers };
+module.exports = { users };

@@ -33,10 +33,6 @@ class HandleLabelModal extends React.Component {
 
     payload.color = this.state.color;
 
-    if (type === 'subject') payload.managebac = this.urlRef.current.value;
-    if (payload.managebac && payload.managebac.substr(-1) === '/') payload.managebac = payload.managebac.slice(0, -1)
-    if (payload.managebac && !payload.managebac.match(/^https:\/\/kokusaiib\.managebac\.com\/student/)) return this.handleError(this.urlRef.current);
-
     if (this.props.modal.name.includes('edit')) payload.id = this.props.modal.data.label_id;
 
     this.props.modal.name.includes('edit') 
@@ -53,16 +49,10 @@ class HandleLabelModal extends React.Component {
     el.style.borderBottom = '2px solid #f44138';
     el.focus();
 
-    if (el.className === 'url-input') {
-      this.setState({
-        urlErrorMessage: 'URL has to start with https://kokusaiib.managebac.com'
-      });
-    } else {
-      this.setState({
-        nameErrorMessage: el.value ? 'Name has to be shorter than 255 characters.' : 'Name cannot be empty.'
-      });
-    }
-  }
+    this.setState({
+      nameErrorMessage: el.value ? 'Name has to be shorter than 255 characters.' : 'Name cannot be empty.'
+    });
+}
 
   render() {
     // Choose type of label to add/edit 
@@ -111,22 +101,6 @@ class HandleLabelModal extends React.Component {
           <p style={{ display: 'inline-block' }}>Use color</p>
           <div className="dot" style={{ background: this.state.color, marginLeft: '4px' }}></div>
         </div>
-
-        {type === 'subject' ? <div>
-          <input 
-            className="url-input"
-            type="text"
-            style={{ width: '236px' }}
-            placeholder={`Enter linked Managebac URL (optional)`}
-            defaultValue={this.props.modal.name.includes('edit') ? label.managebac : ''}
-            onKeyDown={e => {
-              if (e.keyCode === 13) this.handleLabel(type);
-              if (e.keyCode === 27) this.props.onModal();
-            }}
-            ref={this.urlRef}
-          />
-        </div> : null}
-        {type === 'subject' ? <p className="error-message" style={{ textAlign: 'right' }}>{this.state.urlErrorMessage}</p> : null}
       </div>
     );
   }

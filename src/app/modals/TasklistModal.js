@@ -18,8 +18,7 @@ class TasklistModal extends React.Component {
   }
 
   render() {
-    const tasklists = this.props.user.teacher
-      ? this.props.tasklists.map(tasklist => (
+    const tasklists = this.props.tasklists.map(tasklist => (
         tasklist.id === this.props.tasklist.id ? (
           <TasklistOverview 
             name={tasklist.name} 
@@ -36,15 +35,9 @@ class TasklistModal extends React.Component {
             onClick={() => this.handleSelect(tasklist)}
           />
         )  
-      )) : (
-        <TasklistOverview 
-          name={this.props.tasklist.name} 
-          description={this.props.tasklist.description} 
-          checked={true} 
-        />
-      );
+      ));
 
-    // Position is set statiscally in CSS 
+    // Position is set statically in CSS 
     return (
       <div id="tasklist-modal" className="modal" style={this.props.modal.position}>
         {tasklists}

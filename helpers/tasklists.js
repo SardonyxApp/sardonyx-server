@@ -4,42 +4,27 @@
  * @license MIT 
  */
 
-const { students, teachers } = require('../models/users');
+const { users } = require('../models/users');
 const tasklists = require('../models/tasklists');
 const tasks = require('../models/tasks');
 const { subjects, categories } = require('../models/labels');
-const managebacLoader = require('./managebac-loader');
 const jwt = require('jsonwebtoken');
-
-/**
- * @decription Load Managebac assignments to database 
- * @param {Object} req 
- * @param {Object} res 
- */
-exports.loadManagebac = (req, res, next) => {
-  managebacLoader(req.token, req.document); // do not await 
-  next();
-};
 
 /**
  * @description Load user information 
  * @param {Object} req
  * @param {Object} res 
  */
-exports.loadUser = (req, res) => {
-  const target = req.token.teacher ? teachers : students; 
+exports.loadUser = (req, res) => { 
   Promise.all([
-    target.selectByEmail(req.token.email),
-    target.selectLabels(req.token.id, req.token.tasklist)
+    users.selectByEmail(req.token.email),
+    users.selectLabels(req.token.id, req.token.tasklist)
   ]).then(results => {
     const user = results[0][0];
     if (!results[0].length) res.status(400).json({ error: 'Invalid user requested.' });
     
-    // For teachers
     delete user.password_digest;
-    delete user.salt;
 
-    user.teacher = req.token.teacher;
     user.subjects = [];
     user.categories = [];
 
@@ -61,9 +46,8 @@ exports.loadUser = (req, res) => {
  */
 exports.changeUserLabel = (type, action) => {
   return (req, res) => {
-    const target = req.token.teacher ? teachers : students;
-    const operation = action === 'add' ? target.addLabel : target.deleteLabel;
-    operation.call(target, req.token.id, req.query.id, type).then(results => {
+    const operation = action === 'add' ? users.addLabel : users.deleteLabel;
+    operation.call(users, req.token.id, req.query.id, type).then(results => {
       res.json(results);
     }).catch(err => {
       console.error(err);
@@ -73,14 +57,13 @@ exports.changeUserLabel = (type, action) => {
 };
 
 /**
- * @description Update a teacher's default tasklist 
+ * @description Update a user's default tasklist 
  * @param {Object} req 
  * @param {Object} res 
  */
-exports.changeTeacherTasklist = (req, res) => {
-  teachers.updateTasklist(req.token.id, req.query.id).then(results => {
+exports.changeDefaultTasklist = (req, res) => {
+  users.updateTasklist(req.token.id, req.query.id).then(results => {
     const token = jwt.sign({
-      teacher: req.token.teacher,
       id: req.token.id,
       email: req.token.email,
       tasklist: req.query.id

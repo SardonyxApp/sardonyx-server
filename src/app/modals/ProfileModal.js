@@ -15,7 +15,7 @@ class ProfileModal extends React.Component {
           <GlobeIcon width={20} height={20} onClick={() => window.open('https://kokusaiib.managebac.com', '_blank')} />
           <p><a href="https://kokusaiib.managebac.com" target="_blank">Open Managebac</a></p>
         </div>
-        <div style={{ display: this.props.user.teacher ? '' : 'none' }}>
+        <div>
           <LockIcon width={20} height={20} onClick={() => window.location.href = '/password'} />
           <p><a href="/password">Change Password</a></p>
         </div>

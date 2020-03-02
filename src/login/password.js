@@ -70,7 +70,7 @@ class ChangePassword extends React.Component {
         <div className="container">
           <Icon />
           <h1>Change Password</h1>
-          <p>You can change the password for your teacher account using this form.</p>
+          <p>You can change the password for your account using this form.</p>
           <p id="try-again">{this.state.errorMessage}</p>
           <form action="/password" method="post" encType="multipart/form-data" noValidate>
             <label>Old Password</label>
