@@ -3,6 +3,9 @@
 -- source /path/to/this/file
 
 -- NOTICE: this action is irreversible
+-- NOTICE: some parts of this migration will not run on MariaDB, depending on the name of the foreign key constraints.
+-- If the DROP FOREIGN KEY statements fail, check the name of the constraints using SHOW CREATE TABLE table_name 
+-- and replace the foreign key constraint
 
 -- Drop the foreign key and column in tasks associated with students
 ALTER TABLE tasks DROP FOREIGN KEY tasks_ibfk_2;
