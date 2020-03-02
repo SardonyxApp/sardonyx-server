@@ -13,19 +13,7 @@ CREATE TABLE tasklists (
   PRIMARY KEY (id)
 ) ENGINE=INNODB;
 
-CREATE TABLE students (
-  id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  year INT NOT NULL,
-  tasklist_id INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY fk_student_tasklist(tasklist_id)
-  REFERENCES tasklists(id)
-  ON UPDATE CASCADE
-) ENGINE=INNODB;
-
-CREATE TABLE teachers (
+CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
@@ -42,7 +30,6 @@ CREATE TABLE subjects (
   name VARCHAR(255) NOT NULL,
   color CHAR(7),
   tasklist_id INT,
-  managebac VARCHAR(255), -- managebac class or group link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_subject_tasklist(tasklist_id)
   REFERENCES tasklists(id)
@@ -68,22 +55,16 @@ CREATE TABLE tasks (
   description TEXT,
   due DATETIME,
   tasklist_id INT NOT NULL,
-  student_id INT,
-  teacher_id INT, 
+  user_id INT, 
   subject_id INT,
   category_id INT,
-  managebac VARCHAR(255), -- managebac assignment or event link 
   PRIMARY KEY (id),
   FOREIGN KEY fk_task_parent_tasklist(tasklist_id)
   REFERENCES tasklists(id)
   ON UPDATE CASCADE
   ON DELETE CASCADE,
-  FOREIGN KEY fk_task_parent_student(student_id)
-  REFERENCES students(id)
-  ON UPDATE CASCADE
-  ON DELETE SET NULL,
-  FOREIGN KEY fk_task_parent_teacher(teacher_id)
-  REFERENCES teachers(id)
+  FOREIGN KEY fk_task_parent_user(user_id)
+  REFERENCES users(id)
   ON UPDATE CASCADE 
   ON DELETE SET NULL,
   FOREIGN KEY fk_task_subject(subject_id)
@@ -98,17 +79,12 @@ CREATE TABLE tasks (
 
 CREATE TABLE user_labels (
   id INT NOT NULL AUTO_INCREMENT,
-  student_id INT,
-  teacher_id INT,
+  user_id INT,
   subject_id INT,
   category_id INT,
   PRIMARY KEY (id),
-  FOREIGN KEY fk_student_label(student_id)
-  REFERENCES students(id)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE,
-  FOREIGN KEY fk_teacher_label(teacher_id)
-  REFERENCES teachers(id)
+  FOREIGN KEY fk_user_label(user_id)
+  REFERENCES users(id)
   ON UPDATE CASCADE
   ON DELETE CASCADE,
   FOREIGN KEY fk_user_subject(subject_id)
@@ -126,11 +102,8 @@ CREATE TABLE user_labels (
 INSERT INTO tasklists (id, name, description)
   VALUES (1, 'Test Cohort', 'Dummy test group');
 
-INSERT INTO students (id, name, email, year, tasklist_id) 
-  VALUES (1, 'John Doe', 'johndoe@example.com', 2020, 1);
-
-INSERT INTO teachers (id, name, email, tasklist_id, password_digest)
-  VALUES (1, 'Jane Doe', 'janedoe@example.com', 1,' $2b$12$15V8udm1P6wMx86h5ymRw.1oXgqBBghTzLsEhFR0c8suz3FOFkPci');
+INSERT INTO users (id, name, email, tasklist_id, password_digest)
+  VALUES (1, 'Jane Doe', 'janedoe@example.com', 1, '$2b$12$15V8udm1P6wMx86h5ymRw.1oXgqBBghTzLsEhFR0c8suz3FOFkPci');
 -- original password: password1234
 
 INSERT INTO subjects (id, name, color, tasklist_id) 
@@ -139,11 +112,8 @@ INSERT INTO subjects (id, name, color, tasklist_id)
 INSERT INTO categories (id, name, color, tasklist_id)
   VALUES (1, 'Assignment', '#da9104', 1);
 
-INSERT INTO tasks (id, name, description, due, tasklist_id, student_id, subject_id, category_id) 
+INSERT INTO tasks (id, name, description, due, tasklist_id, user_id, subject_id, category_id) 
   VALUES (1, 'Program Sardonyx', 'Implement programs.', '2019-04-01 12:00', 1, 1, 1, 1);
 
-INSERT INTO user_labels (student_id, subject_id)
-  VALUES (1, 1);
-
-INSERT INTO user_labels (teacher_id, category_id)
+INSERT INTO user_labels (user_id, category_id)
   VALUES (1, 1);
