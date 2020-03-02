@@ -31,21 +31,25 @@ exports.initiateUser = (req, res, next) => {
             expiresIn: '1d',
           });
 
-          res.cookie('Sardonyx-Token', token, {
-            maxAge: 86400000, // expires in 28 days 
-            secure: process.env.MODE === 'production', 
-            httpOnly: true 
-          });
+          if (req.type === 'api') {
+            res.append('Sardonyx-Token', token);
+          } else {
+            res.cookie('Sardonyx-Token', token, {
+              maxAge: 86400000, // expires in 28 days 
+              secure: process.env.MODE === 'production', 
+              httpOnly: true 
+            });
+          }
 
           next();
         } else {
           // Incorrect password 
-          res.redirect('/login?invalid=true');
+          req.type === 'browser' ? res.redirect('/login?invalid=true') : res.status(401).send("Incorrect password");
         }
       });
     } else { 
       // Invalid account
-      res.redirect('/login?invalid=true');
+      req.type === 'browser' ? res.redirect('/login?invalid=true') : res.status(401).send("Invalid account");
     }
   }).catch(err => {
     console.error(err);
@@ -64,7 +68,7 @@ exports.authenticateToken = (req, res, next) => {
   jwt.verify(req.cookies['Sardonyx-Token'] || req.headers['sardonyx-token'], process.env.PRIVATE_KEY, (err, decoded) => {
     if (err) { // Invalid or expired Sardonyx Token
       if (req.type === 'browser') res.redirect('/login');
-      else res.status(401).send('Sardonyx-Token is invalid or expired. ' + err);
+      else res.status(401).json({ error: 'Sardonyx-Token is invalid or expired. ' + err });
     } else next();
   });
 };

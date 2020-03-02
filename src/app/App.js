@@ -379,7 +379,6 @@ class App extends React.Component {
    * @param {Object} obj.id required 
    * @param {String} obj.name 
    * @param {String} obj.color 
-   * @param {String} obj.managebac 
    */
   handleUpdateLabel(type, obj) {
     fetch(`/app/${type}?id=${obj.id}&tasklist=${this.state.tasklist.id}`, {
