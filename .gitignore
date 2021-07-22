@@ -1,3 +1,4 @@
 node_modules
 .env
 __tests__/tmp.test.js
+certs

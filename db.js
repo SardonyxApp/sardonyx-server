@@ -4,6 +4,8 @@
  * @license MIT 
  */
 
+const fs = require('fs');
+
 const mysql = require('mysql');
 require('dotenv').config();
 
@@ -16,7 +18,7 @@ const state = {
  * @param {Function} callback
  */
 exports.connect = callback => {
-  state.pool = process.env.MODE === 'production' 
+  state.pool = process.env.DB_TYPE === 'cloudsql' 
     ? mysql.createPool({
 	    socketPath: `/cloudsql/${process.env.DB_INSTANCE}`,
       user: process.env.DB_LOGIN,
@@ -29,6 +31,9 @@ exports.connect = callback => {
       user: process.env.DB_LOGIN,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
+      ssl: (process.env.DB_TYPE === 'ssl' ? {
+        ca: fs.readFileSync(__dirname + '/certs/ca.pem')
+      } : {}),
       timezone: '+09:00'
     });
 
